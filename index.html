@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HEILLON — Infrastructure de Verificação de Decisões para sistemas autônomos.">
+  <title>HEILLON Protocol — Infrastructure de Verificação de Decisões</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="flow-lines" aria-hidden="true"></div>
+  <div class="data-stream" aria-hidden="true"></div>
+  <div class="hdr-stream" id="hdr-stream" aria-hidden="true"></div>
+  
+  <header class="header header--sticky">
+    <div class="container header__container">
+      <a href="#hero" class="logo" aria-label="Voltar ao início">
+        <span class="logo-symbol">HEILLON</span>
+        <span class="logo-label">Protocol</span>
+      </a>
+      <nav class="nav" id="main-nav">
+        <a href="#structural-problem" class="nav-link">Problem</a>
+        <a href="#why-verification" class="nav-link">Why</a>
+        <a href="#infraestrutura" class="nav-link">Protocol</a>
+        <a href="#hdr-artifact" class="nav-link">HDR</a>
+        <a href="#demo" class="nav-link">Demo</a>
+        <a href="#use-case" class="nav-link">Use Case</a>
+        <a href="#architecture" class="nav-link">Architecture</a>
+        <a href="#component-overview" class="nav-link">Components</a>
+        <a href="#stack" class="nav-link">Stack</a>
+        <a href="#developers" class="nav-link">Developers</a>
+        <a href="#legitimacy" class="nav-link">Legitimacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <main>
+    <section id="hero" class="hero">
+      <div class="hero-illustration" aria-hidden="true"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-inner">
+        <div class="hero-layout">
+          <div class="hero-content hero-content--left">
+            <h1 class="hero-title">
+              Decision Verification Infrastructure<br>
+              <span class="hero-title-secondary">for Autonomous Systems</span>
+            </h1>
+            <p class="hero-subtitle">HEILLON validates institutional decisions before software, AI agents and automated systems execute actions.</p>
+            <p class="hero-concept">Intent → Validation → Execution</p>
+            <div class="hero-cta">
+              <a href="#demo" class="btn btn--primary">Run Interactive Demonstration</a>
+              <a href="#infraestrutura" class="btn btn--secondary">Explore the Protocol</a>
+            </div>
+          </div>
+          <div class="hero-pipeline hero-pipeline--compact" aria-label="HEILLON verification pipeline">
+          <div class="pipeline-flow">
+            <div class="pipeline-node pipeline-node--entry">
+              <span class="pipeline-node-glow"></span>
+              <span class="pipeline-node-label">Intent</span>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
+            </div>
+            <div class="pipeline-node pipeline-node--gate">
+              <span class="pipeline-node-glow"></span>
+              <span class="pipeline-node-label">Authority Gate</span>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
+            </div>
+            <div class="pipeline-node pipeline-node--gate">
+              <span class="pipeline-node-glow"></span>
+              <span class="pipeline-node-label">Policy Gate</span>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
+            </div>
+            <div class="pipeline-node pipeline-node--gate">
+              <span class="pipeline-node-glow"></span>
+              <span class="pipeline-node-label">Risk Gate</span>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
+            </div>
+            <div class="pipeline-node pipeline-node--gate">
+              <span class="pipeline-node-glow"></span>
+              <span class="pipeline-node-label">Governance Gate</span>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
+            </div>
+            <div class="pipeline-node pipeline-node--authorized">
+              <span class="pipeline-node-glow"></span>
+              <span class="pipeline-node-label">Decision Authorized</span>
+            </div>
+            <div class="pipeline-connector">
+              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
+            </div>
+            <div class="pipeline-node pipeline-node--artifact">
+              <span class="pipeline-node-glow"></span>
+              <span class="pipeline-node-label">HDR Artifact Generated</span>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="live-stream" class="section section--viewport section--dark section--live-stream">
+      <div class="container">
+        <div class="live-stream-layout">
+          <div class="live-stream-content">
+            <h2 class="section-title">Live Decision Stream</h2>
+            <p class="live-stream-subtitle body-text">Recent decisions verified by the HEILLON protocol.</p>
+            <p class="live-stream-text">Autonomous systems continuously generate execution intents. The HEILLON protocol validates these intents against institutional policies before execution. Each verified decision produces a cryptographically verifiable artifact (HDR).</p>
+          </div>
+          <div class="live-stream-panel">
+            <div class="live-stream-counter">
+              <span class="live-stream-counter-label">Verified Decisions</span>
+              <span class="live-stream-counter-value" id="live-stream-count">0</span>
+            </div>
+            <div class="live-stream-log" id="live-stream-log">
+              <div class="live-stream-entry live-stream-entry--authorized" data-outcome="authorized">HDR-91A72F   AUTHORIZED   14:32:11</div>
+              <div class="live-stream-entry live-stream-entry--denied" data-outcome="denied">HDR-7C1B9E   DENIED       14:32:14</div>
+              <div class="live-stream-entry live-stream-entry--authorized" data-outcome="authorized">HDR-28C4DA   AUTHORIZED   14:32:18</div>
+              <div class="live-stream-entry live-stream-entry--authorized" data-outcome="authorized">HDR-F18E22   AUTHORIZED   14:32:22</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="structural-problem" class="section section--viewport section--dark section--structural-problem">
+      <div class="container">
+        <h2 class="section-title">Structural Problem</h2>
+        <p class="body-text">
+          Autonomous systems are beginning to execute actions. AI agents, automated workflows and cloud operations already perform financial transfers, infrastructure changes and system governance—yet most systems execute without verifying whether decisions were legitimate before execution.
+        </p>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="why-verification" class="section section--viewport section--dark section--why-verification">
+      <div class="container">
+        <div class="why-layout">
+          <div class="why-content">
+            <h2 class="section-title">Why Decision Verification Matters</h2>
+            <div class="why-narrative">
+              <p class="why-lead">Software used to compute.</p>
+              <p class="why-lead">Modern systems now execute actions.</p>
+              <p class="body-text why-context">
+                AI agents and automated systems already perform tasks such as:
+              </p>
+              <ul class="why-tasks">
+                <li>financial transfers</li>
+                <li>infrastructure changes</li>
+                <li>automated operations</li>
+                <li>system governance actions</li>
+              </ul>
+              <p class="body-text why-problem">
+                However, most systems still operate without a mechanism to verify whether those decisions were legitimate before execution.
+              </p>
+            </div>
+          </div>
+          <div class="why-containers">
+            <div class="why-model-block">
+              <h4 class="why-model-title">Current Model</h4>
+              <div class="why-model-flow">
+                <span class="why-model-step">Intent</span>
+                <span class="why-model-arrow">→</span>
+                <span class="why-model-step">Execution</span>
+              </div>
+              <p class="why-model-problem">Execution without verification creates institutional risk. Organizations rely on logs, audits and policy enforcement after the action occurs. These mechanisms are retrospective.</p>
+            </div>
+            <div class="why-model-block why-model-block--verified">
+              <h4 class="why-model-title">Verified Model</h4>
+              <div class="why-model-flow">
+                <span class="why-model-step">Intent</span>
+                <span class="why-model-arrow">→</span>
+                <span class="why-model-step why-model-step--accent">Validation</span>
+                <span class="why-model-arrow">→</span>
+                <span class="why-model-step">Execution</span>
+              </div>
+            </div>
+            <div class="why-comparison-box why-comparison-box--unverified">
+              <h4 class="why-comparison-title">Unverified Execution</h4>
+              <div class="why-comparison-flow">Intent → Execution</div>
+            </div>
+            <div class="why-comparison-box why-comparison-box--verified">
+              <h4 class="why-comparison-title">Verified Infrastructure</h4>
+              <div class="why-comparison-flow">Intent → Validation → Execution</div>
+            </div>
+          </div>
+        </div>
+        <p class="why-key">Verification must happen before execution.</p>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="infraestrutura" class="section section--viewport section--protocol">
+      <div class="container">
+        <div class="protocol-layout">
+          <div class="protocol-content">
+            <h2 class="section-title">HEILLON Protocol</h2>
+            <p class="protocol-intro body-text">
+              The HEILLON decision protocol validates decisions before execution. Each proposed action flows through the verification pipeline before any execution occurs.
+            </p>
+          </div>
+          <div class="protocol-diagram-block" aria-label="HEILLON protocol pipeline" id="protocol-diagram">
+          <div class="protocol-pipeline">
+            <div class="protocol-pipeline-node protocol-pipeline-node--entry" data-protocol-node="0">
+              <span class="protocol-pipeline-node-glow"></span>
+              <span class="protocol-pipeline-node-label">Intent</span>
+              <span class="protocol-pipeline-node-id">01</span>
+            </div>
+            <div class="protocol-pipeline-connector" data-protocol-connector="0">
+              <div class="protocol-pipeline-connector-line protocol-pipeline-connector-flow"></div>
+            </div>
+            <div class="protocol-pipeline-node protocol-pipeline-node--component" data-protocol-node="1">
+              <span class="protocol-pipeline-node-glow"></span>
+              <span class="protocol-pipeline-node-label">Decision Guard</span>
+              <span class="protocol-pipeline-node-id">02</span>
+            </div>
+            <div class="protocol-pipeline-connector" data-protocol-connector="1">
+              <div class="protocol-pipeline-connector-line protocol-pipeline-connector-flow"></div>
+            </div>
+            <div class="protocol-pipeline-node protocol-pipeline-node--component" data-protocol-node="2">
+              <span class="protocol-pipeline-node-glow"></span>
+              <span class="protocol-pipeline-node-label">Decision Ledger</span>
+              <span class="protocol-pipeline-node-id">03</span>
+            </div>
+            <div class="protocol-pipeline-connector" data-protocol-connector="2">
+              <div class="protocol-pipeline-connector-line protocol-pipeline-connector-flow"></div>
+            </div>
+            <div class="protocol-pipeline-node protocol-pipeline-node--artifact" data-protocol-node="3">
+              <span class="protocol-pipeline-node-glow"></span>
+              <span class="protocol-pipeline-node-label">HDR Artifact</span>
+              <span class="protocol-pipeline-node-id">04</span>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="protocol-components">
+          <div class="protocol-component">
+            <h4 class="protocol-component-label">Intent</h4>
+            <p class="protocol-component-desc">A proposed action generated by software, an AI agent or an automated system.</p>
+          </div>
+          <div class="protocol-component">
+            <h4 class="protocol-component-label">Decision Guard</h4>
+            <p class="protocol-component-desc">Evaluates whether the action complies with institutional policies.</p>
+          </div>
+          <div class="protocol-component">
+            <h4 class="protocol-component-label">Decision Ledger</h4>
+            <p class="protocol-component-desc">Records the validated decision in an immutable chronological event chain.</p>
+          </div>
+          <div class="protocol-component">
+            <h4 class="protocol-component-label">HDR Artifact</h4>
+            <p class="protocol-component-desc">Generates a verifiable proof artifact for the validated decision.</p>
+          </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="hdr-artifact" class="section section--viewport section--hdr-artifact">
+      <div class="container">
+        <div class="hdr-layout">
+          <div class="hdr-content">
+            <h2 class="section-title">HDR Artifact</h2>
+            <p class="hdr-intro body-text">Structured verification record produced by the decision verification protocol.</p>
+            <div class="hdr-download-cta">
+              <a href="#" class="btn btn--secondary" id="hdr-download-sample">Download Sample HDR Artifact</a>
+            </div>
+          </div>
+          <div class="hdr-artifact-block" aria-label="HEILLON Decision Record artifact" id="hdr-artifact-block">
+          <div class="hdr-artifact-pattern"></div>
+          <div class="hdr-artifact-inner">
+            <div class="hdr-artifact-header">
+              <span class="hdr-artifact-id">HDR-01AB92</span>
+              <span class="hdr-artifact-badge" data-hdr-field="badge">VERIFIED</span>
+            </div>
+            <div class="hdr-artifact-divider"></div>
+            <div class="hdr-artifact-fields">
+              <div class="hdr-artifact-row" data-hdr-field="0">
+                <span class="hdr-artifact-key">Intent Hash</span>
+                <span class="hdr-artifact-dots"></span>
+                <span class="hdr-artifact-value">9A7F3D92C1</span>
+              </div>
+              <div class="hdr-artifact-row" data-hdr-field="1">
+                <span class="hdr-artifact-key">Decision Outcome</span>
+                <span class="hdr-artifact-dots"></span>
+                <span class="hdr-artifact-value hdr-artifact-value--outcome">AUTHORIZED</span>
+              </div>
+              <div class="hdr-artifact-row" data-hdr-field="2">
+                <span class="hdr-artifact-key">Policy Version</span>
+                <span class="hdr-artifact-dots"></span>
+                <span class="hdr-artifact-value">v1.0</span>
+              </div>
+              <div class="hdr-artifact-row" data-hdr-field="3">
+                <span class="hdr-artifact-key">Ledger Event</span>
+                <span class="hdr-artifact-dots"></span>
+                <span class="hdr-artifact-value">EVT-9F31</span>
+              </div>
+              <div class="hdr-artifact-row" data-hdr-field="4">
+                <span class="hdr-artifact-key">Timestamp</span>
+                <span class="hdr-artifact-dots"></span>
+                <span class="hdr-artifact-value">2026-03-06T14:32:11Z</span>
+              </div>
+              <div class="hdr-artifact-row" data-hdr-field="5">
+                <span class="hdr-artifact-key">Verification</span>
+                <span class="hdr-artifact-dots"></span>
+                <span class="hdr-artifact-value hdr-artifact-value--sig">HLLN-SIGN-8AC21</span>
+              </div>
+            </div>
+            <div class="hdr-artifact-divider"></div>
+            <div class="hdr-artifact-footer">
+              <span class="hdr-artifact-issued">Decision validated before execution</span>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo" class="section section--viewport section--dark section--demo">
+      <div class="container">
+        <h2 class="section-title">Explore a Verified Decision</h2>
+        <p class="demo-intro body-text">Simulate how HEILLON validates a decision before execution.</p>
+        <div class="demo-stage">
+        <div class="demo-layout" id="demo-layout">
+          <div class="demo-input-panel">
+            <h3 class="demo-panel-title">Decision Intent</h3>
+            <form id="demo-form" class="demo-form">
+              <div class="demo-field">
+                <label for="demo-amount">Transfer Amount</label>
+                <input type="number" id="demo-amount" name="amount" min="1" step="0.01" value="5000" required>
+              </div>
+              <div class="demo-field">
+                <label for="demo-currency">Currency</label>
+                <select id="demo-currency" name="currency">
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="BRL">BRL</option>
+                </select>
+              </div>
+              <div class="demo-field">
+                <label for="demo-actor">Actor ID</label>
+                <input type="text" id="demo-actor" name="actor" placeholder="e.g. agent-001" value="agent-001" required>
+              </div>
+              <button type="submit" class="btn btn--primary btn--submit" id="demo-submit">Validate Decision</button>
+            </form>
+          </div>
+          <div class="demo-pipeline-panel">
+            <h3 class="demo-panel-title">Verification Pipeline</h3>
+            <div class="demo-pipeline" id="demo-pipeline" aria-live="polite">
+              <div class="demo-pipeline-step" data-step="0">
+                <span class="demo-pipeline-step-label">Intent Submitted</span>
+              </div>
+              <div class="demo-pipeline-connector"></div>
+              <div class="demo-pipeline-step" data-step="1">
+                <span class="demo-pipeline-step-label">Authority Check</span>
+              </div>
+              <div class="demo-pipeline-connector"></div>
+              <div class="demo-pipeline-step" data-step="2">
+                <span class="demo-pipeline-step-label">Policy Evaluation</span>
+              </div>
+              <div class="demo-pipeline-connector"></div>
+              <div class="demo-pipeline-step" data-step="3">
+                <span class="demo-pipeline-step-label">Risk Assessment</span>
+              </div>
+              <div class="demo-pipeline-connector"></div>
+              <div class="demo-pipeline-step" data-step="4">
+                <span class="demo-pipeline-step-label">Governance Validation</span>
+              </div>
+              <div class="demo-pipeline-connector"></div>
+              <div class="demo-pipeline-step demo-pipeline-step--outcome" data-step="5">
+                <span class="demo-pipeline-step-label demo-pipeline-outcome-text">Decision Outcome</span>
+              </div>
+              <div class="demo-pipeline-connector"></div>
+              <div class="demo-pipeline-step demo-pipeline-step--artifact" data-step="6">
+                <span class="demo-pipeline-step-label">HDR Artifact Generated</span>
+              </div>
+            </div>
+          </div>
+          <div class="demo-result-panel" id="demo-result" aria-live="polite" hidden>
+            <h4 class="demo-result-title">HDR Artifact</h4>
+            <div class="demo-result-hdr" id="demo-result-hdr"></div>
+            <div class="demo-result-actions">
+              <a href="#" class="btn btn--secondary btn--sm" id="demo-download-hdr">Download HDR Artifact</a>
+              <a href="#infraestrutura" class="btn btn--secondary btn--sm">Explore Protocol</a>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="use-case" class="section section--viewport section--dark section--use-case">
+      <div class="container">
+        <h2 class="section-title">Institutional Use Case</h2>
+        <h3 class="use-case-scenario">Automated Treasury Transfer</h3>
+        <div class="use-case-content">
+          <div class="use-case-block">
+            <h4 class="use-case-block-title">Problem</h4>
+            <p class="body-text">Automated systems can execute financial transfers without institutional verification. This creates risk in regulated environments.</p>
+          </div>
+          <div class="use-case-block">
+            <h4 class="use-case-block-title">Solution</h4>
+            <p class="body-text">HEILLON validates the transfer intent before execution.</p>
+          </div>
+        </div>
+        <div class="use-case-process">
+          <h4 class="use-case-process-title">Process</h4>
+          <div class="use-case-steps">
+            <div class="use-case-step">
+              <span class="use-case-step-num">1</span>
+              <span class="use-case-step-desc">System proposes transfer intent</span>
+            </div>
+            <div class="use-case-flow-arrow"></div>
+            <div class="use-case-step">
+              <span class="use-case-step-num">2</span>
+              <span class="use-case-step-desc">HEILLON validates against institutional policies</span>
+            </div>
+            <div class="use-case-flow-arrow"></div>
+            <div class="use-case-step">
+              <span class="use-case-step-num">3</span>
+              <span class="use-case-step-desc">Decision is authorized or denied</span>
+            </div>
+            <div class="use-case-flow-arrow"></div>
+            <div class="use-case-step">
+              <span class="use-case-step-num">4</span>
+              <span class="use-case-step-desc">HDR artifact is generated</span>
+            </div>
+          </div>
+        </div>
+        <p class="use-case-benefit">Every automated financial action becomes verifiable and auditable.</p>
+        <div class="use-case-diagram">
+          <div class="use-case-diagram-flow">
+            <div class="use-case-diagram-node use-case-diagram-node--system">
+              <span class="use-case-diagram-label">Automated Treasury System</span>
+              <span class="use-case-diagram-sublabel">Transfer intent</span>
+            </div>
+            <div class="use-case-diagram-connector"></div>
+            <div class="use-case-diagram-node use-case-diagram-node--heillon">
+              <span class="use-case-diagram-label">HEILLON Verification</span>
+              <span class="use-case-diagram-sublabel">Policy · Authority · Risk</span>
+            </div>
+            <div class="use-case-diagram-connector"></div>
+            <div class="use-case-diagram-node use-case-diagram-node--output">
+              <span class="use-case-diagram-label">Authorized Execution</span>
+              <span class="use-case-diagram-sublabel">HDR artifact</span>
+            </div>
+          </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section section--viewport section--dark section--architecture">
+      <div class="container">
+        <div class="architecture-layout">
+          <div class="architecture-content">
+            <h2 class="section-title">Infrastructure Architecture</h2>
+            <p class="architecture-intro body-text">Fluxo vertical de validação de decisões em todo o sistema. No Protocolo DSR toda verificação segue o mesmo padrão de análise passando por todas as verificações de regras e leis e o carimbo para LEGITIMAÇÃO do resultado, com prova matemática e histórico de ações.</p>
+          </div>
+          <div class="architecture-diagram" aria-label="HEILLON architecture flow">
+          <div class="architecture-flow">
+            <div class="architecture-node architecture-node--entry">
+              <span class="architecture-node-label">Intent</span>
+            </div>
+            <div class="architecture-connector"></div>
+            <div class="architecture-node architecture-node--component">
+              <span class="architecture-node-label">Decision Guard</span>
+            </div>
+            <div class="architecture-connector"></div>
+            <div class="architecture-node architecture-node--component">
+              <span class="architecture-node-label">Policy Engine</span>
+            </div>
+            <div class="architecture-connector"></div>
+            <div class="architecture-node architecture-node--component">
+              <span class="architecture-node-label">Decision Ledger</span>
+            </div>
+            <div class="architecture-connector"></div>
+            <div class="architecture-node architecture-node--output">
+              <span class="architecture-node-label">Proof Engine</span>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="component-overview" class="section section--viewport section--dark section--component-overview">
+      <div class="container">
+        <h2 class="section-title">Component Overview</h2>
+        <p class="component-intro body-text">Core components of the verification infrastructure.</p>
+        <div class="component-cards">
+          <div class="component-card">
+            <h4 class="component-card-label">Decision Guard</h4>
+            <p class="component-card-desc">Validates decision intents against authority and routing rules.</p>
+          </div>
+          <div class="component-card">
+            <h4 class="component-card-label">Policy Engine</h4>
+            <p class="component-card-desc">Evaluates institutional rules and policy constraints.</p>
+          </div>
+          <div class="component-card">
+            <h4 class="component-card-label">Decision Ledger</h4>
+            <p class="component-card-desc">Stores validated decisions in an immutable chronological chain.</p>
+          </div>
+          <div class="component-card">
+            <h4 class="component-card-label">Proof Engine</h4>
+            <p class="component-card-desc">Generates the HDR artifact for verified decisions.</p>
+          </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack" class="section section--viewport section--stack">
+      <div class="container">
+        <h2 class="section-title section-title--stack">Autonomous Systems Stack</h2>
+        <div class="stack-diagram" aria-label="Autonomous systems architecture stack with Decision Verification Layer" id="stack-diagram">
+          <div class="stack-diagram-grid"></div>
+          <div class="stack-diagram-flow">
+            <div class="stack-flow-line stack-flow-line--1" data-stack-index="3"></div>
+            <div class="stack-layer stack-layer--1" data-stack-layer="3">
+              <span class="stack-layer-label">AI Models</span>
+              <span class="stack-layer-desc">Machine learning models and AI systems generating decisions</span>
+            </div>
+            <div class="stack-flow-line stack-flow-line--2" data-stack-index="2"></div>
+            <div class="stack-layer stack-layer--2" data-stack-layer="2">
+              <span class="stack-layer-label">Applications</span>
+              <span class="stack-layer-desc">Software applications orchestrating automated workflows</span>
+            </div>
+            <div class="stack-flow-line stack-flow-line--3" data-stack-index="1"></div>
+            <div class="stack-layer stack-layer--3" data-stack-layer="1">
+              <span class="stack-layer-label">Execution Systems</span>
+              <span class="stack-layer-desc">Systems executing automated actions: financial transfers, infrastructure changes, system operations</span>
+            </div>
+            <div class="stack-flow-line stack-flow-line--4" data-stack-index="0"></div>
+            <div class="stack-layer stack-layer--heillon" data-stack-layer="0">
+              <span class="stack-layer-glow"></span>
+              <span class="stack-layer-label stack-layer-label--heillon">Decision Verification Infrastructure</span>
+              <span class="stack-layer-sublabel">HEILLON</span>
+              <span class="stack-layer-concept">Intent → Validation → Execution</span>
+            </div>
+          </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="developers" class="section section--viewport section--developers">
+      <div class="container">
+        <h2 class="section-title">Developer Entry</h2>
+        <p class="dev-intro body-text">Integration resources for HEILLON.</p>
+        <div class="dev-resources">
+          <span class="dev-resource">Protocol Documentation</span>
+          <span class="dev-resource">API Reference</span>
+          <span class="dev-resource">Integration Guide</span>
+          <span class="dev-resource">SDKs</span>
+        </div>
+        <div class="dev-api">
+          <div class="dev-endpoint">
+            <span class="dev-endpoint-method">POST</span>
+            <code class="dev-endpoint-path">/decision/validate</code>
+          </div>
+          <div class="dev-code-blocks">
+            <div class="dev-code-block">
+              <h4 class="dev-code-title">Example Intent Payload</h4>
+              <pre class="dev-code-content"><code>{
+  "intent_type": "treasury.transfer",
+  "actor_id": "service-payment",
+  "amount": 15000,
+  "currency": "USD"
+}</code></pre>
+            </div>
+            <div class="dev-code-block">
+              <h4 class="dev-code-title">Response Example</h4>
+              <pre class="dev-code-content"><code>{
+  "decision_id": "DEC-7827A",
+  "outcome": "AUTHORIZED",
+  "policy_version": "v1.0",
+  "ledger_event": "EVT-9f31",
+  "proof_artifact": "HDR-01AB92"
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="dev-cta">
+          <a href="#" class="btn btn--primary">Explore Developer Documentation</a>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="legitimacy" class="section section--viewport section--legitimacy">
+      <div class="container">
+        <h2 class="section-title">Institutional Legitimacy</h2>
+        <p class="legitimacy-intro body-text">Verification introduces structural legitimacy for automated decisions.</p>
+        <div class="legitimacy-content">
+          <div class="legitimacy-block legitimacy-block--traditional">
+            <h4 class="legitimacy-block-title">Traditional Systems</h4>
+            <p class="legitimacy-block-desc">Legitimacy is based on policies, audits, and reputation.</p>
+            <p class="legitimacy-block-note">These mechanisms are retrospective.</p>
+          </div>
+          <div class="legitimacy-transition" aria-hidden="true">
+            <span class="legitimacy-arrow">→</span>
+          </div>
+          <div class="legitimacy-block legitimacy-block--structural">
+            <h4 class="legitimacy-block-title">Structural Legitimacy</h4>
+            <p class="legitimacy-block-desc">HEILLON introduces structural legitimacy. Decisions are verified before execution.</p>
+          </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="protocol-paper" class="section section--viewport section--dark section--protocol-paper">
+      <div class="container">
+        <div class="protocol-paper-layout">
+          <div class="protocol-paper-content">
+            <h2 class="section-title">HEILLON Protocol Paper</h2>
+            <p class="protocol-paper-subtitle body-text">Specification of the decision verification protocol.</p>
+            <p class="protocol-paper-text">The HEILLON protocol defines a standardized verification layer between intent and execution. This paper describes the architecture, verification model, artifact structure and governance framework.</p>
+          </div>
+          <div class="protocol-paper-card" data-reveal>
+            <h3 class="protocol-paper-card-title">HEILLON Protocol Specification</h3>
+            <p class="protocol-paper-card-version">Version 1.0</p>
+            <ul class="protocol-paper-sections">
+              <li>Decision Verification Model</li>
+              <li>HDR Artifact Structure</li>
+              <li>Policy Enforcement Model</li>
+              <li>Ledger Integrity Model</li>
+              <li>Governance Framework</li>
+            </ul>
+            <a href="#" class="btn btn--primary protocol-paper-download">Download Protocol Paper</a>
+            <p class="protocol-paper-caption">PDF • Protocol Specification</p>
+          </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="founder" class="section section--viewport section--founder">
+      <div class="container">
+        <h2 class="section-title founder-title">Built by</h2>
+        <div class="founder-card" data-reveal>
+          <h3 class="founder-name">Marcelo Roberto da Silveira</h3>
+          <p class="founder-role">Founder &amp; Chief Architect · HEILLON</p>
+          <p class="founder-desc">Marcelo Roberto da Silveira is the creator of the HEILLON protocol, an infrastructure designed to introduce institutional verification for autonomous systems. His work focuses on decision governance, cryptographic verification and integrity infrastructure for AI-driven environments.</p>
+          <div class="founder-links">
+            <a href="#" class="founder-link">LinkedIn</a>
+            <span class="founder-link-sep">·</span>
+            <a href="#" class="founder-link">Technical writings</a>
+          </div>
+        </div>
+        <div class="section-end">
+          <span class="scroll-indicator">Scroll to continue ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="closing" class="section section--viewport section--closing">
+      <div class="container">
+        <h2 class="closing-title">Decision Verification Infrastructure</h2>
+        <div class="closing-narrative">
+          <p>Autonomous systems are beginning to act.</p>
+          <p>AI agents now execute financial operations, infrastructure changes and automated decisions.</p>
+          <p class="closing-authority">But institutions must retain authority.</p>
+          <p>HEILLON introduces the missing infrastructure layer.</p>
+          <p class="closing-infra">Decision Verification Infrastructure.</p>
+        </div>
+        <p class="closing-concept">Intent → Validation → Execution</p>
+        <p class="closing-message">Autonomous systems require institutional authority. Verification becomes the foundation.</p>
+        <div class="closing-ctas">
+          <a href="#demo" class="btn btn--primary">Run the Demonstration</a>
+          <a href="#infraestrutura" class="btn btn--secondary">Explore the Protocol</a>
+          <a href="#" class="btn btn--secondary">Download Sample HDR Artifact</a>
+        </div>
+        <div class="section-end section-end--final">
+          <span class="scroll-indicator">HEILLON Protocol · HDR</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text">HEILLON Protocol · HDR Artifact</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
