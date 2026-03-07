@@ -221,31 +221,6 @@ Verification:     ${hdr.sig}`;
     runSimulation(formData);
   });
 
-  const hdrDownloadSample = document.getElementById('hdr-download-sample');
-  if (hdrDownloadSample) {
-    hdrDownloadSample.addEventListener('click', (e) => {
-      e.preventDefault();
-      const sampleHDR = `HDR Artifact — Sample
-HDR-01AB92
-
-Intent Hash:      9A7F3D92C1
-Decision Outcome: AUTHORIZED
-Policy Version:   v1.0
-Ledger Event:     EVT-9F31
-Timestamp:        2026-03-06T14:32:11Z
-Verification:     HLLN-SIGN-8AC21
-
-Decision validated before execution`;
-      const blob = new Blob([sampleHDR], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'HDR-01AB92.hdr';
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-  }
-
   if (downloadBtn) {
     downloadBtn.addEventListener('click', (e) => {
       if (!lastHDR) return;

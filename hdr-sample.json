@@ -1,0 +1,11 @@
+{
+  "hdr_id": "HDR-01AB92",
+  "intent_hash": "9A7F3D92C1",
+  "decision_outcome": "AUTHORIZED",
+  "policy_version": "v1.0",
+  "ledger_event": "EVT-9F31",
+  "timestamp": "2026-03-06T14:32:11Z",
+  "verification": "HLLN-SIGN-8AC21",
+  "protocol": "HEILLON Decision Verification Protocol",
+  "note": "Sample artifact demonstrating verifiable decision proof."
+}
