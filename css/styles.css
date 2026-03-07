@@ -2259,7 +2259,7 @@ body {
 
 .demo-layout--with-result {
   grid-template-columns: 225px 1fr 234px;
-  align-items: stretch;
+  align-items: start;
   gap: 1.125rem;
 }
 
@@ -2553,7 +2553,7 @@ body {
 }
 
 .demo-result-hdr {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0;
 }
 
 .demo-hdr-display {
@@ -2609,13 +2609,17 @@ body {
   color: var(--accent-cyan);
 }
 
-.demo-result-actions {
-  display: flex;
+.demo-actions-row {
+  display: none;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  padding-top: 0.75rem;
-  margin-top: 0.4rem;
-  border-top: 1px solid rgba(0, 255, 178, 0.1);
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 212, 255, 0.08);
+}
+
+.demo-stage:has(.demo-layout--with-result) .demo-actions-row {
+  display: flex;
 }
 
 .btn--sm {
