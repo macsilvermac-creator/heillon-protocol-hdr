@@ -5,19 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HEILLON — Sovereign AI Infrastructure</title>
   <meta name="description" content="The world's first cryptographic legitimacy layer for AI and institutional decisions. Computable sovereignty." />
-  <meta property="og:title" content="HEILLON — Sovereign AI Infrastructure" />
-  <meta property="og:description" content="The world's first cryptographic legitimacy layer for AI and institutional decisions. Computable sovereignty." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://heillon.com" />
-  <meta property="og:image" content="https://heillon.com/og-image.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="HEILLON — Sovereign AI Infrastructure" />
-  <meta name="twitter:description" content="The world's first cryptographic legitimacy layer for AI and institutional decisions." />
-  <meta name="twitter:image" content="https://heillon.com/og-image.png" />
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
@@ -587,15 +574,235 @@
     HEILLON
   </a>
   <div class="nav-links">
-    <a href="#what">Protocol</a>
-    <a href="#pillars">Pillars</a>
+    <a href="#gap">The Problem</a>
+    <a href="#stack">Architecture</a>
+    <a href="#pillars">Protocol</a>
     <a href="#usecases">Use Cases</a>
     <a href="#ledger">Live Ledger</a>
     <a href="#contact" class="nav-cta">Contact</a>
   </div>
 </nav>
 
-<!-- HERO -->
+
+    /* ── GOVERNANCE GAP (nova seção) ─────────────────────────── */
+    #gap {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+    }
+    .gap-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .gap-problem {
+      padding: 48px; background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .gap-problem-title {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
+      margin-bottom: 20px;
+    }
+    .gap-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .gap-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; line-height: 1.6; color: var(--muted);
+    }
+    .gap-list li::before {
+      content: '—'; color: var(--gold); flex-shrink: 0; margin-top: 2px;
+    }
+    .gap-list li strong { color: var(--white); }
+    .gap-right { display: flex; flex-direction: column; gap: 24px; }
+    .gap-def {
+      padding: 32px; border-left: 2px solid var(--gold);
+      background: rgba(200,169,110,0.04);
+    }
+    .gap-def-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
+      margin-bottom: 12px;
+    }
+    .gap-def p { font-size: 15px; line-height: 1.75; color: var(--muted); }
+    .gap-def p strong { color: var(--white); }
+
+    /* ── HOW IT WORKS SIMPLIFICADO (3 passos) ───────────────── */
+    #simple-how {
+      background: var(--deep);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .simple-steps {
+      margin-top: 56px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      background: var(--border);
+    }
+    .simple-step {
+      background: var(--deep); padding: 48px 40px;
+      position: relative; overflow: hidden;
+      transition: background .3s;
+    }
+    .simple-step:hover { background: var(--surface); }
+    .simple-step-num {
+      font-size: 64px; font-weight: 800; line-height: 1;
+      color: rgba(200,169,110,0.08); font-family: var(--font-mono);
+      position: absolute; top: 24px; right: 24px;
+    }
+    .simple-step-icon {
+      width: 48px; height: 48px; border: 1px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 24px;
+    }
+    .simple-step-title {
+      font-size: 18px; font-weight: 700; margin-bottom: 12px;
+    }
+    .simple-step-subtitle {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
+      margin-bottom: 16px;
+    }
+    .simple-step-desc { font-size: 14px; line-height: 1.7; color: var(--muted); }
+
+    /* ── STACK VISUAL ────────────────────────────────────────── */
+    #stack { background: var(--black); }
+    .stack-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .stack-diagram {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .stack-layer {
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      border: 1px solid var(--border);
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      font-family: var(--font-mono); letter-spacing: 0.06em;
+      transition: border-color .2s, color .2s;
+    }
+    .stack-layer:hover { border-color: var(--border-hi); color: var(--white); }
+    .stack-layer.highlight {
+      border-color: var(--gold); color: var(--gold);
+      background: var(--gold-dim); font-weight: 700;
+      font-size: 14px; padding: 20px 24px;
+    }
+    .stack-layer.highlight .stack-badge {
+      font-size: 9px; letter-spacing: 0.2em; background: var(--gold);
+      color: var(--black); padding: 3px 8px; font-weight: 800;
+    }
+    .stack-arrow {
+      text-align: center; padding: 4px 0;
+      font-size: 16px; color: rgba(200,169,110,0.3);
+    }
+    .stack-text { display: flex; flex-direction: column; gap: 20px; }
+    .stack-text p { font-size: 15px; line-height: 1.75; color: var(--muted); }
+    .stack-text p strong { color: var(--white); }
+
+    /* ── USE CASE DETALHADO ──────────────────────────────────── */
+    #scenario { background: var(--deep); }
+    .scenario-flow {
+      margin-top: 56px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+      position: relative;
+    }
+    .scenario-flow::before {
+      content: '';
+      position: absolute; top: 36px; left: 12.5%; right: 12.5%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold), transparent);
+      opacity: 0.3; z-index: 0;
+    }
+    .scenario-step {
+      padding: 0 24px; text-align: center; position: relative; z-index: 1;
+    }
+    .sc-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--black); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin: 0 auto 20px;
+      transition: border-color .3s;
+    }
+    .scenario-step:hover .sc-icon { border-color: var(--gold); }
+    .sc-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
+      margin-bottom: 8px;
+    }
+    .sc-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+    .sc-desc { font-size: 13px; line-height: 1.65; color: var(--muted); }
+    .scenario-result {
+      margin-top: 56px; padding: 40px;
+      border: 1px solid var(--border);
+      background: rgba(61,255,160,0.04);
+      border-left: 3px solid var(--green);
+      display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: start;
+    }
+    .scenario-result-icon { font-size: 32px; }
+    .scenario-result-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green);
+      font-family: var(--font-mono); margin-bottom: 12px;
+    }
+    .scenario-result-text { font-size: 14px; line-height: 1.75; color: var(--muted); }
+    .scenario-result-text strong { color: var(--white); }
+
+    /* ── WHY IT MATTERS ─────────────────────────────────────── */
+    #why { background: var(--black); }
+    .why-grid {
+      margin-top: 56px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+      background: var(--border);
+    }
+    .why-card {
+      background: var(--black); padding: 40px;
+      transition: background .3s;
+    }
+    .why-card:hover { background: var(--surface); }
+    .why-card-icon { font-size: 28px; margin-bottom: 16px; }
+    .why-card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .why-card-desc { font-size: 13px; line-height: 1.7; color: var(--muted); }
+
+    /* ── DOWNLOAD FIX ───────────────────────────────────────── */
+    .download-strip {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px;
+    }
+    .download-strip-text { display: flex; flex-direction: column; gap: 6px; }
+    .download-strip-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
+    }
+    .download-strip-title { font-size: 18px; font-weight: 700; }
+    .download-strip-sub { font-size: 13px; color: var(--muted); }
+    .download-btns { display: flex; gap: 12px; flex-shrink: 0; }
+    .btn-download {
+      padding: 12px 24px;
+      background: transparent; border: 1px solid var(--border-hi);
+      color: var(--muted); font-family: var(--font-mono);
+      font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; text-decoration: none;
+      cursor: pointer; transition: all .2s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-download:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-download.primary {
+      background: var(--gold); border-color: var(--gold);
+      color: var(--black); font-weight: 700;
+    }
+    .btn-download.primary:hover {
+      background: transparent; color: var(--gold);
+    }
+
+    @media (max-width: 900px) {
+      .gap-inner, .stack-inner { grid-template-columns: 1fr; gap: 40px; }
+      .simple-steps { grid-template-columns: 1fr; }
+      .scenario-flow { grid-template-columns: 1fr 1fr; }
+      .scenario-flow::before { display: none; }
+      .why-grid { grid-template-columns: 1fr; }
+      .download-strip { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+
 <section id="hero">
   <div class="hero-grid-lines"></div>
   <div class="hero-glow"></div>
@@ -618,7 +825,7 @@
   </p>
 
   <div class="hero-actions">
-    <a href="#what" class="btn-primary">Explore the Protocol</a>
+    <a href="#gap" class="btn-primary">Explore the Protocol</a>
     <a href="#contact" class="btn-ghost">Request Access →</a>
   </div>
 
@@ -672,50 +879,213 @@
   </div>
 </div>
 
-<!-- WHAT IS HEILLON -->
-<section id="what">
-  <div class="what-text reveal">
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-num">01</span>
-      <div class="section-eyebrow-line"></div>
-      <span class="section-eyebrow-label">The Protocol</span>
+
+<!-- THE GOVERNANCE GAP -->
+<section id="gap">
+  <div class="gap-inner reveal">
+    <div>
+      <div class="section-eyebrow">
+        <span class="section-eyebrow-num">01</span>
+        <div class="section-eyebrow-line"></div>
+        <span class="section-eyebrow-label">The Problem</span>
+      </div>
+      <h2 class="section-title" style="margin-bottom:32px;">
+        The <em>Governance</em><br>Gap.
+      </h2>
+      <p style="font-size:15px;line-height:1.8;color:var(--muted);max-width:480px;margin-bottom:32px;">
+        AI systems now trigger workflows, execute transactions, and make operational decisions — at machine speed. But institutional governance was designed for humans.
+      </p>
+      <div class="gap-problem">
+        <div class="gap-problem-title">Institutions cannot reliably verify:</div>
+        <ul class="gap-list">
+          <li><strong>Who authorized</strong> the decision</li>
+          <li><strong>Under which constraints</strong> it was executed</li>
+          <li><strong>Whether policy boundaries</strong> were respected</li>
+          <li><strong>In which operational context</strong> it occurred</li>
+        </ul>
+      </div>
     </div>
-    <h2 class="section-title">
-      AI without <em>proof</em><br>is just an opinion.
-    </h2>
-    <p>
-      Current AI systems make decisions with zero verifiable trace of <strong>why</strong>, <strong>when</strong>, or <strong>under whose authority</strong> they acted. HEILLON changes this fundamentally.
-    </p>
-    <p>
-      Our protocol wraps every consequential action — AI or human — in an <strong>immutable cryptographic record</strong> that proves its legitimacy: the authority chain, the temporal context, and the intention behind it.
-    </p>
-    <p>
-      This is not compliance software. This is <strong>civilizational infrastructure</strong> — the layer that makes AI governance possible.
-    </p>
-    <a href="/public/heillon-protocol-paper.md" download="HEILLON-Protocol-Paper.md" class="btn-primary" style="display:inline-block; margin-top:1.5rem;">Download Protocol Paper</a>
-  </div>
-  <div class="what-visual reveal">
-    <div class="what-hex-grid"></div>
-    <div class="what-diagram">
-      <div class="diagram-ring"></div>
-      <div class="diagram-ring"></div>
-      <div class="diagram-ring"></div>
-      <div class="diagram-ring"></div>
-      <div class="diagram-node"></div>
-      <div class="diagram-node"></div>
-      <div class="diagram-node"></div>
-      <div class="diagram-node"></div>
-      <div class="diagram-node"></div>
-      <div class="diagram-center">HEILLON<br>KERNEL</div>
+    <div class="gap-right">
+      <div class="gap-def">
+        <div class="gap-def-label">Computational Legitimacy</div>
+        <p>The capacity of a system to <strong>prove</strong> that a decision was authorized, executed within policy boundaries, and can be <strong>reconstructed and audited</strong> at any future point.</p>
+      </div>
+      <div class="gap-def" style="border-left-color: var(--green);">
+        <div class="gap-def-label" style="color:var(--green);">The HEILLON Answer</div>
+        <p>A <strong>Decision Verification Layer</strong> embedded between autonomous systems and institutional infrastructure — making legitimacy a computable property of every execution.</p>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- HOW HEILLON WORKS — SIMPLIFIED -->
+<section id="simple-how">
+  <div class="reveal">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-num">02</span>
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-label">How It Works</span>
+    </div>
+    <h2 class="section-title">Three steps to<br><em>verified</em> execution.</h2>
+  </div>
+  <div class="simple-steps reveal">
+    <div class="simple-step">
+      <div class="simple-step-num">01</div>
+      <div class="simple-step-icon">🎯</div>
+      <div class="simple-step-subtitle">Declare</div>
+      <div class="simple-step-title">Intention</div>
+      <p class="simple-step-desc">An AI or enterprise system declares an operational intention before acting. This intent is sealed into the ledger as prior evidence — execution cannot occur without it.</p>
+    </div>
+    <div class="simple-step">
+      <div class="simple-step-num">02</div>
+      <div class="simple-step-icon">⚖️</div>
+      <div class="simple-step-subtitle">Verify</div>
+      <div class="simple-step-title">Authority</div>
+      <p class="simple-step-desc">HEILLON verifies the authority chain, operational jurisdiction, and mandate constraints. The system cannot proceed if authority validation fails.</p>
+    </div>
+    <div class="simple-step">
+      <div class="simple-step-num">03</div>
+      <div class="simple-step-icon">🔐</div>
+      <div class="simple-step-subtitle">Seal</div>
+      <div class="simple-step-title">Execution</div>
+      <p class="simple-step-desc">The decision is cryptographically sealed with full context: authority lineage, operational parameters, temporal proof, and policy compliance — permanently and irreversibly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STACK VISUAL -->
+<section id="stack">
+  <div class="stack-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">
+        <span class="section-eyebrow-num">03</span>
+        <div class="section-eyebrow-line"></div>
+        <span class="section-eyebrow-label">Architecture Position</span>
+      </div>
+      <h2 class="section-title" style="margin-bottom:32px;">
+        Where HEILLON<br>sits in the <em>stack</em>.
+      </h2>
+      <div class="stack-text">
+        <p>HEILLON operates as a <strong>verification layer</strong> between autonomous AI systems and institutional infrastructure — the only layer that can guarantee legitimacy at machine speed.</p>
+        <p>It does not replace orchestration or models. It provides the <strong>authority verification</strong> that all other layers currently lack.</p>
+      </div>
+    </div>
+    <div class="stack-diagram reveal">
+      <div class="stack-layer">AI Models & Agent Systems<span>↑↓</span></div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-layer">Workflow Orchestration<span>↑↓</span></div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-layer highlight">HEILLON — Decision Verification Layer<span class="stack-badge">SOVEREIGN</span></div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-layer">Enterprise & Financial Systems<span>↑↓</span></div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-layer">Institutional & Regulatory Infrastructure<span>↑↓</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICAL USE CASE -->
+<section id="scenario">
+  <div class="reveal">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-num">04</span>
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-label">Example: Financial AI Decision</span>
+    </div>
+    <h2 class="section-title">From trigger<br>to <em>proof</em> — in one flow.</h2>
+  </div>
+  <div class="scenario-flow reveal">
+    <div class="scenario-step">
+      <div class="sc-icon">🤖</div>
+      <div class="sc-label">Step 1</div>
+      <div class="sc-title">AI Triggers Transaction</div>
+      <p class="sc-desc">An automated system initiates a financial operation based on market conditions.</p>
+    </div>
+    <div class="scenario-step">
+      <div class="sc-icon">🔍</div>
+      <div class="sc-label">Step 2</div>
+      <div class="sc-title">HEILLON Verifies</div>
+      <p class="sc-desc">Authority chain, operational mandate, and policy constraints are validated before execution proceeds.</p>
+    </div>
+    <div class="scenario-step">
+      <div class="sc-icon">🔐</div>
+      <div class="sc-label">Step 3</div>
+      <div class="sc-title">Execution Sealed</div>
+      <p class="sc-desc">The decision is cryptographically sealed with full authority lineage and temporal proof.</p>
+    </div>
+    <div class="scenario-step">
+      <div class="sc-icon">📋</div>
+      <div class="sc-label">Step 4</div>
+      <div class="sc-title">Audit Available</div>
+      <p class="sc-desc">Regulators, auditors, or boards can reconstruct the complete decision history at any future point.</p>
+    </div>
+  </div>
+  <div class="scenario-result reveal">
+    <div class="scenario-result-icon">✓</div>
+    <div>
+      <div class="scenario-result-title">Verifiable Result</div>
+      <p class="scenario-result-text">The institution can reconstruct <strong>who authorized the decision</strong>, <strong>under which constraints</strong> it was executed, <strong>what operational mandate</strong> was in force, and <strong>whether execution remained within policy boundaries</strong> — permanently and irrefutably.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- WHY IT MATTERS -->
+<section id="why">
+  <div class="reveal">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-num">05</span>
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-label">Why It Matters</span>
+    </div>
+    <h2 class="section-title">Governance must become<br><em>infrastructure</em>.</h2>
+  </div>
+  <div class="why-grid reveal">
+    <div class="why-card">
+      <div class="why-card-icon">⚖️</div>
+      <div class="why-card-title">Regulatory Compliance</div>
+      <p class="why-card-desc">Regulators increasingly demand proof — not just logs. HEILLON provides a real-time, immutable audit trail for every consequential decision, human or AI-driven.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-card-icon">🏛️</div>
+      <div class="why-card-title">Institutional Accountability</div>
+      <p class="why-card-desc">As AI systems become operational actors, institutions must maintain verifiable authority chains. Without them, accountability collapses at machine speed.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-card-icon">🔒</div>
+      <div class="why-card-title">Trust in Autonomous Systems</div>
+      <p class="why-card-desc">AI agents can only be trusted within institutions if their decisions are provably legitimate. HEILLON makes legitimacy a computable, verifiable property.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-card-icon">🌐</div>
+      <div class="why-card-title">Civilizational Infrastructure</div>
+      <p class="why-card-desc">The transition to autonomous institutional systems requires a new layer of governance infrastructure. HEILLON is designed to provide exactly that layer — at scale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD STRIP -->
+<div class="download-strip reveal">
+  <div class="download-strip-text">
+    <div class="download-strip-label">Protocol Documentation</div>
+    <div class="download-strip-title">HEILLON Protocol — Architecture Map</div>
+    <div class="download-strip-sub">Technical reference for the Decision Verification Layer and Z-J-M-H-K pipeline.</div>
+  </div>
+  <div class="download-btns">
+    <a href="/hdr-sample.json" download="heillon-protocol-architecture.json" class="btn-download primary">
+      ↓ Download Protocol JSON
+    </a>
+    <a href="mailto:contact@heillon.com?subject=Protocol Documentation Request" class="btn-download">
+      Request Full Whitepaper →
+    </a>
+  </div>
+</div>
 
 <!-- PILLARS -->
 <section id="pillars">
   <div class="pillars-header reveal">
     <div class="section-eyebrow">
-      <span class="section-eyebrow-num">02</span>
+      <span class="section-eyebrow-num">07</span>
       <div class="section-eyebrow-line"></div>
       <span class="section-eyebrow-label">Architecture</span>
     </div>
@@ -759,7 +1129,7 @@
 <section id="how">
   <div class="reveal">
     <div class="section-eyebrow">
-      <span class="section-eyebrow-num">03</span>
+      <span class="section-eyebrow-num">08</span>
       <div class="section-eyebrow-line"></div>
       <span class="section-eyebrow-label">The Z-J-M-H-K Pipeline</span>
     </div>
@@ -793,7 +1163,7 @@
 <section id="usecases">
   <div class="reveal" style="margin-bottom:64px;">
     <div class="section-eyebrow">
-      <span class="section-eyebrow-num">04</span>
+      <span class="section-eyebrow-num">09</span>
       <div class="section-eyebrow-line"></div>
       <span class="section-eyebrow-label">Applications</span>
     </div>
@@ -834,7 +1204,7 @@
   <div class="ledger-inner">
     <div class="reveal">
       <div class="section-eyebrow">
-        <span class="section-eyebrow-num">05</span>
+        <span class="section-eyebrow-num">10</span>
         <div class="section-eyebrow-line"></div>
         <span class="section-eyebrow-label">Live System</span>
       </div>
@@ -889,7 +1259,7 @@
 <section id="contact">
   <div class="contact-meta reveal">
     <div class="section-eyebrow">
-      <span class="section-eyebrow-num">06</span>
+      <span class="section-eyebrow-num">11</span>
       <div class="section-eyebrow-line"></div>
       <span class="section-eyebrow-label">Get in Touch</span>
     </div>
