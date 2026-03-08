@@ -6,6 +6,50 @@
 <title>HEILLON — Computable Legitimacy Infrastructure</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- JSON-LD: SoftwareApplication + AuditService para compliance tooling -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "HEILLON",
+    "alternateName": "HEILLON Decision Verification Layer",
+    "description": "Cryptographic infrastructure for computable legitimacy — makes AI and institutional decisions auditable, sovereign, and irrefutable. Decision Verification Layer operating between autonomous AI systems and institutional infrastructure.",
+    "url": "https://heillon.com",
+    "applicationCategory": "SecurityApplication",
+    "applicationSubCategory": "AI Governance Infrastructure",
+    "operatingSystem": "Cloud",
+    "offers": {
+      "@type": "Offer",
+      "description": "Institutional POC and API access available on request",
+      "url": "https://heillon.com/#contact"
+    },
+    "featureList": [
+      "Cryptographic audit trail (SHA-256)",
+      "EU AI Act Art. 12 compliance",
+      "Constitutional Cycle Records (CCR)",
+      "NLO Legitimacy Scoring (0-5)",
+      "RFC 3161 trusted timestamping",
+      "Z-J-M-H-K decision pipeline",
+      "Immutable hash chain ledger",
+      "Public proof verification"
+    ],
+    "keywords": "AI governance, computable legitimacy, audit trail, cryptographic proof, decision verification, EU AI Act compliance, institutional AI, sovereign AI infrastructure",
+    "creator": {
+      "@type": "Organization",
+      "name": "HEILLON",
+      "url": "https://heillon.com",
+      "email": "contact@heillon.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Joinville",
+        "addressRegion": "SC",
+        "addressCountry": "BR"
+      }
+    },
+    "softwareVersion": "v4.5.1",
+    "releaseNotes": "Constitutional phase CONSTITUTIONAL_ACTIVE · Schema M2+M3 · 27/27 constitutional tests passing"
+  }
+  </script>
 <style>
 /* ── TOKENS ──────────────────────────────────────────────── */
 :root {
@@ -1390,6 +1434,89 @@ footer {
   color: var(--red);
   opacity: 0.8;
 }
+
+/* ── SANDBOX CTA ─────────────────────────────────────────── */
+.contact-path-highlight {
+  border-color: rgba(200,169,110,0.3);
+  background: var(--gold-lo);
+}
+.contact-path-highlight:hover {
+  border-color: var(--gold);
+  background: var(--gold-md);
+}
+.contact-path-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  padding: 2px 6px;
+  background: var(--gold);
+  color: var(--black);
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* ── TRUST SIGNALS ───────────────────────────────────────── */
+#trust {
+  padding: 64px 48px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.trust-inner { max-width: 1200px; margin: 0 auto; }
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 32px;
+}
+.trust-metric {
+  background: var(--surface);
+  padding: 28px 20px;
+  text-align: center;
+  transition: background .2s;
+}
+.trust-metric:hover { background: var(--black); }
+.trust-metric-val {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.trust-metric-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.trust-metric-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+.trust-metric-audit { position: relative; }
+.trust-audit-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  padding: 3px 8px;
+  border: 1px solid rgba(200,169,110,0.3);
+  color: var(--gold);
+  display: inline-block;
+  margin-bottom: 8px;
+}
+@media (max-width: 1024px) {
+  .trust-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
+}
 </style>
 </head>
 <body>
@@ -1728,6 +1855,52 @@ footer {
   </div>
 </section>
 
+<!-- TRUST SIGNALS -->
+<section id="trust">
+  <div class="trust-inner">
+    <div class="section-label reveal"><span class="section-num">·</span> Verifiable Metrics</div>
+    <div class="trust-grid reveal reveal-delay-1">
+
+      <div class="trust-metric">
+        <div class="trust-metric-val" id="trust-tables">15</div>
+        <div class="trust-metric-label">Schema Tables</div>
+        <div class="trust-metric-sub">verified · M2+M3</div>
+      </div>
+
+      <div class="trust-metric">
+        <div class="trust-metric-val">27/27</div>
+        <div class="trust-metric-label">Constitutional Tests</div>
+        <div class="trust-metric-sub">CCR-01 · CCR-02 · CCR-03</div>
+      </div>
+
+      <div class="trust-metric">
+        <div class="trust-metric-val">SHA-256</div>
+        <div class="trust-metric-label">Hash Standard</div>
+        <div class="trust-metric-sub">FIPS 180-4 · verifiable</div>
+      </div>
+
+      <div class="trust-metric">
+        <div class="trust-metric-val">RFC 3161</div>
+        <div class="trust-metric-label">Timestamp Standard</div>
+        <div class="trust-metric-sub">tamper-proof · auditable</div>
+      </div>
+
+      <div class="trust-metric">
+        <div class="trust-metric-val">Aug 2026</div>
+        <div class="trust-metric-label">EU AI Act Deadline</div>
+        <div class="trust-metric-sub">Art. 12 · high-risk systems</div>
+      </div>
+
+      <div class="trust-metric trust-metric-audit">
+        <div class="trust-audit-badge">IN PROGRESS</div>
+        <div class="trust-metric-label">External Audit</div>
+        <div class="trust-metric-sub">Independent review · Q2 2026</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- TECHNICAL PROOF -->
 <section id="tech-proof">
   <div class="tech-inner">
@@ -1805,10 +1978,10 @@ footer {
           <div class="spec-key">Whitepaper</div>
           <div class="spec-val" style="display:flex;flex-direction:column;gap:8px;">
             <a id="btn-whitepaper-download" onclick="downloadWhitepaper()" style="color:var(--gold);text-decoration:none;cursor:pointer;font-weight:600;">
-              ↓ Download Technical Brief (PDF) — no login required
+              ↓ Download Whitepaper v1.0 (10 pages) — no login required
             </a>
             <span style="font-size:10px;color:rgba(136,145,164,0.6);">
-              4-page overview · Protocol spec · Cryptographic standards · Architecture
+              Schema JSON · Hash algorithm · Serialization order · Regulatory alignment
             </span>
           </div>
         </div>
@@ -1915,6 +2088,16 @@ footer {
           <div class="contact-path-text">
             <div class="contact-path-title">Institutional POC</div>
             <div class="contact-path-sub">30-min technical review with the founding team</div>
+          </div>
+        </a>
+        <a href="mailto:contact@heillon.com?subject=Sandbox Access Request" class="contact-path contact-path-highlight">
+          <span class="contact-path-icon">⌗</span>
+          <div class="contact-path-text">
+            <div class="contact-path-title">
+              API Sandbox Access
+              <span class="contact-path-badge">EARLY ACCESS</span>
+            </div>
+            <div class="contact-path-sub">Temporary API key · /verify endpoint · OpenAPI spec · "Verify CCR in 5 min" tutorial</div>
           </div>
         </a>
         <a href="mailto:contact@heillon.com?subject=Whitepaper Request" class="contact-path">
@@ -2259,107 +2442,262 @@ function copyCode(id) {
 
 // ── WHITEPAPER DOWNLOAD ───────────────────────────────────────
 function downloadWhitepaper() {
-  const content = `HEILLON — Technical Brief v1.0
+  const content = `HEILLON — Technical Whitepaper v1.0
 Computable Legitimacy Infrastructure
-======================================
+=====================================
+Version: 1.0 · March 2026 · contact@heillon.com
 
-WHAT IS HEILLON
----------------
+
+1. EXECUTIVE SUMMARY
+---------------------
 HEILLON is a Decision Verification Layer — cryptographic infrastructure
 that makes every AI and institutional decision auditable, sovereign,
-and irrefutable.
+and irrefutable. It operates between autonomous AI systems and
+institutional infrastructure as the only layer that can guarantee
+legitimacy at machine speed.
 
-It operates between autonomous AI systems and institutional infrastructure,
-providing authority verification that all other stack layers currently lack.
+Core value: HEILLON makes legitimacy a computable, verifiable property
+of every execution — not a post-hoc claim.
 
-THE CORE PROBLEM
-----------------
-AI systems now trigger workflows, execute transactions, and make operational
-decisions at machine speed. Institutional governance was designed for humans.
 
-Institutions cannot reliably verify:
-- Who authorized the decision
-- Under which constraints it was executed
-- Whether policy boundaries were respected
-- In which operational context it occurred
-
-Logs are not proof. HEILLON provides computable proof.
-
-REGULATORY CONTEXT
-------------------
-EU AI Act Art. 12 — mandates audit trails for high-risk AI systems.
-Obligations take effect August 2026.
-
-NIST AI RMF GV.1.1 — governance documentation requirements.
-ISO 27001 A.12.4 — logging and monitoring controls.
-
-HEILLON provides the cryptographic proof layer that compliance requires.
-
-THE FIVE PILLARS
-----------------
-P-01  SOVEREIGN TIME       — tamper-proof temporal anchoring (RFC 3161)
-P-02  IMMUTABLE LEDGER     — SHA-256 hash chain of custody
-P-03  FORMAL AUTHORITY     — cryptographically verifiable mandate binding
-P-04  PRIOR INTENTION      — declared before execution, sealed to ledger
-P-05  NLO LEVELS           — legitimacy scoring (1-5 scale, auditable)
-
-THE Z-J-M-H-K PIPELINE
------------------------
-Z  Zone         — institutional domain + operational boundaries
-J  Jurisdiction — cryptographic authority verification
-M  Mandate      — prior intention sealed to immutable ledger
-H  HEILLON      — execution + constitutional hash seal (SHA-256)
-K  Knowledge    — NLO level certification + permanent audit record
-
-CRYPTOGRAPHIC STANDARDS
-------------------------
-Hash Algorithm  : SHA-256
-Chain Structure : Merkle-style hash chain
-Timestamps      : RFC 3161-compatible trusted timestamping
-Signatures      : Ed25519 (planned for v2)
-Audit Trail     : Append-only, 15-table SQL schema
-
-ARCHITECTURE POSITION
+2. THE GOVERNANCE GAP
 ----------------------
-  AI Models & Agent Systems
-         ↕
-  Workflow Orchestration
-         ↕
-  HEILLON — Decision Verification Layer  ← THIS LAYER
-         ↕
-  Enterprise & Financial Systems
-         ↕
-  Institutional & Regulatory Infrastructure
+AI systems now trigger workflows, execute financial transactions, and make
+operational decisions at machine speed. Institutional governance was
+designed for humans. The result is a structural accountability gap:
 
-CURRENT STATE
--------------
-Constitutional Phase : CONSTITUTIONAL_ACTIVE
-Schema Version      : M2+M3
-Tables              : 15
-Active Flags        : M3_AUTHORITY, M3_GLOBAL_ENFORCEMENT,
-                      M3_AUTHORITY_QUORUM, M3_MODULE_CATALOG
+Problem 1: Logs are not proof
+  Logs record what happened. They do not prove who had authority,
+  under what mandate, or whether policy boundaries were respected.
+  Regulators increasingly require proof — not logs.
 
-Public Artifact     : CCR-03 (Constitutional Cycle Record)
-Verification        : https://heillon.com/#verify
-Live API            : https://heilloncommandcenter-production.up.railway.app/health
+Problem 2: Accountability collapses at machine speed
+  When an AI system makes a decision that costs $10M, initiates a
+  treatment protocol, or influences a policy affecting 2M citizens,
+  no existing layer of the stack can answer: was this legitimate?
 
-CONTACT
--------
-For full whitepaper, API access, institutional POC, or investment briefing:
-contact@heillon.com
+Problem 3: Regulatory exposure is immediate
+  EU AI Act Art. 12 mandates audit trails for high-risk AI systems.
+  Obligations for high-risk systems take effect August 2026.
+  Non-compliance carries fines up to €30M or 6% of global turnover.
 
-HEILLON © 2026 · Joinville, SC, Brazil
+
+3. THE FIVE PILLARS
+--------------------
+P-01  SOVEREIGN TIME
+  Every event is anchored to a verifiable, tamper-proof temporal record
+  using RFC 3161-compatible trusted timestamping. No retroactive
+  manipulation is possible. Every sealed event has a cryptographically
+  verifiable creation timestamp.
+
+P-02  IMMUTABLE LEDGER
+  A SHA-256 hash chain records every action with its full context,
+  permanently and irreversibly. Tampering any event in the chain
+  invalidates all subsequent hashes — making tampering detectable
+  by any verifier.
+
+P-03  FORMAL AUTHORITY
+  Actions are bound to cryptographically verifiable authority claims.
+  The chain of command is always traceable and auditable. No action
+  can be sealed without a valid authority record.
+
+P-04  PRIOR INTENTION
+  Intentions are declared and sealed into the ledger BEFORE execution.
+  This creates an unbreakable link between declared purpose and
+  executed action — the foundation of legal accountability.
+
+P-05  NLO LEVELS (0–5)
+  A structured legitimacy scoring system that quantifies and certifies
+  the degree of sovereignty of any decision:
+    NLO-0: Unverified action (no record)
+    NLO-1: Logged action (timestamp only)
+    NLO-2: Attributed action (identity bound)
+    NLO-3: Authorized action (authority verified)
+    NLO-4: Constitutional action (all 5 pillars active)
+    NLO-5: Sovereign action (externally audited)
+
+
+4. THE Z-J-M-H-K PIPELINE
+---------------------------
+Every decision passing through HEILLON traverses five stages:
+
+  Z — ZONE
+    Define the operational domain: institutional context, geographic
+    jurisdiction, and boundaries of permissible action.
+    Output: ZoneRecord { domainId, boundaries[], activeSince }
+
+  J — JURISDICTION
+    Establish cryptographic authority: who has the right to act,
+    under what mandate, verified against the authority registry.
+    Output: JurisdictionRecord { authorityId, mandateHash, scope[] }
+
+  M — MANDATE
+    Declare the intention BEFORE execution — sealed into the immutable
+    ledger as prior evidence. Execution cannot proceed without a
+    valid, sealed intention record.
+    Output: MandateRecord { intentionHash, declaredAt, nloTarget }
+
+  H — HEILLON SEAL
+    Execute the action and cryptographically seal it with:
+    - Full authority lineage
+    - Temporal proof (RFC 3161 timestamp)
+    - Policy compliance verification
+    - Constitutional hash (SHA-256)
+    Output: SealRecord { executionHash, sealedAt, constitutionalProof }
+
+  K — KNOWLEDGE
+    Generate the NLO level certification and permanent audit record.
+    The sealed proof is appended to the immutable ledger.
+    Output: KnowledgeRecord { nloLevel, auditTrail, reportHash }
+
+
+5. CCR-03 — CANONICAL SCHEMA (JSON)
+-------------------------------------
+The Constitutional Cycle Record (CCR) is the primary auditable artifact.
+Below is the canonical schema used for CCR-03, the public proof artifact:
+
+{
+  "cycleId": "CCR-03",
+  "version": "v4.4.0-canonical-sealed",
+  "commitTag": "v4.4.0-canonical-sealed",
+  "phase": "CONSTITUTIONAL_ACTIVE",
+  "schemaVersion": "M2+M3",
+  "tablesFound": 15,
+  "cycleStatus": "CANONICAL_VALID",
+  "tests": "9/9 PASS",
+  "testBreakdown": {
+    "CCR-01": "9/9 PASS",
+    "CCR-02": "9/9 PASS",
+    "CCR-03": "9/9 PASS"
+  },
+  "hash": "<SHA-256 of canonical JSON serialization>",
+  "previousHash": "<hash of previous CCR, or zeros for genesis>",
+  "hashAlgorithm": "SHA-256",
+  "canonicalSerializationOrder": [
+    "cycleId", "version", "phase", "schemaVersion",
+    "tablesFound", "cycleStatus", "tests", "sealedAt",
+    "authority", "nloLevel", "chainIntact", "flags"
+  ],
+  "sealedAt": "<ISO 8601 timestamp>",
+  "sealedBy": "HEILLON-KERNEL-SOVEREIGN",
+  "authority": "HEILLON-KERNEL-SOVEREIGN",
+  "authorityScope": ["CONSTITUTIONAL", "LEDGER_WRITE", "CYCLE_SEAL"],
+  "nloLevel": 4,
+  "chainIntact": true,
+  "flags": {
+    "M3_AUTHORITY": true,
+    "M3_AUTHORITY_DELEGATION": true,
+    "M3_AUTHORITY_QUORUM": true,
+    "M3_AUTHORITY_GATE": true,
+    "M3_GLOBAL_ENFORCEMENT": true,
+    "M3_MODULE_CATALOG": true
+  }
+}
+
+VERIFICATION ALGORITHM (server-side):
+  1. Parse JSON; normalize fields to canonical serialization order
+  2. Serialize to UTF-8 bytes (no BOM, no trailing whitespace)
+  3. Compute SHA-256 of serialized bytes
+  4. Compare against stored hash
+  5. Verify previousHash matches hash of prior CCR
+  6. If all steps pass: CANONICAL_VALID
+
+
+6. CRYPTOGRAPHIC STANDARDS
+----------------------------
+Hash Algorithm    : SHA-256 (FIPS 180-4)
+Chain Structure   : Merkle-style append-only hash chain
+Timestamps        : RFC 3161-compatible trusted timestamping
+Serialization     : Canonical JSON (sorted keys, no whitespace)
+Transport         : TLS 1.3 minimum
+Storage           : Append-only ledger (no UPDATE/DELETE operations)
+Future            : Ed25519 signatures for authority records (v2 roadmap)
+
+
+7. REGULATORY ALIGNMENT
+------------------------
+EU AI Act Art. 12
+  HEILLON provides the audit trail mandated for high-risk AI systems.
+  Obligations take effect August 2026 for systems already in operation.
+  Coverage: logging requirements, human oversight, transparency.
+
+NIST AI RMF (GV.1.1, MS.2.5, MG.3.2)
+  HEILLON maps to governance documentation, monitoring, and
+  incident response requirements of the NIST AI Risk Management Framework.
+
+ISO 27001 (A.12.4 — Logging and Monitoring)
+  The immutable ledger satisfies logging and monitoring control
+  requirements with cryptographic proof of log integrity.
+
+SOC 2 Type II (availability, integrity)
+  The hash chain and append-only architecture provide technical
+  controls aligned with SOC 2 availability and integrity criteria.
+
+
+8. ARCHITECTURE POSITION
+-------------------------
+  ┌─────────────────────────────────────┐
+  │     AI Models & Agent Systems       │
+  └────────────────┬────────────────────┘
+                   ↕
+  ┌─────────────────────────────────────┐
+  │       Workflow Orchestration        │
+  └────────────────┬────────────────────┘
+                   ↕
+  ╔═════════════════════════════════════╗
+  ║   HEILLON — Decision Verification   ║  ← THIS LAYER
+  ║           Layer (SOVEREIGN)         ║
+  ╚════════════════╤════════════════════╝
+                   ↕
+  ┌─────────────────────────────────────┐
+  │   Enterprise & Financial Systems    │
+  └────────────────┬────────────────────┘
+                   ↕
+  ┌─────────────────────────────────────┐
+  │  Institutional & Regulatory Infra   │
+  └─────────────────────────────────────┘
+
+HEILLON does NOT replace orchestration or AI models.
+It provides the authority verification that all other layers lack.
+
+
+9. CURRENT SYSTEM STATE
+------------------------
+Constitutional Phase   : CONSTITUTIONAL_ACTIVE
+Schema Version         : M2+M3
+Active Tables          : 15
+Milestones Completed   : M1 → M3.8 (8 milestones)
+Constitutional Tests   : 27/27 PASS (CCR-01, CCR-02, CCR-03)
+Public Artifact        : CCR-03
+
+Live API (public, no auth):
+  GET /health              → system + schema status
+  GET /constitutional/status → constitutional phase + flags
+
+Public Verifier: https://heillon.com/#verify
+CCR-03 Download: https://heillon.com/#download-ccr
+
+
+10. CONTACT & ACCESS
+---------------------
+Technical Integration  : contact@heillon.com
+Investment Briefing    : contact@heillon.com (subject: Investment Briefing)
+Institutional POC      : contact@heillon.com (subject: Institutional POC)
+Full API Access        : contact@heillon.com (subject: API Access Request)
+
+Response within 48h.
+
+HEILLON © 2026 · Joinville, SC, Brazil · heillon.com
 `;
 
-  const blob = new Blob([content], { type: 'text/plain' });
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'HEILLON_Technical_Brief_v1.txt';
+  a.download = 'HEILLON_Technical_Whitepaper_v1.0.txt';
   a.click();
   URL.revokeObjectURL(url);
-
-  addTerminalLine('SEAL', 'Technical brief downloaded · no auth required');
+  addTerminalLine('SEAL', 'Whitepaper v1.0 downloaded · no auth required');
 }
 
 // ── FORM ──────────────────────────────────────────────────────
