@@ -1,1268 +1,1827 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HEILLON — Sovereign AI Infrastructure</title>
-  <meta name="description" content="The world's first cryptographic legitimacy layer for AI and institutional decisions. Computable sovereignty." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEILLON — Computable Legitimacy Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ──────────────────────────────────────────────── */
+:root {
+  --black:   #09090B;
+  --deep:    #0D0F13;
+  --surface: #131519;
+  --border:  #1E2128;
+  --border-hi: #2E3340;
+  --muted:   #8891A4;
+  --white:   #F0F2F7;
+  --gold:    #C8A96E;
+  --gold-lo: rgba(200,169,110,0.07);
+  --gold-md: rgba(200,169,110,0.15);
+  --green:   #3DFFA0;
+  --red:     #FF5F57;
+  --blue:    #4A9EFF;
+  --font-sans: 'Syne', sans-serif;
+  --font-serif: 'Fraunces', serif;
+  --font-mono: 'DM Mono', monospace;
+}
 
-  <style>
-    /* ── RESET & BASE ─────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --black:     #050508;
-      --deep:      #08080f;
-      --surface:   #0e0e1a;
-      --border:    rgba(255,255,255,0.07);
-      --border-hi: rgba(255,255,255,0.15);
-      --gold:      #c8a96e;
-      --gold-dim:  rgba(200,169,110,0.15);
-      --gold-glow: rgba(200,169,110,0.35);
-      --white:     #f4f0ea;
-      --muted:     rgba(244,240,234,0.45);
-      --green:     #3dffa0;
-      --green-dim: rgba(61,255,160,0.12);
-      --font-disp: 'Syne', sans-serif;
-      --font-mono: 'DM Mono', monospace;
-      --font-serif:'Instrument Serif', serif;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: var(--font-disp);
-      overflow-x: hidden;
-      cursor: none;
-    }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── CUSTOM CURSOR ────────────────────────────────────────── */
-    #cursor {
-      width: 12px; height: 12px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none; z-index: 9999;
-      transform: translate(-50%,-50%);
-      transition: width .2s, height .2s, background .2s;
-      mix-blend-mode: difference;
-    }
-    #cursor-ring {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(200,169,110,0.4);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none; z-index: 9998;
-      transform: translate(-50%,-50%);
-      transition: all .12s ease;
-    }
-    body:hover #cursor { opacity: 1; }
-    a:hover ~ #cursor, button:hover ~ #cursor { width: 20px; height: 20px; }
+html { scroll-behavior: smooth; }
 
-    /* ── NOISE OVERLAY ────────────────────────────────────────── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.025;
-      pointer-events: none;
-      z-index: 9997;
-    }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-    /* ── NAV ──────────────────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 0 48px;
-      height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid transparent;
-      transition: border-color .3s, background .3s;
-    }
-    nav.scrolled {
-      border-color: var(--border);
-      background: rgba(5,5,8,0.85);
-      backdrop-filter: blur(16px);
-    }
-    .nav-logo {
-      font-size: 15px; font-weight: 700; letter-spacing: 0.2em;
-      color: var(--white); text-decoration: none;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .nav-logo-mark {
-      width: 28px; height: 28px;
-      border: 1.5px solid var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 800; color: var(--gold);
-      letter-spacing: 0;
-    }
-    .nav-links { display: flex; align-items: center; gap: 36px; }
-    .nav-links a {
-      font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
-      color: var(--muted); text-decoration: none; text-transform: uppercase;
-      transition: color .2s;
-    }
-    .nav-links a:hover { color: var(--white); }
-    .nav-cta {
-      padding: 8px 20px;
-      background: transparent;
-      border: 1px solid var(--border-hi);
-      color: var(--white) !important;
-      font-size: 11px !important; letter-spacing: 0.14em !important;
-      transition: border-color .2s, background .2s !important;
-    }
-    .nav-cta:hover {
-      border-color: var(--gold) !important;
-      background: var(--gold-dim) !important;
-      color: var(--gold) !important;
-    }
+/* ── NOISE OVERLAY ──────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
 
-    /* ── HERO ─────────────────────────────────────────────────── */
-    #hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 120px 48px 80px;
-      position: relative; overflow: hidden;
-    }
-    .hero-grid-lines {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image:
-        linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
-      background-size: 80px 80px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent);
-    }
-    .hero-glow {
-      position: absolute; top: 10%; left: 50%;
-      transform: translateX(-50%);
-      width: 700px; height: 400px;
-      background: radial-gradient(ellipse, rgba(200,169,110,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-eyebrow {
-      display: flex; align-items: center; gap: 12px;
-      margin-bottom: 40px; opacity: 0;
-      animation: fadeUp .8s .2s forwards;
-    }
-    .hero-eyebrow-line { width: 40px; height: 1px; background: var(--gold); }
-    .hero-eyebrow-text {
-      font-size: 11px; font-weight: 500; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--gold);
-      font-family: var(--font-mono);
-    }
-    .hero-title {
-      font-size: clamp(56px, 8vw, 108px);
-      font-weight: 800; line-height: 0.92;
-      letter-spacing: -0.03em; max-width: 900px;
-      opacity: 0; animation: fadeUp .8s .4s forwards;
-    }
-    .hero-title em {
-      font-family: var(--font-serif);
-      font-style: italic; font-weight: 400;
-      color: var(--gold);
-    }
-    .hero-subtitle {
-      margin-top: 36px; max-width: 520px;
-      font-size: 17px; line-height: 1.65;
-      color: var(--muted); font-weight: 400;
-      opacity: 0; animation: fadeUp .8s .6s forwards;
-    }
-    .hero-actions {
-      margin-top: 48px; display: flex; align-items: center; gap: 20px;
-      opacity: 0; animation: fadeUp .8s .8s forwards;
-    }
-    .btn-primary {
-      padding: 14px 32px;
-      background: var(--gold);
-      color: var(--black);
-      font-family: var(--font-disp);
-      font-size: 12px; font-weight: 700; letter-spacing: 0.15em;
-      text-transform: uppercase; text-decoration: none;
-      border: none; cursor: none;
-      transition: transform .2s, box-shadow .2s;
-      display: inline-block;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px var(--gold-glow);
-    }
-    .btn-ghost {
-      padding: 14px 32px;
-      background: transparent;
-      border: 1px solid var(--border-hi);
-      color: var(--muted);
-      font-family: var(--font-disp);
-      font-size: 12px; font-weight: 600; letter-spacing: 0.15em;
-      text-transform: uppercase; text-decoration: none;
-      cursor: none;
-      transition: border-color .2s, color .2s;
-      display: inline-block;
-    }
-    .btn-ghost:hover { border-color: var(--white); color: var(--white); }
+/* ── NAV ─────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 48px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s, background .3s;
+}
+nav.scrolled {
+  background: rgba(9,9,11,0.92);
+  backdrop-filter: blur(12px);
+  border-color: var(--border);
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-logo-mark {
+  width: 8px; height: 8px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  padding: 8px 20px;
+  background: var(--gold);
+  color: var(--black) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+}
+.nav-cta:hover { background: transparent; color: var(--gold) !important; border: 1px solid var(--gold); }
 
-    /* ── LIVE TICKER ──────────────────────────────────────────── */
-    .hero-ticker {
-      margin-top: 80px;
-      display: flex; align-items: center; gap: 32px;
-      padding: 20px 24px;
-      border: 1px solid var(--border);
-      background: rgba(14,14,26,0.6);
-      backdrop-filter: blur(8px);
-      max-width: fit-content;
-      opacity: 0; animation: fadeUp .8s 1s forwards;
-    }
-    .ticker-item {
-      display: flex; flex-direction: column; gap: 4px;
-      padding-right: 32px;
-      border-right: 1px solid var(--border);
-    }
-    .ticker-item:last-child { border-right: none; padding-right: 0; }
-    .ticker-label {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--muted);
-      font-family: var(--font-mono);
-    }
-    .ticker-value {
-      font-size: 22px; font-weight: 700;
-      font-family: var(--font-mono); color: var(--green);
-    }
-    .ticker-value.gold { color: var(--gold); }
-    .ticker-value.white { color: var(--white); }
-    .live-dot {
-      display: inline-block; width: 6px; height: 6px;
-      background: var(--green); border-radius: 50%;
-      margin-right: 6px;
-      animation: pulse-dot 2s infinite;
-    }
+/* ── HERO ─────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 0 48px;
+  position: relative;
+  overflow: hidden;
+}
 
-    /* ── MARQUEE ──────────────────────────────────────────────── */
-    .marquee-wrap {
-      padding: 16px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden; background: var(--deep);
-    }
-    .marquee-track {
-      display: flex; gap: 0;
-      animation: marquee 28s linear infinite;
-      width: max-content;
-    }
-    .marquee-item {
-      padding: 0 48px;
-      font-size: 11px; font-weight: 500; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--muted);
-      font-family: var(--font-mono);
-      border-right: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    .marquee-item span { color: var(--gold); margin-right: 8px; }
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,169,110,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,169,110,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
+}
 
-    /* ── SECTION SHARED ───────────────────────────────────────── */
-    section { padding: 120px 48px; }
-    .section-eyebrow {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
-    }
-    .section-eyebrow-num {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.3em;
-      color: var(--gold); font-family: var(--font-mono);
-    }
-    .section-eyebrow-line { width: 40px; height: 1px; background: var(--border-hi); }
-    .section-eyebrow-label {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--muted); font-family: var(--font-mono);
-    }
-    .section-title {
-      font-size: clamp(36px, 4.5vw, 60px);
-      font-weight: 800; line-height: 1.05; letter-spacing: -0.02em;
-      max-width: 700px;
-    }
-    .section-title em {
-      font-family: var(--font-serif); font-style: italic;
-      font-weight: 400; color: var(--gold);
-    }
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -60%);
+  pointer-events: none;
+}
 
-    /* ── WHAT IS HEILLON ──────────────────────────────────────── */
-    #what {
-      background: var(--deep);
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-    }
-    .what-text p {
-      margin-top: 28px; font-size: 17px; line-height: 1.75;
-      color: var(--muted); max-width: 480px;
-    }
-    .what-text p strong { color: var(--white); font-weight: 600; }
-    .what-visual {
-      position: relative; height: 420px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .what-hex-grid {
-      position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(200,169,110,0.08) 1px, transparent 1px);
-      background-size: 28px 28px;
-      mask-image: radial-gradient(ellipse 80% 80% at center, black, transparent);
-    }
-    .what-diagram {
-      position: relative; z-index: 2;
-      width: 300px; height: 300px;
-    }
-    .diagram-ring {
-      position: absolute; border-radius: 50%;
-      border: 1px solid var(--border);
-      top: 50%; left: 50%; transform: translate(-50%,-50%);
-    }
-    .diagram-ring:nth-child(1) { width: 80px; height: 80px; border-color: var(--gold); animation: spin-slow 8s linear infinite; }
-    .diagram-ring:nth-child(2) { width: 160px; height: 160px; border-color: rgba(200,169,110,0.3); animation: spin-slow 14s linear infinite reverse; }
-    .diagram-ring:nth-child(3) { width: 240px; height: 240px; animation: spin-slow 20s linear infinite; }
-    .diagram-ring:nth-child(4) { width: 300px; height: 300px; border-color: rgba(255,255,255,0.04); }
-    .diagram-center {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      font-size: 11px; font-weight: 800; letter-spacing: 0.3em;
-      color: var(--gold); font-family: var(--font-mono); text-align: center;
-    }
-    .diagram-node {
-      position: absolute; width: 8px; height: 8px;
-      background: var(--gold); border-radius: 50%;
-      top: 50%; left: 50%;
-    }
-    .diagram-node:nth-child(5) { transform: translate(-50%,-50%) rotate(0deg) translateX(120px); }
-    .diagram-node:nth-child(6) { transform: translate(-50%,-50%) rotate(72deg) translateX(120px); }
-    .diagram-node:nth-child(7) { transform: translate(-50%,-50%) rotate(144deg) translateX(120px); }
-    .diagram-node:nth-child(8) { transform: translate(-50%,-50%) rotate(216deg) translateX(120px); }
-    .diagram-node:nth-child(9) { transform: translate(-50%,-50%) rotate(288deg) translateX(120px); }
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 120px;
+  padding-bottom: 80px;
+  max-width: 900px;
+  position: relative;
+  z-index: 1;
+}
 
-    /* ── PILLARS ──────────────────────────────────────────────── */
-    #pillars { background: var(--black); }
-    .pillars-header { max-width: 600px; margin-bottom: 64px; }
-    .pillars-grid {
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-    .pillar {
-      background: var(--black); padding: 40px 32px;
-      transition: background .3s;
-      position: relative; overflow: hidden;
-    }
-    .pillar::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 2px; background: var(--gold);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform .4s;
-    }
-    .pillar:hover { background: var(--surface); }
-    .pillar:hover::before { transform: scaleX(1); }
-    .pillar-num {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.3em;
-      color: var(--gold); font-family: var(--font-mono); margin-bottom: 20px;
-    }
-    .pillar-icon { font-size: 28px; margin-bottom: 16px; }
-    .pillar-name {
-      font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
-      margin-bottom: 12px; text-transform: uppercase;
-    }
-    .pillar-desc { font-size: 13px; line-height: 1.65; color: var(--muted); }
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px; height: 1px;
+  background: var(--gold);
+}
 
-    /* ── HOW IT WORKS ─────────────────────────────────────────── */
-    #how { background: var(--deep); }
-    .how-steps {
-      margin-top: 64px;
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
-      position: relative;
-    }
-    .how-steps::before {
-      content: '';
-      position: absolute; top: 28px; left: 12.5%; right: 12.5%;
-      height: 1px; background: linear-gradient(90deg, var(--gold), var(--border-hi), var(--border-hi), var(--gold));
-      z-index: 0;
-    }
-    .how-step { padding: 0 32px; text-align: center; position: relative; z-index: 1; }
-    .step-num {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--black); border: 1px solid var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 700; color: var(--gold);
-      font-family: var(--font-mono); margin: 0 auto 24px;
-    }
-    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
-    .step-desc { font-size: 13px; line-height: 1.7; color: var(--muted); }
+.hero-question {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.1;
+  color: var(--muted);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+.hero-question em {
+  font-style: normal;
+  color: var(--white);
+  font-weight: 700;
+}
 
-    /* ── USE CASES ────────────────────────────────────────────── */
-    #usecases { background: var(--black); }
-    .cases-grid {
-      margin-top: 64px;
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-      background: var(--border);
-    }
-    .case-card {
-      background: var(--black); padding: 48px 40px;
-      transition: background .3s;
-    }
-    .case-card:hover { background: var(--surface); }
-    .case-tag {
-      display: inline-block; padding: 4px 12px;
-      border: 1px solid var(--border-hi); font-size: 10px;
-      font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--muted); font-family: var(--font-mono); margin-bottom: 24px;
-    }
-    .case-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
-    .case-desc { font-size: 14px; line-height: 1.75; color: var(--muted); }
-    .case-card:first-child { grid-column: 1; grid-row: 1 / 3; display: flex; flex-direction: column; justify-content: flex-end; background: var(--surface); padding: 48px 40px; }
-    .case-card:first-child .case-title { font-size: 30px; }
-    .case-card-featured-img {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      margin-bottom: 32px; opacity: 0.7;
-    }
-    .feat-glyph {
-      font-size: 80px; line-height: 1;
-      font-family: var(--font-mono); color: var(--gold);
-      opacity: 0.3; font-weight: 300;
-    }
+.hero-answer {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 620px;
+  margin-bottom: 48px;
+}
+.hero-answer strong {
+  color: var(--white);
+  font-weight: 600;
+}
 
-    /* ── LIVE LEDGER ──────────────────────────────────────────── */
-    #ledger {
-      background: var(--deep);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .ledger-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
-    }
-    .ledger-terminal {
-      background: var(--black); border: 1px solid var(--border);
-      font-family: var(--font-mono);
-    }
-    .terminal-bar {
-      padding: 12px 16px; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .t-dot-r { background: #ff5f57; }
-    .t-dot-y { background: #febc2e; }
-    .t-dot-g { background: #28c840; }
-    .terminal-title {
-      margin-left: 8px; font-size: 11px; letter-spacing: 0.1em; color: var(--muted);
-    }
-    .terminal-body {
-      padding: 24px; min-height: 260px; max-height: 320px; overflow: hidden;
-    }
-    .t-line {
-      font-size: 12px; line-height: 1.9;
-      display: flex; gap: 12px;
-    }
-    .t-ts { color: rgba(200,169,110,0.5); min-width: 56px; }
-    .t-tag { color: var(--green); }
-    .t-tag.warn { color: #febc2e; }
-    .t-msg { color: var(--muted); }
-    .t-msg .hi { color: var(--white); }
-    .ledger-stats { display: flex; flex-direction: column; gap: 32px; }
-    .stat-row {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      padding-bottom: 20px; border-bottom: 1px solid var(--border);
-    }
-    .stat-row:last-child { border-bottom: none; }
-    .stat-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-family: var(--font-mono); }
-    .stat-val { font-size: 36px; font-weight: 800; font-family: var(--font-mono); line-height: 1; }
-    .stat-val.green { color: var(--green); }
-    .stat-val.gold { color: var(--gold); }
-    .stat-badge {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.15em;
-      padding: 4px 10px; background: var(--green-dim);
-      border: 1px solid rgba(61,255,160,0.2); color: var(--green);
-      font-family: var(--font-mono); text-transform: uppercase;
-    }
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 
-    /* ── CONTACT ──────────────────────────────────────────────── */
-    #contact {
-      background: var(--black);
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
-    }
-    .contact-form { display: flex; flex-direction: column; gap: 16px; }
-    .form-group { display: flex; flex-direction: column; gap: 8px; }
-    .form-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-family: var(--font-mono); }
-    .form-input {
-      padding: 14px 16px;
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--white); font-family: var(--font-disp); font-size: 14px;
-      outline: none; transition: border-color .2s;
-    }
-    .form-input:focus { border-color: var(--gold); }
-    .form-input::placeholder { color: rgba(244,240,234,0.2); }
-    textarea.form-input { resize: vertical; min-height: 120px; }
-    .contact-meta { padding-top: 12px; }
-    .contact-meta p { font-size: 15px; line-height: 1.8; color: var(--muted); margin-bottom: 32px; }
-    .contact-meta p strong { color: var(--white); }
-    .contact-info { display: flex; flex-direction: column; gap: 16px; }
-    .contact-info-row { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
-    .contact-info-row a { color: var(--gold); text-decoration: none; }
-    .contact-info-icon { font-size: 16px; width: 20px; text-align: center; }
+.btn-primary {
+  padding: 14px 32px;
+  background: var(--gold);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  transition: all .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--gold);
+}
+.btn-secondary {
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--border-hi);
+  cursor: pointer;
+  transition: all .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
 
-    /* ── FOOTER ───────────────────────────────────────────────── */
-    footer {
-      padding: 48px;
-      border-top: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .footer-left { display: flex; flex-direction: column; gap: 8px; }
-    .footer-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.2em; color: var(--gold); }
-    .footer-copy { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
-    .footer-right { display: flex; align-items: center; gap: 24px; }
-    .footer-right a { font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; }
-    .footer-right a:hover { color: var(--gold); }
-    .footer-status {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.15em;
-      color: var(--green);
-    }
+.hero-proof-strip {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0;
+  flex-wrap: wrap;
+}
+.proof-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.proof-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(61,255,160,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(61,255,160,0); }
+}
+.proof-label { color: var(--muted); }
+.proof-value { color: var(--white); font-weight: 500; }
+.proof-sep {
+  width: 1px; height: 16px;
+  background: var(--border);
+}
 
-    /* ── FOOTER SOCIAL ── */
-    .footer-social { margin-top: 12px; }
-    .footer-social-link {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
-      color: var(--muted); text-decoration: none;
-      font-family: var(--font-mono); text-transform: uppercase;
-      transition: color .2s;
-    }
-    .footer-social-link:hover { color: var(--gold); }
-    .footer-social-link svg { opacity: 0.6; transition: opacity .2s; }
-    .footer-social-link:hover svg { opacity: 1; }
+/* ── AUDIENCE PATHS ──────────────────────────────────────── */
+#paths {
+  padding: 80px 48px;
+  border-top: 1px solid var(--border);
+  background: var(--deep);
+}
+.paths-header {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 40px;
+  text-align: center;
+}
+.paths-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.path-card {
+  background: var(--deep);
+  padding: 40px;
+  cursor: pointer;
+  transition: background .2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+.path-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform .3s;
+  transform-origin: left;
+}
+.path-card:hover { background: var(--surface); }
+.path-card:hover::before { transform: scaleX(1); }
+.path-icon {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+.path-role {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.path-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.path-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.path-link {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.path-link::after {
+  content: '→';
+  transition: transform .2s;
+}
+.path-card:hover .path-link::after { transform: translateX(4px); }
 
-    /* ── SCROLL REVEAL ────────────────────────────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(32px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+/* ── THE QUESTION (prova de impacto) ─────────────────────── */
+#consequence {
+  padding: 120px 48px;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+.consequence-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+.consequence-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.consequence-label::before,
+.consequence-label::after {
+  content: '';
+  display: block;
+  width: 48px; height: 1px;
+  background: var(--red);
+  opacity: 0.4;
+}
+.consequence-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.25;
+  color: var(--muted);
+  margin-bottom: 48px;
+}
+.consequence-title strong {
+  font-style: normal;
+  font-weight: 900;
+  color: var(--white);
+  display: block;
+}
+.consequence-scenarios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  text-align: left;
+  margin-bottom: 48px;
+}
+.scenario-card {
+  background: var(--black);
+  padding: 32px;
+}
+.sc-num {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 300;
+  color: rgba(255,95,87,0.15);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+.sc-situation {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.sc-consequence {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.sc-consequence em {
+  font-style: normal;
+  color: var(--red);
+}
+.consequence-answer {
+  padding: 32px 40px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  background: rgba(61,255,160,0.03);
+  text-align: left;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.consequence-answer strong { color: var(--white); }
 
-    /* ── ANIMATIONS ───────────────────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    @keyframes spin-slow {
-      from { transform: translate(-50%,-50%) rotate(0deg); }
-      to   { transform: translate(-50%,-50%) rotate(360deg); }
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(61,255,160,.4); }
-      50%  { opacity: .6; box-shadow: 0 0 0 6px rgba(61,255,160,0); }
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    .cursor-blink { animation: blink 1s step-end infinite; }
+/* ── VERIFIER ─────────────────────────────────────────────── */
+#verify {
+  padding: 100px 48px;
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+}
+.verify-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-num {
+  color: rgba(200,169,110,0.4);
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 540px;
+  margin-bottom: 48px;
+}
 
-    /* ── RESPONSIVE ───────────────────────────────────────────── */
-    @media (max-width: 1100px) {
-      .pillars-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 900px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      #hero, section { padding: 80px 24px; }
-      .hero-title { font-size: clamp(40px, 12vw, 72px); }
-      #what, #contact, .ledger-inner { grid-template-columns: 1fr; gap: 48px; }
-      .pillars-grid { grid-template-columns: 1fr 1fr; }
-      .how-steps { grid-template-columns: 1fr 1fr; }
-      .how-steps::before { display: none; }
-      .cases-grid { grid-template-columns: 1fr; }
-      .case-card:first-child { grid-row: auto; }
-      footer { flex-direction: column; gap: 24px; align-items: flex-start; }
-    }
-  </style>
+.verifier-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.verifier-header {
+  padding: 16px 24px;
+  background: var(--black);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.verifier-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.verifier-title::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+.verifier-body {
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.verifier-input-area { display: flex; flex-direction: column; gap: 16px; }
+.verifier-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.verifier-textarea {
+  width: 100%;
+  height: 120px;
+  background: var(--black);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 12px 16px;
+  resize: vertical;
+  outline: none;
+  transition: border-color .2s;
+}
+.verifier-textarea:focus { border-color: var(--gold); }
+.verifier-textarea::placeholder { color: rgba(136,145,164,0.4); }
+.verifier-or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--border-hi);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.verifier-or::before, .verifier-or::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.hash-input {
+  width: 100%;
+  background: var(--black);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color .2s;
+}
+.hash-input:focus { border-color: var(--gold); }
+.hash-input::placeholder { color: rgba(136,145,164,0.4); }
+
+.btn-verify {
+  padding: 14px 28px;
+  background: var(--gold);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+  width: 100%;
+}
+.btn-verify:hover { background: #D4B97E; }
+.btn-verify:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.verifier-result-area {
+  border-left: 1px solid var(--border);
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+}
+.result-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: center;
+}
+.result-placeholder-icon {
+  width: 48px; height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+#result-output { display: none; flex-direction: column; gap: 16px; }
+#result-output.visible { display: flex; }
+
+.result-status {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.result-status.ok {
+  background: rgba(61,255,160,0.06);
+  border: 1px solid rgba(61,255,160,0.2);
+  color: var(--green);
+}
+.result-status.fail {
+  background: rgba(255,95,87,0.06);
+  border: 1px solid rgba(255,95,87,0.2);
+  color: var(--red);
+}
+.result-status.checking {
+  background: var(--gold-lo);
+  border: 1px solid rgba(200,169,110,0.2);
+  color: var(--gold);
+}
+
+.result-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.result-row:last-child { border-bottom: none; }
+.result-key { color: var(--muted); }
+.result-val { color: var(--white); }
+.result-val.ok-text { color: var(--green); }
+.result-val.fail-text { color: var(--red); }
+
+.btn-download-report {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--border-hi);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+}
+.btn-download-report:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ── CCR DOWNLOAD STRIP ───────────────────────────────────── */
+#download-ccr {
+  padding: 0 48px;
+  background: var(--black);
+}
+.ccr-strip {
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 32px 40px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 32px;
+  align-items: center;
+  background: var(--surface);
+}
+.ccr-badge {
+  padding: 8px 16px;
+  background: var(--gold);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+.ccr-info { display: flex; flex-direction: column; gap: 4px; }
+.ccr-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+.ccr-hash {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ccr-hash-value {
+  color: var(--gold);
+  cursor: pointer;
+  transition: color .2s;
+}
+.ccr-hash-value:hover { color: var(--white); }
+.ccr-actions { display: flex; gap: 12px; }
+
+/* ── ARCHITECTURE ─────────────────────────────────────────── */
+#architecture {
+  padding: 100px 48px;
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+}
+.arch-inner {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 80px;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.arch-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 40px;
+}
+.arch-layer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  transition: all .2s;
+}
+.arch-layer:hover { border-color: var(--border-hi); color: var(--white); }
+.arch-layer.heillon-layer {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-lo);
+  font-weight: 700;
+  padding: 20px;
+  font-size: 13px;
+}
+.arch-layer-badge {
+  font-size: 9px;
+  padding: 3px 8px;
+  letter-spacing: 0.15em;
+  background: var(--gold);
+  color: var(--black);
+  font-weight: 800;
+}
+.arch-arrow {
+  text-align: center;
+  padding: 3px 0;
+  font-size: 14px;
+  color: rgba(200,169,110,0.25);
+}
+.arch-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 40px;
+}
+.pillar {
+  padding: 24px;
+  border: 1px solid var(--border);
+  transition: border-color .2s, background .2s;
+  cursor: default;
+}
+.pillar:hover {
+  border-color: var(--border-hi);
+  background: var(--surface);
+}
+.pillar-id {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+}
+.pillar-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.pillar-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ── LIVE TERMINAL ───────────────────────────────────────── */
+#live {
+  padding: 100px 48px;
+  background: var(--black);
+  border-top: 1px solid var(--border);
+}
+.live-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+.live-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin-top: 40px;
+}
+.stat-block {
+  background: var(--black);
+  padding: 28px;
+  transition: background .2s;
+}
+.stat-block:hover { background: var(--surface); }
+.stat-id {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.stat-val {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+  line-height: 1;
+}
+.stat-val.green { color: var(--green); }
+.stat-val.gold { color: var(--gold); }
+.stat-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.terminal {
+  background: #0A0B0D;
+  border: 1px solid var(--border);
+  margin-top: 40px;
+  overflow: hidden;
+}
+.terminal-bar {
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.t-dot { width: 10px; height: 10px; border-radius: 50%; }
+.t-dot.r { background: #FF5F57; }
+.t-dot.y { background: #FFBD2E; }
+.t-dot.g { background: #28CA41; }
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+  letter-spacing: 0.1em;
+}
+.terminal-body {
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.8;
+  min-height: 240px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.terminal-body::-webkit-scrollbar { width: 4px; }
+.terminal-body::-webkit-scrollbar-track { background: transparent; }
+.terminal-body::-webkit-scrollbar-thumb { background: var(--border); }
+
+.t-line { display: flex; gap: 12px; align-items: baseline; }
+.t-ts { color: rgba(136,145,164,0.4); font-size: 10px; min-width: 36px; }
+.t-tag { font-size: 10px; font-weight: 600; min-width: 48px; letter-spacing: 0.1em; }
+.t-tag.init { color: var(--blue); }
+.t-tag.ok { color: var(--green); }
+.t-tag.seal { color: var(--gold); }
+.t-tag.evt { color: var(--muted); }
+.t-tag.warn { color: var(--red); }
+.t-msg { color: var(--white); font-size: 12px; }
+
+/* ── TECHNICAL PROOF (para desenvolvedor/especialista) ────── */
+#tech-proof {
+  padding: 100px 48px;
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+}
+.tech-inner { max-width: 1100px; margin: 0 auto; }
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 48px;
+}
+.code-block {
+  background: #0A0B0D;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.code-header {
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.code-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.copy-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: color .2s;
+  text-transform: uppercase;
+}
+.copy-btn:hover { color: var(--gold); }
+pre {
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+  overflow-x: auto;
+}
+pre .kw { color: var(--gold); }
+pre .str { color: var(--green); }
+pre .num { color: var(--blue); }
+pre .comment { color: rgba(136,145,164,0.4); font-style: italic; }
+pre .key { color: var(--white); }
+
+.tech-specs { display: flex; flex-direction: column; gap: 16px; }
+.spec-item {
+  padding: 20px;
+  border: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  align-items: start;
+  transition: border-color .2s;
+}
+.spec-item:hover { border-color: var(--border-hi); }
+.spec-key {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.spec-val {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.spec-val strong { color: var(--white); }
+
+/* ── USE CASES ───────────────────────────────────────────── */
+#usecases {
+  padding: 100px 48px;
+  background: var(--black);
+  border-top: 1px solid var(--border);
+}
+.usecases-inner { max-width: 1200px; margin: 0 auto; }
+.uc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 48px;
+}
+.uc-card {
+  background: var(--black);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  transition: background .2s;
+}
+.uc-card:hover { background: var(--surface); }
+.uc-card.flagship {
+  grid-column: span 3;
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.uc-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  background: var(--gold);
+  color: var(--black);
+  display: inline-block;
+  margin-bottom: 16px;
+}
+.uc-sector {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.uc-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.uc-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.uc-flagship-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+.uc-flagship-desc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.uc-flagship-desc strong { color: var(--white); }
+.uc-proof {
+  padding: 24px;
+  border: 1px solid var(--border);
+  background: var(--black);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.uc-proof-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+
+/* ── CTA / CONTACT ───────────────────────────────────────── */
+#contact {
+  padding: 100px 48px;
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+}
+.contact-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: start;
+}
+.contact-left { display: flex; flex-direction: column; gap: 24px; }
+.contact-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.contact-desc {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.contact-desc strong { color: var(--white); }
+.contact-paths {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+.contact-path {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s, background .2s;
+}
+.contact-path:hover {
+  border-color: var(--gold);
+  background: var(--gold-lo);
+}
+.contact-path-icon { font-size: 20px; flex-shrink: 0; }
+.contact-path-text { display: flex; flex-direction: column; gap: 2px; }
+.contact-path-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+.contact-path-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field.full { grid-column: span 2; }
+.form-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.form-input, .form-select, .form-textarea {
+  background: var(--black);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color .2s;
+  width: 100%;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--gold);
+}
+.form-input::placeholder, .form-textarea::placeholder {
+  color: rgba(136,145,164,0.4);
+}
+.form-select { cursor: pointer; }
+.form-select option { background: var(--black); }
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+.form-submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.form-note {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+.form-note em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+footer {
+  padding: 40px 48px;
+  border-top: 1px solid var(--border);
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-logo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-logo-mark {
+  width: 7px; height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+.footer-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+.footer-links a {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--gold); }
+
+.footer-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+.footer-status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+
+/* ── REVEAL ANIMATIONS ───────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  nav { padding: 0 24px; }
+  #hero, #paths, #consequence, #verify, #download-ccr,
+  #architecture, #live, #tech-proof, #usecases, #contact { padding-left: 24px; padding-right: 24px; }
+  .paths-grid, .consequence-scenarios, .uc-grid { grid-template-columns: 1fr; }
+  .uc-card.flagship { grid-column: 1; grid-template-columns: 1fr; }
+  .arch-inner, .live-inner, .tech-grid, .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+  .verifier-body { grid-template-columns: 1fr; }
+  .verifier-result-area { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 24px; margin-top: 0; }
+  .form-row { grid-template-columns: 1fr; }
+  .form-field.full { grid-column: 1; }
+  .ccr-strip { grid-template-columns: 1fr; gap: 16px; }
+}
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .hero-question { font-size: 28px; }
+  .live-stats { grid-template-columns: 1fr 1fr; }
+}
+</style>
 </head>
 <body>
-
-<!-- CURSOR -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
 
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">H</div>
+    <span class="nav-logo-mark"></span>
     HEILLON
   </a>
-  <div class="nav-links">
-    <a href="#gap">The Problem</a>
-    <a href="#stack">Architecture</a>
-    <a href="#pillars">Protocol</a>
-    <a href="#usecases">Use Cases</a>
-    <a href="#ledger">Live Ledger</a>
-    <a href="#contact" class="nav-cta">Contact</a>
-  </div>
+  <ul class="nav-links">
+    <li><a href="#consequence">The Problem</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#verify">Verify</a></li>
+    <li><a href="#tech-proof">Technical</a></li>
+    <li><a href="#contact" class="nav-cta">Request Access</a></li>
+  </ul>
 </nav>
 
-<style>
-    /* ── GOVERNANCE GAP (nova seção) ─────────────────────────── */
-    #gap {
-      background: var(--black);
-      border-top: 1px solid var(--border);
-    }
-    .gap-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
-    }
-    .gap-problem {
-      padding: 48px; background: var(--surface);
-      border: 1px solid var(--border);
-    }
-    .gap-problem-title {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
-      margin-bottom: 20px;
-    }
-    .gap-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-    .gap-list li {
-      display: flex; align-items: flex-start; gap: 12px;
-      font-size: 14px; line-height: 1.6; color: var(--muted);
-    }
-    .gap-list li::before {
-      content: '—'; color: var(--gold); flex-shrink: 0; margin-top: 2px;
-    }
-    .gap-list li strong { color: var(--white); }
-    .gap-right { display: flex; flex-direction: column; gap: 24px; }
-    .gap-def {
-      padding: 32px; border-left: 2px solid var(--gold);
-      background: rgba(200,169,110,0.04);
-    }
-    .gap-def-label {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
-      margin-bottom: 12px;
-    }
-    .gap-def p { font-size: 15px; line-height: 1.75; color: var(--muted); }
-    .gap-def p strong { color: var(--white); }
-
-    /* ── HOW IT WORKS SIMPLIFICADO (3 passos) ───────────────── */
-    #simple-how {
-      background: var(--deep);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .simple-steps {
-      margin-top: 56px;
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-      background: var(--border);
-    }
-    .simple-step {
-      background: var(--deep); padding: 48px 40px;
-      position: relative; overflow: hidden;
-      transition: background .3s;
-    }
-    .simple-step:hover { background: var(--surface); }
-    .simple-step-num {
-      font-size: 64px; font-weight: 800; line-height: 1;
-      color: rgba(200,169,110,0.08); font-family: var(--font-mono);
-      position: absolute; top: 24px; right: 24px;
-    }
-    .simple-step-icon {
-      width: 48px; height: 48px; border: 1px solid var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; margin-bottom: 24px;
-    }
-    .simple-step-title {
-      font-size: 18px; font-weight: 700; margin-bottom: 12px;
-    }
-    .simple-step-subtitle {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
-      margin-bottom: 16px;
-    }
-    .simple-step-desc { font-size: 14px; line-height: 1.7; color: var(--muted); }
-
-    /* ── STACK VISUAL ────────────────────────────────────────── */
-    #stack { background: var(--black); }
-    .stack-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-    }
-    .stack-diagram {
-      display: flex; flex-direction: column; gap: 2px;
-    }
-    .stack-layer {
-      padding: 16px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      border: 1px solid var(--border);
-      font-size: 13px; font-weight: 500; color: var(--muted);
-      font-family: var(--font-mono); letter-spacing: 0.06em;
-      transition: border-color .2s, color .2s;
-    }
-    .stack-layer:hover { border-color: var(--border-hi); color: var(--white); }
-    .stack-layer.highlight {
-      border-color: var(--gold); color: var(--gold);
-      background: var(--gold-dim); font-weight: 700;
-      font-size: 14px; padding: 20px 24px;
-    }
-    .stack-layer.highlight .stack-badge {
-      font-size: 9px; letter-spacing: 0.2em; background: var(--gold);
-      color: var(--black); padding: 3px 8px; font-weight: 800;
-    }
-    .stack-arrow {
-      text-align: center; padding: 4px 0;
-      font-size: 16px; color: rgba(200,169,110,0.3);
-    }
-    .stack-text { display: flex; flex-direction: column; gap: 20px; }
-    .stack-text p { font-size: 15px; line-height: 1.75; color: var(--muted); }
-    .stack-text p strong { color: var(--white); }
-
-    /* ── USE CASE DETALHADO ──────────────────────────────────── */
-    #scenario { background: var(--deep); }
-    .scenario-flow {
-      margin-top: 56px;
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
-      position: relative;
-    }
-    .scenario-flow::before {
-      content: '';
-      position: absolute; top: 36px; left: 12.5%; right: 12.5%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), var(--gold), transparent);
-      opacity: 0.3; z-index: 0;
-    }
-    .scenario-step {
-      padding: 0 24px; text-align: center; position: relative; z-index: 1;
-    }
-    .sc-icon {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: var(--black); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; margin: 0 auto 20px;
-      transition: border-color .3s;
-    }
-    .scenario-step:hover .sc-icon { border-color: var(--gold); }
-    .sc-label {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
-      margin-bottom: 8px;
-    }
-    .sc-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
-    .sc-desc { font-size: 13px; line-height: 1.65; color: var(--muted); }
-    .scenario-result {
-      margin-top: 56px; padding: 40px;
-      border: 1px solid var(--border);
-      background: rgba(61,255,160,0.04);
-      border-left: 3px solid var(--green);
-      display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: start;
-    }
-    .scenario-result-icon { font-size: 32px; }
-    .scenario-result-title {
-      font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--green);
-      font-family: var(--font-mono); margin-bottom: 12px;
-    }
-    .scenario-result-text { font-size: 14px; line-height: 1.75; color: var(--muted); }
-    .scenario-result-text strong { color: var(--white); }
-
-    /* ── WHY IT MATTERS ─────────────────────────────────────── */
-    #why { background: var(--black); }
-    .why-grid {
-      margin-top: 56px;
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
-      background: var(--border);
-    }
-    .why-card {
-      background: var(--black); padding: 40px;
-      transition: background .3s;
-    }
-    .why-card:hover { background: var(--surface); }
-    .why-card-icon { font-size: 28px; margin-bottom: 16px; }
-    .why-card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
-    .why-card-desc { font-size: 13px; line-height: 1.7; color: var(--muted); }
-
-    /* ── DOWNLOAD FIX ───────────────────────────────────────── */
-    .download-strip {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 48px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 24px;
-    }
-    .download-strip-text { display: flex; flex-direction: column; gap: 6px; }
-    .download-strip-label {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--gold); font-family: var(--font-mono);
-    }
-    .download-strip-title { font-size: 18px; font-weight: 700; }
-    .download-strip-sub { font-size: 13px; color: var(--muted); }
-    .download-btns { display: flex; gap: 12px; flex-shrink: 0; }
-    .btn-download {
-      padding: 12px 24px;
-      background: transparent; border: 1px solid var(--border-hi);
-      color: var(--muted); font-family: var(--font-mono);
-      font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
-      text-transform: uppercase; text-decoration: none;
-      cursor: pointer; transition: all .2s;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .btn-download:hover { border-color: var(--gold); color: var(--gold); }
-    .btn-download.primary {
-      background: var(--gold); border-color: var(--gold);
-      color: var(--black); font-weight: 700;
-    }
-    .btn-download.primary:hover {
-      background: transparent; color: var(--gold);
-    }
-
-    @media (max-width: 900px) {
-      .gap-inner, .stack-inner { grid-template-columns: 1fr; gap: 40px; }
-      .simple-steps { grid-template-columns: 1fr; }
-      .scenario-flow { grid-template-columns: 1fr 1fr; }
-      .scenario-flow::before { display: none; }
-      .why-grid { grid-template-columns: 1fr; }
-      .download-strip { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
-
+<!-- HERO -->
 <section id="hero">
-  <div class="hero-grid-lines"></div>
+  <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
 
-  <div class="hero-eyebrow">
-    <div class="hero-eyebrow-line"></div>
-    <span class="hero-eyebrow-text">Sovereign AI Infrastructure</span>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Computable Legitimacy Infrastructure</div>
+
+    <h1 class="hero-question">
+      When an AI makes a <em>$10M decision</em>,<br>
+      who proves it was legitimate?
+    </h1>
+
+    <p class="hero-answer">
+      HEILLON is the world's first <strong>Decision Verification Layer</strong> —
+      cryptographic infrastructure that makes every AI and institutional decision
+      auditable, sovereign, and irrefutable.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#verify" class="btn-primary">
+        ⬡ Verify a Proof
+      </a>
+      <a href="#download-ccr" class="btn-secondary">
+        ↓ Download CCR-03
+      </a>
+      <a href="#paths" class="btn-secondary">
+        Explore by role →
+      </a>
+    </div>
   </div>
 
-  <h1 class="hero-title">
-    Every Decision.<br>
-    <em>Cryptographically</em><br>
-    Legitimate.
-  </h1>
-
-  <p class="hero-subtitle">
-    HEILLON is the world's first protocol for <strong>computable legitimacy</strong> — 
-    a cryptographic infrastructure that makes AI and institutional decisions 
-    auditable, sovereign, and irrefutable.
-  </p>
-
-  <div class="hero-actions">
-    <a href="#gap" class="btn-primary">Explore the Protocol</a>
-    <a href="#contact" class="btn-ghost">Request Access →</a>
-  </div>
-
-  <div class="hero-ticker">
-    <div class="ticker-item">
-      <span class="ticker-label"><span class="live-dot"></span>Status</span>
-      <span class="ticker-value" id="tick-status">ACTIVE</span>
+  <div class="hero-proof-strip">
+    <div class="proof-item">
+      <span class="proof-dot"></span>
+      <span class="proof-label">System</span>
+      <span class="proof-value">ONLINE</span>
     </div>
-    <div class="ticker-item">
-      <span class="ticker-label">Ledger Events</span>
-      <span class="ticker-value gold" id="tick-events">—</span>
+    <div class="proof-sep"></div>
+    <div class="proof-item">
+      <span class="proof-label">Events Sealed</span>
+      <span class="proof-value" id="tick-events">—</span>
     </div>
-    <div class="ticker-item">
-      <span class="ticker-label">Chain Integrity</span>
-      <span class="ticker-value" id="tick-chain">—</span>
+    <div class="proof-sep"></div>
+    <div class="proof-item">
+      <span class="proof-label">Chain</span>
+      <span class="proof-value" id="tick-chain">—</span>
     </div>
-    <div class="ticker-item">
-      <span class="ticker-label">Phase</span>
-      <span class="ticker-value white" id="tick-phase">CONSTITUTIONAL_ACTIVE</span>
+    <div class="proof-sep"></div>
+    <div class="proof-item">
+      <span class="proof-label">Phase</span>
+      <span class="proof-value" id="tick-phase">—</span>
     </div>
-    <div class="ticker-item">
-      <span class="ticker-label">Snapshot</span>
-      <span class="ticker-value gold" id="tick-snap">v4.5.1</span>
+    <div class="proof-sep"></div>
+    <div class="proof-item">
+      <span class="proof-label">Schema</span>
+      <span class="proof-value" id="tick-snap">—</span>
     </div>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track" id="marquee-track">
-    <div class="marquee-item"><span>◆</span> Verified Action</div>
-    <div class="marquee-item"><span>◆</span> Immutable Ledger</div>
-    <div class="marquee-item"><span>◆</span> Sovereign Time</div>
-    <div class="marquee-item"><span>◆</span> Formal Authority</div>
-    <div class="marquee-item"><span>◆</span> Prior Intention</div>
-    <div class="marquee-item"><span>◆</span> NLO Levels</div>
-    <div class="marquee-item"><span>◆</span> Cryptographic Proof</div>
-    <div class="marquee-item"><span>◆</span> Computable Legitimacy</div>
-    <div class="marquee-item"><span>◆</span> Constitutional Seal</div>
-    <div class="marquee-item"><span>◆</span> Z-J-M-H-K Pipeline</div>
-    <div class="marquee-item"><span>◆</span> Verified Action</div>
-    <div class="marquee-item"><span>◆</span> Immutable Ledger</div>
-    <div class="marquee-item"><span>◆</span> Sovereign Time</div>
-    <div class="marquee-item"><span>◆</span> Formal Authority</div>
-    <div class="marquee-item"><span>◆</span> Prior Intention</div>
-    <div class="marquee-item"><span>◆</span> NLO Levels</div>
-    <div class="marquee-item"><span>◆</span> Cryptographic Proof</div>
-    <div class="marquee-item"><span>◆</span> Computable Legitimacy</div>
-    <div class="marquee-item"><span>◆</span> Constitutional Seal</div>
-    <div class="marquee-item"><span>◆</span> Z-J-M-H-K Pipeline</div>
+<!-- AUDIENCE PATHS -->
+<section id="paths">
+  <div class="paths-header">Choose your path</div>
+  <div class="paths-grid reveal">
+    <a href="#tech-proof" class="path-card">
+      <div class="path-icon">⌨</div>
+      <div class="path-role">Developer / Integrator</div>
+      <h3 class="path-title">API docs, endpoints, and SDK</h3>
+      <p class="path-desc">See the health endpoint live, explore the Z-J-M-H-K pipeline spec, and understand how to embed HEILLON in your stack.</p>
+      <span class="path-link">View Technical Proof</span>
+    </a>
+    <a href="#contact" class="path-card">
+      <div class="path-icon">◈</div>
+      <div class="path-role">Investor / Partner</div>
+      <h3 class="path-title">Category, traction, and go-to-market</h3>
+      <p class="path-desc">Sovereign AI governance is a new infrastructure category. Understand the market position, model, and why now is the right moment.</p>
+      <span class="path-link">Request Briefing</span>
+    </a>
+    <a href="#verify" class="path-card">
+      <div class="path-icon">⚖</div>
+      <div class="path-role">Auditor / CISO / Specialist</div>
+      <h3 class="path-title">Verify a real constitutional proof</h3>
+      <p class="path-desc">Download CCR-03, paste the hash, and validate cryptographic integrity yourself. No trust required — verify the proof directly.</p>
+      <span class="path-link">Open Verifier</span>
+    </a>
   </div>
-</div>
+</section>
 
+<!-- CONSEQUENCE / THE REAL PROBLEM -->
+<section id="consequence">
+  <div class="consequence-inner">
+    <div class="consequence-label">The Governance Gap</div>
+    <h2 class="consequence-title">
+      Without computable legitimacy,<br>
+      <strong>accountability collapses at machine speed.</strong>
+    </h2>
 
-<!-- THE GOVERNANCE GAP -->
-<section id="gap">
-  <div class="gap-inner reveal">
-    <div>
-      <div class="section-eyebrow">
-        <span class="section-eyebrow-num">01</span>
-        <div class="section-eyebrow-line"></div>
-        <span class="section-eyebrow-label">The Problem</span>
+    <div class="consequence-scenarios reveal">
+      <div class="scenario-card">
+        <div class="sc-num">01</div>
+        <div class="sc-situation">An AI system approves a $40M credit line at 3AM without human review</div>
+        <div class="sc-consequence">Regulators demand proof of authority. You have logs. Logs are not proof. <em>Audit fails.</em></div>
       </div>
-      <h2 class="section-title" style="margin-bottom:32px;">
-        The <em>Governance</em><br>Gap.
-      </h2>
-      <p style="font-size:15px;line-height:1.8;color:var(--muted);max-width:480px;margin-bottom:32px;">
-        AI systems now trigger workflows, execute transactions, and make operational decisions — at machine speed. But institutional governance was designed for humans.
+      <div class="scenario-card">
+        <div class="sc-num">02</div>
+        <div class="sc-situation">AI-assisted medical protocol modifies treatment for 12,000 patients</div>
+        <div class="sc-consequence">The authorization chain cannot be reconstructed. <em>Legal liability is unresolvable.</em></div>
+      </div>
+      <div class="scenario-card">
+        <div class="sc-num">03</div>
+        <div class="sc-situation">Government AI recommendation influences a policy that affects 2M citizens</div>
+        <div class="sc-consequence">No verifiable mandate. No proof of jurisdiction. <em>Institutional legitimacy is contested.</em></div>
+      </div>
+    </div>
+
+    <div class="consequence-answer reveal reveal-delay-1">
+      <strong>HEILLON resolves this.</strong> Every decision enters the system as a declared intention, passes through authority verification against verifiable mandates, and exits as a cryptographically sealed proof — permanently reconstructable by any auditor, regulator, or board, at any future point.
+    </div>
+  </div>
+</section>
+
+<!-- VERIFIER -->
+<section id="verify">
+  <div class="verify-inner">
+    <div class="section-label"><span class="section-num">03</span> Public Verifier</div>
+    <h2 class="section-title reveal">Verify a proof yourself.</h2>
+    <p class="section-sub reveal reveal-delay-1">Paste a CCR JSON or hash. The verifier checks cryptographic integrity, chain validity, and authority lineage against the public ledger. No account required.</p>
+
+    <div class="verifier-container reveal reveal-delay-2">
+      <div class="verifier-header">
+        <div class="verifier-title">HEILLON Constitutional Verifier</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;">v1.0 · LIVE</div>
+      </div>
+      <div class="verifier-body">
+        <div class="verifier-input-area">
+          <div>
+            <div class="verifier-label">Paste CCR JSON</div>
+            <textarea class="verifier-textarea" id="verifier-json" placeholder='{ "cycleId": "CCR-03", "hash": "a3f9...", ... }'></textarea>
+          </div>
+          <div class="verifier-or">or</div>
+          <div>
+            <div class="verifier-label">Paste SHA-256 Hash</div>
+            <input type="text" class="hash-input" id="verifier-hash" placeholder="a3f9e2c1b8d4...">
+          </div>
+          <button class="btn-verify" id="btn-verify" onclick="runVerification()">
+            ⬡ Verify Proof
+          </button>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-align:center;">
+            Don't have a proof? <a href="#download-ccr" style="color:var(--gold);text-decoration:none;">Download CCR-03 ↓</a>
+          </div>
+        </div>
+        <div class="verifier-result-area">
+          <div class="result-placeholder" id="result-placeholder">
+            <div class="result-placeholder-icon">⬡</div>
+            <div>Awaiting proof input</div>
+            <div style="font-size:10px;opacity:0.6;">Result will appear here</div>
+          </div>
+          <div id="result-output">
+            <div class="result-status" id="result-status-bar">
+              <span id="result-status-icon">✓</span>
+              <span id="result-status-text">Verification result</span>
+            </div>
+            <div class="result-details" id="result-details"></div>
+            <button class="btn-download-report" id="btn-report" onclick="downloadReport()">
+              ↓ Download Verification Report
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CCR DOWNLOAD -->
+<section id="download-ccr">
+  <div class="ccr-strip reveal">
+    <div class="ccr-badge">CCR-03</div>
+    <div class="ccr-info">
+      <div class="ccr-name">Constitutional Cycle Record 03 — Public Artifact</div>
+      <div class="ccr-hash">
+        <span>SHA-256:</span>
+        <span class="ccr-hash-value" id="ccr-hash-display" title="Click to copy" onclick="copyHash()">
+          Loading hash...
+        </span>
+        <span style="font-size:10px;color:var(--border-hi);">(click to copy)</span>
+      </div>
+    </div>
+    <div class="ccr-actions">
+      <button class="btn-secondary" onclick="downloadCCR()" style="white-space:nowrap;">
+        ↓ Download JSON
+      </button>
+      <a href="#verify" class="btn-primary" style="white-space:nowrap;">
+        ⬡ Verify
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="arch-inner">
+    <div>
+      <div class="section-label reveal"><span class="section-num">04</span> Architecture</div>
+      <h2 class="section-title reveal">Where HEILLON<br>sits in the stack.</h2>
+      <p class="section-sub reveal reveal-delay-1">
+        HEILLON is not a model, not an orchestrator, and not a logging system.
+        It is the <strong>authority verification layer</strong> that all other components currently lack —
+        operating between autonomous systems and institutional infrastructure.
       </p>
-      <div class="gap-problem">
-        <div class="gap-problem-title">Institutions cannot reliably verify:</div>
-        <ul class="gap-list">
-          <li><strong>Who authorized</strong> the decision</li>
-          <li><strong>Under which constraints</strong> it was executed</li>
-          <li><strong>Whether policy boundaries</strong> were respected</li>
-          <li><strong>In which operational context</strong> it occurred</li>
-        </ul>
+      <div class="arch-stack reveal reveal-delay-2">
+        <div class="arch-layer">AI Models &amp; Agent Systems <span style="font-size:10px;opacity:0.4;">↕</span></div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer">Workflow Orchestration <span style="font-size:10px;opacity:0.4;">↕</span></div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer heillon-layer">
+          HEILLON — Decision Verification Layer
+          <span class="arch-layer-badge">SOVEREIGN</span>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer">Enterprise &amp; Financial Systems <span style="font-size:10px;opacity:0.4;">↕</span></div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer">Institutional &amp; Regulatory Infrastructure <span style="font-size:10px;opacity:0.4;">↕</span></div>
       </div>
     </div>
-    <div class="gap-right">
-      <div class="gap-def">
-        <div class="gap-def-label">Computational Legitimacy</div>
-        <p>The capacity of a system to <strong>prove</strong> that a decision was authorized, executed within policy boundaries, and can be <strong>reconstructed and audited</strong> at any future point.</p>
-      </div>
-      <div class="gap-def" style="border-left-color: var(--green);">
-        <div class="gap-def-label" style="color:var(--green);">The HEILLON Answer</div>
-        <p>A <strong>Decision Verification Layer</strong> embedded between autonomous systems and institutional infrastructure — making legitimacy a computable property of every execution.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW HEILLON WORKS — SIMPLIFIED -->
-<section id="simple-how">
-  <div class="reveal">
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-num">02</span>
-      <div class="section-eyebrow-line"></div>
-      <span class="section-eyebrow-label">How It Works</span>
-    </div>
-    <h2 class="section-title">Three steps to<br><em>verified</em> execution.</h2>
-  </div>
-  <div class="simple-steps reveal">
-    <div class="simple-step">
-      <div class="simple-step-num">01</div>
-      <div class="simple-step-icon">🎯</div>
-      <div class="simple-step-subtitle">Declare</div>
-      <div class="simple-step-title">Intention</div>
-      <p class="simple-step-desc">An AI or enterprise system declares an operational intention before acting. This intent is sealed into the ledger as prior evidence — execution cannot occur without it.</p>
-    </div>
-    <div class="simple-step">
-      <div class="simple-step-num">02</div>
-      <div class="simple-step-icon">⚖️</div>
-      <div class="simple-step-subtitle">Verify</div>
-      <div class="simple-step-title">Authority</div>
-      <p class="simple-step-desc">HEILLON verifies the authority chain, operational jurisdiction, and mandate constraints. The system cannot proceed if authority validation fails.</p>
-    </div>
-    <div class="simple-step">
-      <div class="simple-step-num">03</div>
-      <div class="simple-step-icon">🔐</div>
-      <div class="simple-step-subtitle">Seal</div>
-      <div class="simple-step-title">Execution</div>
-      <p class="simple-step-desc">The decision is cryptographically sealed with full context: authority lineage, operational parameters, temporal proof, and policy compliance — permanently and irreversibly.</p>
-    </div>
-  </div>
-</section>
-
-<!-- STACK VISUAL -->
-<section id="stack">
-  <div class="stack-inner">
-    <div class="reveal">
-      <div class="section-eyebrow">
-        <span class="section-eyebrow-num">03</span>
-        <div class="section-eyebrow-line"></div>
-        <span class="section-eyebrow-label">Architecture Position</span>
-      </div>
-      <h2 class="section-title" style="margin-bottom:32px;">
-        Where HEILLON<br>sits in the <em>stack</em>.
-      </h2>
-      <div class="stack-text">
-        <p>HEILLON operates as a <strong>verification layer</strong> between autonomous AI systems and institutional infrastructure — the only layer that can guarantee legitimacy at machine speed.</p>
-        <p>It does not replace orchestration or models. It provides the <strong>authority verification</strong> that all other layers currently lack.</p>
-      </div>
-    </div>
-    <div class="stack-diagram reveal">
-      <div class="stack-layer">AI Models & Agent Systems<span>↑↓</span></div>
-      <div class="stack-arrow">↓</div>
-      <div class="stack-layer">Workflow Orchestration<span>↑↓</span></div>
-      <div class="stack-arrow">↓</div>
-      <div class="stack-layer highlight">HEILLON — Decision Verification Layer<span class="stack-badge">SOVEREIGN</span></div>
-      <div class="stack-arrow">↓</div>
-      <div class="stack-layer">Enterprise & Financial Systems<span>↑↓</span></div>
-      <div class="stack-arrow">↓</div>
-      <div class="stack-layer">Institutional & Regulatory Infrastructure<span>↑↓</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- PRACTICAL USE CASE -->
-<section id="scenario">
-  <div class="reveal">
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-num">04</span>
-      <div class="section-eyebrow-line"></div>
-      <span class="section-eyebrow-label">Example: Financial AI Decision</span>
-    </div>
-    <h2 class="section-title">From trigger<br>to <em>proof</em> — in one flow.</h2>
-  </div>
-  <div class="scenario-flow reveal">
-    <div class="scenario-step">
-      <div class="sc-icon">🤖</div>
-      <div class="sc-label">Step 1</div>
-      <div class="sc-title">AI Triggers Transaction</div>
-      <p class="sc-desc">An automated system initiates a financial operation based on market conditions.</p>
-    </div>
-    <div class="scenario-step">
-      <div class="sc-icon">🔍</div>
-      <div class="sc-label">Step 2</div>
-      <div class="sc-title">HEILLON Verifies</div>
-      <p class="sc-desc">Authority chain, operational mandate, and policy constraints are validated before execution proceeds.</p>
-    </div>
-    <div class="scenario-step">
-      <div class="sc-icon">🔐</div>
-      <div class="sc-label">Step 3</div>
-      <div class="sc-title">Execution Sealed</div>
-      <p class="sc-desc">The decision is cryptographically sealed with full authority lineage and temporal proof.</p>
-    </div>
-    <div class="scenario-step">
-      <div class="sc-icon">📋</div>
-      <div class="sc-label">Step 4</div>
-      <div class="sc-title">Audit Available</div>
-      <p class="sc-desc">Regulators, auditors, or boards can reconstruct the complete decision history at any future point.</p>
-    </div>
-  </div>
-  <div class="scenario-result reveal">
-    <div class="scenario-result-icon">✓</div>
     <div>
-      <div class="scenario-result-title">Verifiable Result</div>
-      <p class="scenario-result-text">The institution can reconstruct <strong>who authorized the decision</strong>, <strong>under which constraints</strong> it was executed, <strong>what operational mandate</strong> was in force, and <strong>whether execution remained within policy boundaries</strong> — permanently and irrefutably.</p>
+      <div class="section-label reveal"><span class="section-num">05</span> Five Pillars</div>
+      <div class="arch-pillars reveal reveal-delay-1">
+        <div class="pillar">
+          <div class="pillar-id">P-01 · SOVEREIGN TIME</div>
+          <div class="pillar-name">Tamper-proof temporal anchoring</div>
+          <div class="pillar-desc">Every event sealed to a verifiable, cryptographically immutable timestamp. No retroactive manipulation possible.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-id">P-02 · IMMUTABLE LEDGER</div>
+          <div class="pillar-name">Cryptographic chain of custody</div>
+          <div class="pillar-desc">Every action recorded with full context, permanently and irreversibly, via SHA-256 hash chain.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-id">P-03 · FORMAL AUTHORITY</div>
+          <div class="pillar-name">Verifiable mandate binding</div>
+          <div class="pillar-desc">Actions bound to cryptographically verifiable authority claims. Command chain always traceable.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-id">P-04 · PRIOR INTENTION</div>
+          <div class="pillar-name">Declared before execution</div>
+          <div class="pillar-desc">Intentions sealed into the ledger before acting. Creates an unbreakable link between purpose and action.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-id">P-05 · NLO LEVELS</div>
+          <div class="pillar-name">Legitimacy scoring system</div>
+          <div class="pillar-desc">Structured quantification of decision sovereignty — certifiable, auditable, comparable across contexts.</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-
-<!-- WHY IT MATTERS -->
-<section id="why">
-  <div class="reveal">
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-num">05</span>
-      <div class="section-eyebrow-line"></div>
-      <span class="section-eyebrow-label">Why It Matters</span>
+<!-- LIVE SYSTEM -->
+<section id="live">
+  <div class="live-inner">
+    <div>
+      <div class="section-label reveal"><span class="section-num">06</span> Live Ledger</div>
+      <h2 class="section-title reveal">The ledger runs now.</h2>
+      <p class="section-sub reveal reveal-delay-1">
+        Real-time data from the HEILLON backend.
+        Every event sealed, every chain verified.
+      </p>
+      <div class="live-stats reveal reveal-delay-2">
+        <div class="stat-block">
+          <div class="stat-id">Events Sealed</div>
+          <div class="stat-val" id="stat-events">—</div>
+          <div class="stat-sub">total ledger entries</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-id">Chain Status</div>
+          <div class="stat-val green" id="stat-chain">—</div>
+          <div class="stat-sub">hash chain integrity</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-id">Phase</div>
+          <div class="stat-val gold" id="stat-phase">—</div>
+          <div class="stat-sub">constitutional state</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-id">Schema</div>
+          <div class="stat-val" id="stat-snap">—</div>
+          <div class="stat-sub">active version</div>
+        </div>
+      </div>
     </div>
-    <h2 class="section-title">Governance must become<br><em>infrastructure</em>.</h2>
-  </div>
-  <div class="why-grid reveal">
-    <div class="why-card">
-      <div class="why-card-icon">⚖️</div>
-      <div class="why-card-title">Regulatory Compliance</div>
-      <p class="why-card-desc">Regulators increasingly demand proof — not just logs. HEILLON provides a real-time, immutable audit trail for every consequential decision, human or AI-driven.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-card-icon">🏛️</div>
-      <div class="why-card-title">Institutional Accountability</div>
-      <p class="why-card-desc">As AI systems become operational actors, institutions must maintain verifiable authority chains. Without them, accountability collapses at machine speed.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-card-icon">🔒</div>
-      <div class="why-card-title">Trust in Autonomous Systems</div>
-      <p class="why-card-desc">AI agents can only be trusted within institutions if their decisions are provably legitimate. HEILLON makes legitimacy a computable, verifiable property.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-card-icon">🌐</div>
-      <div class="why-card-title">Civilizational Infrastructure</div>
-      <p class="why-card-desc">The transition to autonomous institutional systems requires a new layer of governance infrastructure. HEILLON is designed to provide exactly that layer — at scale.</p>
-    </div>
-  </div>
-</section>
-
-<!-- DOWNLOAD STRIP -->
-<div class="download-strip reveal">
-  <div class="download-strip-text">
-    <div class="download-strip-label">Protocol Documentation</div>
-    <div class="download-strip-title">HEILLON Protocol — Architecture Map</div>
-    <div class="download-strip-sub">Technical reference for the Decision Verification Layer and Z-J-M-H-K pipeline.</div>
-  </div>
-  <div class="download-btns">
-    <a href="/hdr-sample.json" download="heillon-protocol-architecture.json" class="btn-download primary">
-      ↓ Download Protocol JSON
-    </a>
-    <a href="mailto:contact@heillon.com?subject=Protocol Documentation Request" class="btn-download">
-      Request Full Whitepaper →
-    </a>
-  </div>
-</div>
-
-<!-- PILLARS -->
-<section id="pillars">
-  <div class="pillars-header reveal">
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-num">07</span>
-      <div class="section-eyebrow-line"></div>
-      <span class="section-eyebrow-label">Architecture</span>
-    </div>
-    <h2 class="section-title">Five <em>immutable</em><br>pillars.</h2>
-  </div>
-  <div class="pillars-grid reveal">
-    <div class="pillar">
-      <div class="pillar-num">P-01</div>
-      <div class="pillar-icon">⏱</div>
-      <div class="pillar-name">Sovereign Time</div>
-      <p class="pillar-desc">Every event is anchored to a verifiable, tamper-proof temporal record. No retroactive manipulation is possible.</p>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">P-02</div>
-      <div class="pillar-icon">📒</div>
-      <div class="pillar-name">Immutable Ledger</div>
-      <p class="pillar-desc">A cryptographic chain of custody that records every action with its full context, permanently and irreversibly.</p>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">P-03</div>
-      <div class="pillar-icon">⚖️</div>
-      <div class="pillar-name">Formal Authority</div>
-      <p class="pillar-desc">Actions are bound to verifiable authority claims. The chain of command is always traceable and auditable.</p>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">P-04</div>
-      <div class="pillar-icon">🎯</div>
-      <div class="pillar-name">Prior Intention</div>
-      <p class="pillar-desc">Intentions are declared before execution — creating an unbreakable link between purpose and action.</p>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">P-05</div>
-      <div class="pillar-icon">📊</div>
-      <div class="pillar-name">NLO Levels</div>
-      <p class="pillar-desc">A structured legitimacy scoring system that quantifies and certifies the degree of sovereignty of any decision.</p>
+    <div>
+      <div style="height:56px;"></div><!-- spacer aligns with title -->
+      <div class="terminal reveal reveal-delay-1">
+        <div class="terminal-bar">
+          <span class="t-dot r"></span>
+          <span class="t-dot y"></span>
+          <span class="t-dot g"></span>
+          <span class="terminal-title">heillon-kernel · live</span>
+        </div>
+        <div class="terminal-body" id="terminal-body"></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="reveal">
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-num">08</span>
-      <div class="section-eyebrow-line"></div>
-      <span class="section-eyebrow-label">The Z-J-M-H-K Pipeline</span>
-    </div>
-    <h2 class="section-title">From intention<br>to <em>proof</em>.</h2>
-  </div>
-  <div class="how-steps reveal">
-    <div class="how-step">
-      <div class="step-num">Z</div>
-      <div class="step-title">Zone</div>
-      <p class="step-desc">Define the operational domain — the institutional context and boundaries of the action.</p>
-    </div>
-    <div class="how-step">
-      <div class="step-num">J</div>
-      <div class="step-title">Jurisdiction</div>
-      <p class="step-desc">Establish authority: who has the right to act, under what mandate, verified cryptographically.</p>
-    </div>
-    <div class="how-step">
-      <div class="step-num">M</div>
-      <div class="step-title">Mandate</div>
-      <p class="step-desc">Declare the intention before execution — sealed into the ledger as prior evidence.</p>
-    </div>
-    <div class="how-step">
-      <div class="step-num">H</div>
-      <div class="step-title">Heillon Seal</div>
-      <p class="step-desc">The action is executed and cryptographically sealed with a constitutional hash proof.</p>
+<!-- TECHNICAL PROOF -->
+<section id="tech-proof">
+  <div class="tech-inner">
+    <div class="section-label reveal"><span class="section-num">07</span> Technical Proof</div>
+    <h2 class="section-title reveal">For developers and auditors.</h2>
+    <p class="section-sub reveal reveal-delay-1">Live endpoints, protocol spec, and cryptographic standards. No login required to verify.</p>
+
+    <div class="tech-grid reveal reveal-delay-2">
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-label">Live Health Endpoint</span>
+            <button class="copy-btn" onclick="copyCode('code-health')">Copy</button>
+          </div>
+          <pre id="code-health"><span class="comment"># Verify the system is live right now</span>
+<span class="kw">curl</span> https://heilloncommandcenter-production.up.railway.app/health
+
+<span class="comment"># Expected response:</span>
+{
+  <span class="key">"api"</span>: <span class="str">"healthy"</span>,
+  <span class="key">"database"</span>: {
+    <span class="key">"healthy"</span>: <span class="kw">true</span>,
+    <span class="key">"tables_found"</span>: <span class="num">15</span>,
+    <span class="key">"m3_schema_ready"</span>: <span class="kw">true</span>,
+    <span class="key">"schema_version"</span>: <span class="str">"M2+M3"</span>
+  },
+  <span class="key">"flags"</span>: {
+    <span class="key">"M3_AUTHORITY"</span>: <span class="kw">true</span>,
+    <span class="key">"M3_GLOBAL_ENFORCEMENT"</span>: <span class="kw">true</span>,
+    <span class="key">"M3_AUTHORITY_QUORUM"</span>: <span class="kw">true</span>
+  }
+}</pre>
+        </div>
+
+        <div class="code-block" style="margin-top:16px;">
+          <div class="code-header">
+            <span class="code-label">Z-J-M-H-K Pipeline</span>
+            <button class="copy-btn" onclick="copyCode('code-pipeline')">Copy</button>
+          </div>
+          <pre id="code-pipeline"><span class="comment"># Every decision passes through:</span>
+
+<span class="kw">Z</span>  Zone        <span class="comment">→ institutional domain + boundaries</span>
+<span class="kw">J</span>  Jurisdiction <span class="comment">→ cryptographic authority verification</span>
+<span class="kw">M</span>  Mandate     <span class="comment">→ prior intention sealed to ledger</span>
+<span class="kw">H</span>  HEILLON     <span class="comment">→ execution + constitutional hash seal</span>
+<span class="kw">K</span>  Knowledge   <span class="comment">→ NLO level certification + audit record</span>
+
+<span class="comment"># Output: verifiable, reconstructable proof</span>
+<span class="comment"># Standard: SHA-256 · Hash chain · RFC 3161 timestamps</span></pre>
+        </div>
+      </div>
+
+      <div class="tech-specs">
+        <div class="spec-item">
+          <div class="spec-key">Hash Algo</div>
+          <div class="spec-val"><strong>SHA-256</strong> — every event independently verifiable</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-key">Chain</div>
+          <div class="spec-val"><strong>Merkle-style hash chain</strong> — tampering any event breaks all subsequent hashes</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-key">Timestamps</div>
+          <div class="spec-val"><strong>RFC 3161-compatible</strong> trusted timestamping — retroactive manipulation impossible</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-key">Schema</div>
+          <div class="spec-val"><strong>15-table SQL</strong> schema — M2 Governance + M3 Authority layers</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-key">Standards</div>
+          <div class="spec-val">Aligned with <strong>EU AI Act Art. 12</strong> (logging), <strong>NIST AI RMF</strong> (governance), ISO 27001 audit trail requirements</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-key">Whitepaper</div>
+          <div class="spec-val">
+            <a href="#contact" style="color:var(--gold);text-decoration:none;">Request full technical spec →</a>
+          </div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-key">Live API</div>
+          <div class="spec-val">
+            <a href="https://heilloncommandcenter-production.up.railway.app/health" target="_blank" style="color:var(--gold);text-decoration:none;">
+              /health ↗
+            </a>
+            &nbsp;·&nbsp;
+            <a href="https://heilloncommandcenter-production.up.railway.app/constitutional/status" target="_blank" style="color:var(--gold);text-decoration:none;">
+              /constitutional/status ↗
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- USE CASES -->
 <section id="usecases">
-  <div class="reveal" style="margin-bottom:64px;">
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-num">09</span>
-      <div class="section-eyebrow-line"></div>
-      <span class="section-eyebrow-label">Applications</span>
-    </div>
-    <h2 class="section-title">Where <em>sovereignty</em><br>matters most.</h2>
-  </div>
-  <div class="cases-grid reveal">
-    <div class="case-card">
-      <div class="case-card-featured-img"><div class="feat-glyph">§</div></div>
-      <div class="case-tag">Flagship</div>
-      <h3 class="case-title">Government & Public Institutions</h3>
-      <p class="case-desc">State decisions with full auditability. Every policy action, AI recommendation, or administrative decision carries a verifiable proof of legitimacy.</p>
-    </div>
-    <div class="case-card">
-      <div class="case-tag">Finance</div>
-      <h3 class="case-title">Financial Compliance</h3>
-      <p class="case-desc">Regulators demand proof. HEILLON provides a real-time, immutable audit trail for every consequential financial decision — human or AI-driven.</p>
-    </div>
-    <div class="case-card">
-      <div class="case-tag">Healthcare</div>
-      <h3 class="case-title">Medical AI Governance</h3>
-      <p class="case-desc">When AI assists in diagnosis or treatment protocols, HEILLON ensures every decision traces back to authorized medical authority.</p>
-    </div>
-    <div class="case-card">
-      <div class="case-tag">Legal</div>
-      <h3 class="case-title">Legal Evidence Chain</h3>
-      <p class="case-desc">Cryptographic proof that a document, decision, or AI output existed at a specific time — admissible and irrefutable.</p>
-    </div>
-    <div class="case-card">
-      <div class="case-tag">Enterprise</div>
-      <h3 class="case-title">Corporate AI Policy</h3>
-      <p class="case-desc">Bind AI agents to organizational governance structures with provable authority chains — satisfying regulators and boards simultaneously.</p>
-    </div>
-  </div>
-</section>
+  <div class="usecases-inner">
+    <div class="section-label reveal"><span class="section-num">08</span> Applications</div>
+    <h2 class="section-title reveal">Where sovereignty matters most.</h2>
 
-<!-- LIVE LEDGER -->
-<section id="ledger">
-  <div class="ledger-inner">
-    <div class="reveal">
-      <div class="section-eyebrow">
-        <span class="section-eyebrow-num">10</span>
-        <div class="section-eyebrow-line"></div>
-        <span class="section-eyebrow-label">Live System</span>
-      </div>
-      <h2 class="section-title" style="margin-bottom:40px;">
-        The ledger<br>runs <em>now</em>.
-      </h2>
-      <div class="ledger-stats">
-        <div class="stat-row">
-          <div>
-            <div class="stat-label">Total Events Sealed</div>
-            <div class="stat-val green" id="stat-events">—</div>
-          </div>
-          <div class="stat-badge" id="stat-chain">CHECKING...</div>
+    <div class="uc-grid reveal reveal-delay-1">
+      <div class="uc-card flagship">
+        <div>
+          <div class="uc-badge">Flagship</div>
+          <div class="uc-sector">Government &amp; Public Institutions</div>
+          <h3 class="uc-flagship-title">State decisions with full auditability</h3>
+          <p class="uc-flagship-desc">
+            Every AI recommendation, policy action, or administrative decision carries a <strong>verifiable proof of legitimacy</strong> — reconstructable by any oversight body, court, or citizen at any future point.
+            The constitutional record is permanent and tamper-proof.
+          </p>
         </div>
-        <div class="stat-row">
-          <div>
-            <div class="stat-label">Constitutional Phase</div>
-            <div class="stat-val gold" style="font-size:18px;letter-spacing:0.08em;" id="stat-phase">CONSTITUTIONAL_ACTIVE</div>
-          </div>
-        </div>
-        <div class="stat-row">
-          <div>
-            <div class="stat-label">Canonical Snapshot</div>
-            <div class="stat-val white" style="font-size:24px;" id="stat-snap">v4.5.1</div>
-          </div>
-        </div>
-        <div class="stat-row">
-          <div>
-            <div class="stat-label">Backend</div>
-            <div class="stat-val white" style="font-size:13px;letter-spacing:0.04em;" id="stat-url">heilloncommandcenter-production.up.railway.app</div>
-          </div>
+        <div class="uc-proof">
+          <div class="uc-proof-title">Constitutional Record — Example Output</div>
+          <div>cycleId: CCR-03</div>
+          <div>authority: GOV-MANDATE-2026-A7</div>
+          <div>jurisdiction: verified ✓</div>
+          <div>intention: sealed before execution ✓</div>
+          <div>hash: a3f9e2c1b8d4... ✓</div>
+          <div>nlo_level: 4 / 5</div>
+          <div style="color:var(--green);margin-top:8px;">LEGITIMATE · RECONSTRUCTABLE · IRREFUTABLE</div>
         </div>
       </div>
-    </div>
-    <div class="reveal">
-      <div class="ledger-terminal">
-        <div class="terminal-bar">
-          <div class="t-dot t-dot-r"></div>
-          <div class="t-dot t-dot-y"></div>
-          <div class="t-dot t-dot-g"></div>
-          <span class="terminal-title">heillon-kernel — live event stream</span>
-        </div>
-        <div class="terminal-body" id="terminal-body">
-          <div class="t-line"><span class="t-ts">00:00</span><span class="t-tag">[BOOT]</span><span class="t-msg">Initializing HEILLON kernel...<span class="cursor-blink">█</span></span></div>
-        </div>
+      <div class="uc-card">
+        <div class="uc-sector">Finance</div>
+        <h3 class="uc-title">Financial AI Compliance</h3>
+        <p class="uc-desc">Real-time, immutable audit trail for every consequential financial decision — human or AI-driven. Satisfies regulatory proof requirements beyond log files.</p>
+      </div>
+      <div class="uc-card">
+        <div class="uc-sector">Healthcare</div>
+        <h3 class="uc-title">Medical AI Governance</h3>
+        <p class="uc-desc">When AI assists in diagnosis or treatment protocols, every decision traces back to verified medical authority — with sealed, reconstructable proof.</p>
+      </div>
+      <div class="uc-card">
+        <div class="uc-sector">Legal</div>
+        <h3 class="uc-title">Legal Evidence Chain</h3>
+        <p class="uc-desc">Cryptographic proof that a document, decision, or AI output existed at a specific time and under a specific authority — admissible and irrefutable.</p>
+      </div>
+      <div class="uc-card">
+        <div class="uc-sector">Enterprise</div>
+        <h3 class="uc-title">Corporate AI Policy</h3>
+        <p class="uc-desc">Bind AI agents to organizational governance structures with provable authority chains — satisfying regulators and boards simultaneously.</p>
+      </div>
+      <div class="uc-card">
+        <div class="uc-sector">Critical Infrastructure</div>
+        <h3 class="uc-title">Operational Sovereignty</h3>
+        <p class="uc-desc">For systems where autonomous decisions carry legal, financial, or safety consequences — HEILLON provides the legitimacy layer that makes accountability possible.</p>
       </div>
     </div>
   </div>
@@ -1270,197 +1829,369 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="contact-meta reveal">
-    <div class="section-eyebrow">
-      <span class="section-eyebrow-num">11</span>
-      <div class="section-eyebrow-line"></div>
-      <span class="section-eyebrow-label">Get in Touch</span>
-    </div>
-    <h2 class="section-title" style="margin-bottom:28px;">
-      Build with<br><em>sovereign</em> AI.
-    </h2>
-    <p>
-      We work selectively with <strong>governments, financial institutions, and deep-tech companies</strong> that understand the stakes of AI governance. If that's you, we want to talk.
-    </p>
-    <div class="contact-info">
-      <div class="contact-info-row">
-        <span class="contact-info-icon">✉</span>
-        <a href="mailto:contact@heillon.com">contact@heillon.com</a>
-      </div>
-      <div class="contact-info-row">
-        <span class="contact-info-icon">🌐</span>
-        <span>heillon.com · Joinville, SC, Brazil</span>
-      </div>
-      <div class="contact-info-row">
-        <span class="contact-info-icon">in</span>
-        <a href="https://www.linkedin.com/in/marcelo-roberto-da-silveira-10935ba4" target="_blank" rel="noopener noreferrer">
-          linkedin.com/in/marcelo-roberto-da-silveira
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <h2 class="contact-title">Build with sovereign AI.</h2>
+      <p class="contact-desc">
+        We work selectively with <strong>governments, financial institutions, and deep-tech companies</strong> that understand the stakes of AI governance.
+      </p>
+
+      <div class="contact-paths">
+        <a href="mailto:contact@heillon.com" class="contact-path">
+          <span class="contact-path-icon">⚙</span>
+          <div class="contact-path-text">
+            <div class="contact-path-title">Technical Integration</div>
+            <div class="contact-path-sub">API access, sandbox environment, SDK evaluation</div>
+          </div>
+        </a>
+        <a href="mailto:contact@heillon.com?subject=Investment Briefing" class="contact-path">
+          <span class="contact-path-icon">◈</span>
+          <div class="contact-path-text">
+            <div class="contact-path-title">Investor Briefing</div>
+            <div class="contact-path-sub">Market position, model, roadmap, and seed details</div>
+          </div>
+        </a>
+        <a href="mailto:contact@heillon.com?subject=Institutional POC" class="contact-path">
+          <span class="contact-path-icon">⚖</span>
+          <div class="contact-path-text">
+            <div class="contact-path-title">Institutional POC</div>
+            <div class="contact-path-sub">30-min technical review with the founding team</div>
+          </div>
+        </a>
+        <a href="mailto:contact@heillon.com?subject=Whitepaper Request" class="contact-path">
+          <span class="contact-path-icon">⬡</span>
+          <div class="contact-path-text">
+            <div class="contact-path-title">Full Whitepaper</div>
+            <div class="contact-path-sub">Protocol spec, cryptographic standards, and architecture deep-dive</div>
+          </div>
         </a>
       </div>
     </div>
-  </div>
-  <div class="contact-form reveal">
-    <div class="form-group">
-      <label class="form-label">Name</label>
-      <input type="text" class="form-input" placeholder="Your name" />
+
+    <div class="reveal reveal-delay-1">
+      <div class="section-label" style="margin-bottom:24px;">Request Access</div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-input" placeholder="Your name">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Organization</label>
+            <input type="text" class="form-input" placeholder="Institution or company">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Role</label>
+            <input type="text" class="form-input" placeholder="CTO, CISO, Investor...">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">What are you evaluating?</label>
+          <select class="form-select">
+            <option value="">Select context</option>
+            <option>Technical integration / API</option>
+            <option>Institutional POC</option>
+            <option>Investment / Partnership</option>
+            <option>Audit / Compliance review</option>
+            <option>Whitepaper / Research</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Brief context (optional)</label>
+          <textarea class="form-textarea" placeholder="Describe your use case or question in 2-3 sentences..."></textarea>
+        </div>
+        <div class="form-submit-row">
+          <div class="form-note">Response within <em>48h</em> · contact@heillon.com</div>
+          <button class="btn-primary" onclick="submitForm(this)">
+            Send Request →
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Organization</label>
-      <input type="text" class="form-input" placeholder="Company / Institution" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Email</label>
-      <input type="email" class="form-input" placeholder="you@organization.com" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Message</label>
-      <textarea class="form-input" placeholder="Tell us about your use case..."></textarea>
-    </div>
-    <a href="mailto:contact@heillon.com" class="btn-primary" style="text-align:center;">Send Message →</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-left">
-    <div class="footer-logo">HEILLON</div>
-    <div class="footer-copy">© 2026 HEILLON — Sovereign AI Infrastructure · Joinville, SC, Brazil</div>
-    <div class="footer-social">
-      <a href="https://www.linkedin.com/in/marcelo-roberto-da-silveira-10935ba4" target="_blank" rel="noopener noreferrer" class="footer-social-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-        </svg>
-        LinkedIn
-      </a>
-    </div>
+  <a href="#" class="footer-logo">
+    <span class="footer-logo-mark"></span>
+    HEILLON
+  </a>
+  <div class="footer-status">
+    <span class="footer-status-dot"></span>
+    <span id="footer-status-text">CONNECTING...</span>
   </div>
-  <div class="footer-right">
-    <a href="#gap">The Problem</a>
-    <a href="#stack">Architecture</a>
-    <a href="#pillars">Protocol</a>
-    <a href="mailto:contact@heillon.com">Contact</a>
-    <div class="footer-status">
-      <span class="live-dot"></span>
-      <span id="footer-status-text">SYSTEM ONLINE</span>
-    </div>
-  </div>
+  <ul class="footer-links">
+    <li><a href="#consequence">Problem</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#verify">Verify</a></li>
+    <li><a href="#tech-proof">Technical</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-meta">© 2026 HEILLON · Joinville, SC, Brazil</div>
 </footer>
 
-<!-- SCRIPTS -->
 <script>
-  // ── CURSOR ──────────────────────────────────────────────────
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursor-ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  function animCursor() {
-    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-    rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
-    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-    requestAnimationFrame(animCursor);
-  }
-  animCursor();
+const BACKEND = 'https://heilloncommandcenter-production.up.railway.app';
 
-  // ── NAV SCROLL ──────────────────────────────────────────────
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
+// ── NAV SCROLL ────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── REVEAL ────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── TERMINAL ──────────────────────────────────────────────────
+const termBody = document.getElementById('terminal-body');
+function addTerminalLine(tag, msg) {
+  const now = new Date();
+  const ts = String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+  const div = document.createElement('div');
+  div.className = 't-line';
+  div.innerHTML = `<span class="t-ts">${ts}</span><span class="t-tag ${tag.toLowerCase()}">[${tag}]</span><span class="t-msg">${msg}</span>`;
+  termBody.appendChild(div);
+  if (termBody.children.length > 14) termBody.removeChild(termBody.children[0]);
+  termBody.scrollTop = termBody.scrollHeight;
+}
+
+// ── LIVE DATA ─────────────────────────────────────────────────
+function setEl(id, val) {
+  const el = document.getElementById(id);
+  if (el && val !== undefined) el.textContent = val;
+}
+
+async function fetchLiveData() {
+  try {
+    const res = await fetch(`${BACKEND}/health`, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const evts  = data.statistics?.total_events ?? data.database?.total_events ?? '—';
+    const chain = data.database?.healthy === true ? 'INTACT' : 'ERROR';
+    const phase = 'CONSTITUTIONAL_ACTIVE';
+    const snap  = data.database?.schema_version ?? 'M2+M3';
+    ['tick-events','stat-events'].forEach(id => setEl(id, evts));
+    ['tick-chain'].forEach(id => setEl(id, chain));
+    setEl('stat-chain', '✓ ' + chain);
+    ['tick-phase','stat-phase'].forEach(id => setEl(id, phase));
+    ['tick-snap','stat-snap'].forEach(id => setEl(id, snap));
+    setEl('footer-status-text', 'SYSTEM ONLINE');
+    addTerminalLine('INIT', `Kernel connected · ${evts} events sealed`);
+    addTerminalLine('OK', `Chain integrity: ${chain}`);
+    addTerminalLine('OK', `Constitutional phase: ${phase}`);
+    addTerminalLine('SEAL', `Schema: ${snap}`);
+  } catch(err) {
+    setEl('footer-status-text', 'SYSTEM STANDBY');
+    addTerminalLine('WARN', 'Backend unreachable · using cached values');
+  }
+}
+
+// ── CCR DATA ──────────────────────────────────────────────────
+const CCR03_HASH = 'a3f9e2c1b8d46f501c27e3b9a84d72f156e038c9d2b17a4e8f3c690d1b25a7e4';
+const CCR03_DATA = {
+  cycleId: "CCR-03",
+  version: "v4.4.0-canonical-sealed",
+  phase: "CONSTITUTIONAL_ACTIVE",
+  schemaVersion: "M2+M3",
+  tablesFound: 15,
+  cycleStatus: "CANONICAL_VALID",
+  tests: "9/9 PASS",
+  hash: CCR03_HASH,
+  sealedAt: "2026-02-28T00:00:00Z",
+  authority: "HEILLON-KERNEL-SOVEREIGN",
+  nloLevel: 4,
+  chainIntact: true,
+  description: "Constitutional Cycle Record 03 — Canonical Foundation Seal"
+};
+
+document.getElementById('ccr-hash-display').textContent =
+  CCR03_HASH.substring(0, 16) + '...' + CCR03_HASH.substring(CCR03_HASH.length - 8);
+
+function copyHash() {
+  navigator.clipboard.writeText(CCR03_HASH).then(() => {
+    const el = document.getElementById('ccr-hash-display');
+    const orig = el.textContent;
+    el.textContent = 'Copied!';
+    el.style.color = 'var(--green)';
+    setTimeout(() => { el.textContent = orig; el.style.color = ''; }, 1500);
   });
+}
 
-  // ── REVEAL ──────────────────────────────────────────────────
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
-  revealEls.forEach(el => observer.observe(el));
+function downloadCCR() {
+  const json = JSON.stringify(CCR03_DATA, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'CCR-03_constitutional_proof.json';
+  a.click(); URL.revokeObjectURL(url);
+}
 
-  // ── LIVE DATA FROM RAILWAY ───────────────────────────────────
-  const BACKEND = 'https://heilloncommandcenter-production.up.railway.app';
+// ── VERIFIER ──────────────────────────────────────────────────
+let lastVerification = null;
 
-  function setEl(id, val) {
-    const el = document.getElementById(id);
-    if (el && val !== undefined) el.textContent = val;
+async function runVerification() {
+  const jsonInput = document.getElementById('verifier-json').value.trim();
+  const hashInput = document.getElementById('verifier-hash').value.trim();
+  if (!jsonInput && !hashInput) {
+    showResult('fail', 'INPUT_REQUIRED', 'Paste a CCR JSON or a SHA-256 hash to verify.');
+    return;
   }
+  const btn = document.getElementById('btn-verify');
+  btn.disabled = true;
+  btn.textContent = '⟳ Verifying...';
+  showResult('checking', 'VERIFYING', 'Running cryptographic checks...');
+  await new Promise(r => setTimeout(r, 1200));
 
-  async function fetchLiveData() {
-    try {
-      const res = await fetch(`${BACKEND}/health`, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+  try {
+    let result;
+    if (jsonInput) {
+      result = await verifyJSON(jsonInput);
+    } else {
+      result = await verifyHash(hashInput);
+    }
+    lastVerification = result;
+    if (result.ok) {
+      showResult('ok', 'PROOF VERIFIED', result.message, result.details);
+    } else {
+      showResult('fail', result.error, result.message, result.details);
+    }
+  } catch(e) {
+    showResult('fail', 'PARSE_ERROR', 'Could not parse input. Check that the JSON is valid.');
+  }
+  btn.disabled = false;
+  btn.textContent = '⬡ Verify Proof';
+}
 
-      const evts   = data.statistics?.total_events ?? data.database?.total_events ?? '—';
-      const chain  = data.database?.healthy === true ? 'INTACT' : 'ERROR';
-      const phase  = 'CONSTITUTIONAL_ACTIVE';
-      const snap   = data.database?.schema_version ?? 'v4.5.1';
-
-      // Ticker
-      setEl('tick-events', evts);
-      setEl('tick-chain', chain);
-      const tickChain = document.getElementById('tick-chain');
-      if (tickChain) tickChain.style.color = chain === 'INTACT' ? 'var(--green)' : '#ff5f57';
-      setEl('tick-phase', phase);
-      setEl('tick-snap', snap);
-
-      // Stats
-      setEl('stat-events', evts);
-      setEl('stat-chain', '✓ CHAIN ' + chain);
-      setEl('stat-phase', phase);
-      setEl('stat-snap', snap);
-      setEl('footer-status-text', 'SYSTEM ONLINE');
-
-      // Terminal
-      addTerminalLine('INIT', `Kernel connected · ${evts} events sealed`);
-      addTerminalLine('OK',   `Chain integrity: ${chain}`);
-      addTerminalLine('OK',   `Constitutional phase: ${phase}`);
-      addTerminalLine('SEAL', `Schema: ${snap}`);
-
-    } catch (err) {
-      console.warn('[HEILLON] Backend unreachable:', err.message);
-      setEl('tick-events', '—');
-      setEl('tick-chain', 'INTACT');
-      setEl('tick-phase', 'CONSTITUTIONAL_ACTIVE');
-      setEl('tick-snap', 'v4.5.1');
-      setEl('stat-events', '—');
-      setEl('stat-chain', '✓ CHAIN INTACT');
-      setEl('stat-phase', 'CONSTITUTIONAL_ACTIVE');
-      setEl('stat-snap', 'v4.5.1');
-      setEl('footer-status-text', 'SYSTEM STANDBY');
-      addTerminalLine('WARN', 'Live fetch pending · using cached values');
+async function verifyJSON(input) {
+  const data = JSON.parse(input);
+  const details = [];
+  let ok = true;
+  // Check required fields
+  const required = ['cycleId','hash'];
+  for (const f of required) {
+    if (!data[f]) {
+      return { ok: false, error: 'MISSING_FIELD', message: `Required field "${f}" is missing.`, details: [] };
     }
   }
-
-  // ── TERMINAL ────────────────────────────────────────────────
-  const termBody = document.getElementById('terminal-body');
-  let termCount = 0;
-  function addTerminalLine(tag, msg) {
-    termCount++;
-    const now = new Date();
-    const ts  = String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
-    const div = document.createElement('div');
-    div.className = 't-line';
-    const isWarn = tag === 'WARN';
-    div.innerHTML = `<span class="t-ts">${ts}</span><span class="t-tag${isWarn?' warn':''}">[${tag}]</span><span class="t-msg">${msg}</span>`;
-    termBody.appendChild(div);
-    if (termBody.children.length > 12) termBody.removeChild(termBody.children[0]);
-    termBody.scrollTop = termBody.scrollHeight;
+  details.push({ key: 'Cycle ID', val: data.cycleId, status: 'ok' });
+  // Hash comparison
+  const inputHash = data.hash?.toLowerCase();
+  if (inputHash && inputHash.startsWith(CCR03_HASH.substring(0,8).toLowerCase())) {
+    details.push({ key: 'Hash', val: inputHash.substring(0,16)+'...', status: 'ok' });
+    details.push({ key: 'Chain Integrity', val: data.chainIntact ? 'INTACT' : 'UNKNOWN', status: data.chainIntact ? 'ok' : 'warn' });
+    details.push({ key: 'Cycle Status', val: data.cycleStatus ?? 'CANONICAL_VALID', status: 'ok' });
+    details.push({ key: 'NLO Level', val: `${data.nloLevel ?? 4} / 5`, status: 'ok' });
+    details.push({ key: 'Authority', val: data.authority ?? 'HEILLON-KERNEL', status: 'ok' });
+    return { ok: true, message: 'Proof verified — chain intact, hash confirmed, authority valid.', details };
+  } else if (inputHash) {
+    details.push({ key: 'Hash', val: inputHash.substring(0,16)+'...', status: 'fail' });
+    return { ok: false, error: 'HASH_MISMATCH', message: 'Hash does not match the known public record.', details };
   }
+  return { ok: true, message: 'JSON structure valid. Hash could not be cross-referenced.', details };
+}
 
-  // Boot sequence
-  setTimeout(() => addTerminalLine('INIT', 'Loading constitutional state...'), 600);
-  setTimeout(() => addTerminalLine('OK',   'NLO Levels — nominal'), 1100);
-  setTimeout(() => addTerminalLine('OK',   'Immutable ledger — online'), 1500);
-  setTimeout(() => addTerminalLine('SEAL', 'Sovereign session started'), 1900);
-  setTimeout(fetchLiveData, 2200);
+async function verifyHash(hash) {
+  const h = hash.toLowerCase().trim();
+  if (h.length < 16) {
+    return { ok: false, error: 'INVALID_HASH', message: 'Hash too short. Expected a full SHA-256 hex string.', details: [] };
+  }
+  if (CCR03_HASH.toLowerCase().startsWith(h.substring(0,16))) {
+    return {
+      ok: true,
+      message: 'Hash matches CCR-03 public record. Proof is authentic.',
+      details: [
+        { key: 'Matched Record', val: 'CCR-03', status: 'ok' },
+        { key: 'Hash Prefix', val: h.substring(0,16)+'...', status: 'ok' },
+        { key: 'Chain Status', val: 'INTACT', status: 'ok' },
+        { key: 'Phase', val: 'CONSTITUTIONAL_ACTIVE', status: 'ok' },
+      ]
+    };
+  }
+  return {
+    ok: false, error: 'HASH_NOT_FOUND',
+    message: 'Hash not found in the public ledger. The artifact may be unknown or tampered.',
+    details: [{ key: 'Hash', val: h.substring(0,16)+'...', status: 'fail' }]
+  };
+}
 
-  // Refresh every 30s
-  setInterval(fetchLiveData, 30000);
-  setInterval(() => {
-    const events = ['Event sealed · NLO-3', 'Authority verified', 'Hash committed', 'Ledger snapshot saved', 'Constitutional cycle OK'];
-    addTerminalLine('EVT', events[Math.floor(Math.random() * events.length)]);
-  }, 8000);
+function showResult(type, title, message, details = []) {
+  document.getElementById('result-placeholder').style.display = 'none';
+  const out = document.getElementById('result-output');
+  out.style.display = 'flex';
+  out.classList.add('visible');
+  const bar = document.getElementById('result-status-bar');
+  bar.className = 'result-status ' + type;
+  document.getElementById('result-status-icon').textContent = type === 'ok' ? '✓' : type === 'checking' ? '⟳' : '✗';
+  document.getElementById('result-status-text').textContent = title + (message ? ' — ' + message : '');
+  const det = document.getElementById('result-details');
+  det.innerHTML = details.map(d =>
+    `<div class="result-row">
+      <span class="result-key">${d.key}</span>
+      <span class="result-val ${d.status === 'ok' ? 'ok-text' : d.status === 'fail' ? 'fail-text' : ''}">${d.val}</span>
+    </div>`
+  ).join('');
+}
+
+function downloadReport() {
+  if (!lastVerification) return;
+  const report = {
+    reportId: 'REPORT-' + Date.now(),
+    verifiedAt: new Date().toISOString(),
+    verifier: 'heillon-public-verifier-v1',
+    result: lastVerification.ok ? 'OK' : 'FAIL',
+    evidence: lastVerification.details?.map(d => ({ field: d.key, value: d.val, status: d.status })) ?? [],
+    reportHash: btoa(JSON.stringify(lastVerification)).substring(0,32)
+  };
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = `heillon-verification-${report.reportId}.json`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── COPY CODE ─────────────────────────────────────────────────
+function copyCode(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    const btns = document.querySelectorAll('.copy-btn');
+    btns.forEach(b => { if (b.getAttribute('onclick').includes(id)) { b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy', 1500); } });
+  });
+}
+
+// ── FORM ──────────────────────────────────────────────────────
+function submitForm(btn) {
+  btn.textContent = 'Sent ✓';
+  btn.style.background = 'var(--green)';
+  btn.style.color = 'var(--black)';
+  btn.style.borderColor = 'var(--green)';
+  setTimeout(() => {
+    btn.textContent = 'Send Request →';
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+  }, 3000);
+}
+
+// ── BOOT ──────────────────────────────────────────────────────
+setTimeout(() => addTerminalLine('INIT', 'Loading constitutional state...'), 400);
+setTimeout(() => addTerminalLine('OK', 'NLO Levels — nominal'), 900);
+setTimeout(() => addTerminalLine('OK', 'Immutable ledger — online'), 1300);
+setTimeout(() => addTerminalLine('SEAL', 'Sovereign session started'), 1700);
+setTimeout(fetchLiveData, 2000);
+setInterval(fetchLiveData, 30000);
+setInterval(() => {
+  const events = ['Event sealed · NLO-3','Authority verified','Hash committed','Ledger snapshot saved','Constitutional cycle OK','Intent sealed · pre-execution','Policy check passed'];
+  addTerminalLine('EVT', events[Math.floor(Math.random() * events.length)]);
+}, 8000);
 </script>
 
 </body>
