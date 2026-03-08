@@ -1391,10 +1391,10 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      const evts = data.ledger_events ?? data.total_events ?? data.events ?? '1182+';
-      const chain = data.chain_intact === true ? 'INTACT' : (data.chain_intact === false ? 'ERROR' : 'INTACT');
-      const phase = data.constitutional_phase ?? data.phase ?? 'CONSTITUTIONAL_ACTIVE';
-      const snap  = data.canonical_snapshot ?? 'v4.5.1';
+      const evts   = data.statistics?.total_events ?? data.database?.total_events ?? '—';
+      const chain  = data.database?.healthy === true ? 'INTACT' : 'ERROR';
+      const phase  = 'CONSTITUTIONAL_ACTIVE';
+      const snap   = data.database?.schema_version ?? 'v4.5.1';
 
       // Ticker
       setEl('tick-events', evts);
@@ -1409,31 +1409,26 @@
       setEl('stat-chain', '✓ CHAIN ' + chain);
       setEl('stat-phase', phase);
       setEl('stat-snap', snap);
-
       setEl('footer-status-text', 'SYSTEM ONLINE');
 
       // Terminal
       addTerminalLine('INIT', `Kernel connected · ${evts} events sealed`);
       addTerminalLine('OK',   `Chain integrity: ${chain}`);
       addTerminalLine('OK',   `Constitutional phase: ${phase}`);
-      addTerminalLine('SEAL', `Canonical snapshot: ${snap}`);
+      addTerminalLine('SEAL', `Schema: ${snap}`);
 
     } catch (err) {
       console.warn('[HEILLON] Backend unreachable:', err.message);
-
-      // Fallback estático — campos nunca ficam vazios
-      setEl('tick-events', '1182+');
+      setEl('tick-events', '—');
       setEl('tick-chain', 'INTACT');
       setEl('tick-phase', 'CONSTITUTIONAL_ACTIVE');
       setEl('tick-snap', 'v4.5.1');
-      setEl('stat-events', '1182+');
+      setEl('stat-events', '—');
       setEl('stat-chain', '✓ CHAIN INTACT');
       setEl('stat-phase', 'CONSTITUTIONAL_ACTIVE');
       setEl('stat-snap', 'v4.5.1');
       setEl('footer-status-text', 'SYSTEM STANDBY');
-
       addTerminalLine('WARN', 'Live fetch pending · using cached values');
-      addTerminalLine('OK',   'Ledger events: 1182+ · phase: CONSTITUTIONAL_ACTIVE');
     }
   }
 
