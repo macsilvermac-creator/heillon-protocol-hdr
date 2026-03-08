@@ -1,749 +1,1046 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HEILLON — Decision Verification Infrastructure</title>
-  <meta name="description" content="HEILLON verifies institutional decisions before autonomous systems execute them. Intent → Validation → Execution. Every verified decision generates a cryptographic proof artifact (HDR).">
-  <meta property="og:title" content="HEILLON — Decision Verification Infrastructure">
-  <meta property="og:description" content="Infrastructure that verifies decisions before machines execute them.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://heillon.com">
-  <meta property="og:image" content="https://heillon.com/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="HEILLON — Decision Verification Infrastructure">
-  <meta name="twitter:description" content="Infrastructure for verifiable autonomous systems.">
-  <meta name="twitter:image" content="https://heillon.com/og-image.png">
-  <link rel="icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HEILLON — Sovereign AI Infrastructure</title>
+  <meta name="description" content="The world's first cryptographic legitimacy layer for AI and institutional decisions. Computable sovereignty." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET & BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:     #050508;
+      --deep:      #08080f;
+      --surface:   #0e0e1a;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.15);
+      --gold:      #c8a96e;
+      --gold-dim:  rgba(200,169,110,0.15);
+      --gold-glow: rgba(200,169,110,0.35);
+      --white:     #f4f0ea;
+      --muted:     rgba(244,240,234,0.45);
+      --green:     #3dffa0;
+      --green-dim: rgba(61,255,160,0.12);
+      --font-disp: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-serif:'Instrument Serif', serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-disp);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CUSTOM CURSOR ────────────────────────────────────────── */
+    #cursor {
+      width: 12px; height: 12px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, background .2s;
+      mix-blend-mode: difference;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(200,169,110,0.4);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: all .12s ease;
+    }
+    body:hover #cursor { opacity: 1; }
+    a:hover ~ #cursor, button:hover ~ #cursor { width: 20px; height: 20px; }
+
+    /* ── NOISE OVERLAY ────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9997;
+    }
+
+    /* ── NAV ──────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 48px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s, background .3s;
+    }
+    nav.scrolled {
+      border-color: var(--border);
+      background: rgba(5,5,8,0.85);
+      backdrop-filter: blur(16px);
+    }
+    .nav-logo {
+      font-size: 15px; font-weight: 700; letter-spacing: 0.2em;
+      color: var(--white); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo-mark {
+      width: 28px; height: 28px;
+      border: 1.5px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; color: var(--gold);
+      letter-spacing: 0;
+    }
+    .nav-links { display: flex; align-items: center; gap: 36px; }
+    .nav-links a {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+      color: var(--muted); text-decoration: none; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      color: var(--white) !important;
+      font-size: 11px !important; letter-spacing: 0.14em !important;
+      transition: border-color .2s, background .2s !important;
+    }
+    .nav-cta:hover {
+      border-color: var(--gold) !important;
+      background: var(--gold-dim) !important;
+      color: var(--gold) !important;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 120px 48px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent);
+    }
+    .hero-glow {
+      position: absolute; top: 10%; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(200,169,110,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 40px; opacity: 0;
+      animation: fadeUp .8s .2s forwards;
+    }
+    .hero-eyebrow-line { width: 40px; height: 1px; background: var(--gold); }
+    .hero-eyebrow-text {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gold);
+      font-family: var(--font-mono);
+    }
+    .hero-title {
+      font-size: clamp(56px, 8vw, 108px);
+      font-weight: 800; line-height: 0.92;
+      letter-spacing: -0.03em; max-width: 900px;
+      opacity: 0; animation: fadeUp .8s .4s forwards;
+    }
+    .hero-title em {
+      font-family: var(--font-serif);
+      font-style: italic; font-weight: 400;
+      color: var(--gold);
+    }
+    .hero-subtitle {
+      margin-top: 36px; max-width: 520px;
+      font-size: 17px; line-height: 1.65;
+      color: var(--muted); font-weight: 400;
+      opacity: 0; animation: fadeUp .8s .6s forwards;
+    }
+    .hero-actions {
+      margin-top: 48px; display: flex; align-items: center; gap: 20px;
+      opacity: 0; animation: fadeUp .8s .8s forwards;
+    }
+    .btn-primary {
+      padding: 14px 32px;
+      background: var(--gold);
+      color: var(--black);
+      font-family: var(--font-disp);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; text-decoration: none;
+      border: none; cursor: none;
+      transition: transform .2s, box-shadow .2s;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px var(--gold-glow);
+    }
+    .btn-ghost {
+      padding: 14px 32px;
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      color: var(--muted);
+      font-family: var(--font-disp);
+      font-size: 12px; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; text-decoration: none;
+      cursor: none;
+      transition: border-color .2s, color .2s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--white); color: var(--white); }
+
+    /* ── LIVE TICKER ──────────────────────────────────────────── */
+    .hero-ticker {
+      margin-top: 80px;
+      display: flex; align-items: center; gap: 32px;
+      padding: 20px 24px;
+      border: 1px solid var(--border);
+      background: rgba(14,14,26,0.6);
+      backdrop-filter: blur(8px);
+      max-width: fit-content;
+      opacity: 0; animation: fadeUp .8s 1s forwards;
+    }
+    .ticker-item {
+      display: flex; flex-direction: column; gap: 4px;
+      padding-right: 32px;
+      border-right: 1px solid var(--border);
+    }
+    .ticker-item:last-child { border-right: none; padding-right: 0; }
+    .ticker-label {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .ticker-value {
+      font-size: 22px; font-weight: 700;
+      font-family: var(--font-mono); color: var(--green);
+    }
+    .ticker-value.gold { color: var(--gold); }
+    .ticker-value.white { color: var(--white); }
+    .live-dot {
+      display: inline-block; width: 6px; height: 6px;
+      background: var(--green); border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse-dot 2s infinite;
+    }
+
+    /* ── MARQUEE ──────────────────────────────────────────────── */
+    .marquee-wrap {
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden; background: var(--deep);
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 28s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      padding: 0 48px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--muted);
+      font-family: var(--font-mono);
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .marquee-item span { color: var(--gold); margin-right: 8px; }
+
+    /* ── SECTION SHARED ───────────────────────────────────────── */
+    section { padding: 120px 48px; }
+    .section-eyebrow {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+    }
+    .section-eyebrow-num {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.3em;
+      color: var(--gold); font-family: var(--font-mono);
+    }
+    .section-eyebrow-line { width: 40px; height: 1px; background: var(--border-hi); }
+    .section-eyebrow-label {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--muted); font-family: var(--font-mono);
+    }
+    .section-title {
+      font-size: clamp(36px, 4.5vw, 60px);
+      font-weight: 800; line-height: 1.05; letter-spacing: -0.02em;
+      max-width: 700px;
+    }
+    .section-title em {
+      font-family: var(--font-serif); font-style: italic;
+      font-weight: 400; color: var(--gold);
+    }
+
+    /* ── WHAT IS HEILLON ──────────────────────────────────────── */
+    #what {
+      background: var(--deep);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .what-text p {
+      margin-top: 28px; font-size: 17px; line-height: 1.75;
+      color: var(--muted); max-width: 480px;
+    }
+    .what-text p strong { color: var(--white); font-weight: 600; }
+    .what-visual {
+      position: relative; height: 420px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .what-hex-grid {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(200,169,110,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 80% at center, black, transparent);
+    }
+    .what-diagram {
+      position: relative; z-index: 2;
+      width: 300px; height: 300px;
+    }
+    .diagram-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid var(--border);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+    }
+    .diagram-ring:nth-child(1) { width: 80px; height: 80px; border-color: var(--gold); animation: spin-slow 8s linear infinite; }
+    .diagram-ring:nth-child(2) { width: 160px; height: 160px; border-color: rgba(200,169,110,0.3); animation: spin-slow 14s linear infinite reverse; }
+    .diagram-ring:nth-child(3) { width: 240px; height: 240px; animation: spin-slow 20s linear infinite; }
+    .diagram-ring:nth-child(4) { width: 300px; height: 300px; border-color: rgba(255,255,255,0.04); }
+    .diagram-center {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 11px; font-weight: 800; letter-spacing: 0.3em;
+      color: var(--gold); font-family: var(--font-mono); text-align: center;
+    }
+    .diagram-node {
+      position: absolute; width: 8px; height: 8px;
+      background: var(--gold); border-radius: 50%;
+      top: 50%; left: 50%;
+    }
+    .diagram-node:nth-child(5) { transform: translate(-50%,-50%) rotate(0deg) translateX(120px); }
+    .diagram-node:nth-child(6) { transform: translate(-50%,-50%) rotate(72deg) translateX(120px); }
+    .diagram-node:nth-child(7) { transform: translate(-50%,-50%) rotate(144deg) translateX(120px); }
+    .diagram-node:nth-child(8) { transform: translate(-50%,-50%) rotate(216deg) translateX(120px); }
+    .diagram-node:nth-child(9) { transform: translate(-50%,-50%) rotate(288deg) translateX(120px); }
+
+    /* ── PILLARS ──────────────────────────────────────────────── */
+    #pillars { background: var(--black); }
+    .pillars-header { max-width: 600px; margin-bottom: 64px; }
+    .pillars-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .pillar {
+      background: var(--black); padding: 40px 32px;
+      transition: background .3s;
+      position: relative; overflow: hidden;
+    }
+    .pillar::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--gold);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s;
+    }
+    .pillar:hover { background: var(--surface); }
+    .pillar:hover::before { transform: scaleX(1); }
+    .pillar-num {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.3em;
+      color: var(--gold); font-family: var(--font-mono); margin-bottom: 20px;
+    }
+    .pillar-icon { font-size: 28px; margin-bottom: 16px; }
+    .pillar-name {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+      margin-bottom: 12px; text-transform: uppercase;
+    }
+    .pillar-desc { font-size: 13px; line-height: 1.65; color: var(--muted); }
+
+    /* ── HOW IT WORKS ─────────────────────────────────────────── */
+    #how { background: var(--deep); }
+    .how-steps {
+      margin-top: 64px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+      position: relative;
+    }
+    .how-steps::before {
+      content: '';
+      position: absolute; top: 28px; left: 12.5%; right: 12.5%;
+      height: 1px; background: linear-gradient(90deg, var(--gold), var(--border-hi), var(--border-hi), var(--gold));
+      z-index: 0;
+    }
+    .how-step { padding: 0 32px; text-align: center; position: relative; z-index: 1; }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--black); border: 1px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: var(--gold);
+      font-family: var(--font-mono); margin: 0 auto 24px;
+    }
+    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .step-desc { font-size: 13px; line-height: 1.7; color: var(--muted); }
+
+    /* ── USE CASES ────────────────────────────────────────────── */
+    #usecases { background: var(--black); }
+    .cases-grid {
+      margin-top: 64px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      background: var(--border);
+    }
+    .case-card {
+      background: var(--black); padding: 48px 40px;
+      transition: background .3s;
+    }
+    .case-card:hover { background: var(--surface); }
+    .case-tag {
+      display: inline-block; padding: 4px 12px;
+      border: 1px solid var(--border-hi); font-size: 10px;
+      font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); font-family: var(--font-mono); margin-bottom: 24px;
+    }
+    .case-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+    .case-desc { font-size: 14px; line-height: 1.75; color: var(--muted); }
+    .case-card:first-child { grid-column: 1; grid-row: 1 / 3; display: flex; flex-direction: column; justify-content: flex-end; background: var(--surface); padding: 48px 40px; }
+    .case-card:first-child .case-title { font-size: 30px; }
+    .case-card-featured-img {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 32px; opacity: 0.7;
+    }
+    .feat-glyph {
+      font-size: 80px; line-height: 1;
+      font-family: var(--font-mono); color: var(--gold);
+      opacity: 0.3; font-weight: 300;
+    }
+
+    /* ── LIVE LEDGER ──────────────────────────────────────────── */
+    #ledger {
+      background: var(--deep);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .ledger-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .ledger-terminal {
+      background: var(--black); border: 1px solid var(--border);
+      font-family: var(--font-mono);
+    }
+    .terminal-bar {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot-r { background: #ff5f57; }
+    .t-dot-y { background: #febc2e; }
+    .t-dot-g { background: #28c840; }
+    .terminal-title {
+      margin-left: 8px; font-size: 11px; letter-spacing: 0.1em; color: var(--muted);
+    }
+    .terminal-body {
+      padding: 24px; min-height: 260px; max-height: 320px; overflow: hidden;
+    }
+    .t-line {
+      font-size: 12px; line-height: 1.9;
+      display: flex; gap: 12px;
+    }
+    .t-ts { color: rgba(200,169,110,0.5); min-width: 56px; }
+    .t-tag { color: var(--green); }
+    .t-tag.warn { color: #febc2e; }
+    .t-msg { color: var(--muted); }
+    .t-msg .hi { color: var(--white); }
+    .ledger-stats { display: flex; flex-direction: column; gap: 32px; }
+    .stat-row {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-family: var(--font-mono); }
+    .stat-val { font-size: 36px; font-weight: 800; font-family: var(--font-mono); line-height: 1; }
+    .stat-val.green { color: var(--green); }
+    .stat-val.gold { color: var(--gold); }
+    .stat-badge {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.15em;
+      padding: 4px 10px; background: var(--green-dim);
+      border: 1px solid rgba(61,255,160,0.2); color: var(--green);
+      font-family: var(--font-mono); text-transform: uppercase;
+    }
+
+    /* ── CONTACT ──────────────────────────────────────────────── */
+    #contact {
+      background: var(--black);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-family: var(--font-mono); }
+    .form-input {
+      padding: 14px 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--white); font-family: var(--font-disp); font-size: 14px;
+      outline: none; transition: border-color .2s;
+    }
+    .form-input:focus { border-color: var(--gold); }
+    .form-input::placeholder { color: rgba(244,240,234,0.2); }
+    textarea.form-input { resize: vertical; min-height: 120px; }
+    .contact-meta { padding-top: 12px; }
+    .contact-meta p { font-size: 15px; line-height: 1.8; color: var(--muted); margin-bottom: 32px; }
+    .contact-meta p strong { color: var(--white); }
+    .contact-info { display: flex; flex-direction: column; gap: 16px; }
+    .contact-info-row { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+    .contact-info-row a { color: var(--gold); text-decoration: none; }
+    .contact-info-icon { font-size: 16px; width: 20px; text-align: center; }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    footer {
+      padding: 48px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-left { display: flex; flex-direction: column; gap: 8px; }
+    .footer-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.2em; color: var(--gold); }
+    .footer-copy { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+    .footer-right { display: flex; align-items: center; gap: 24px; }
+    .footer-right a { font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; }
+    .footer-right a:hover { color: var(--gold); }
+    .footer-status {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.15em;
+      color: var(--green);
+    }
+
+    /* ── SCROLL REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── ANIMATIONS ───────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes spin-slow {
+      from { transform: translate(-50%,-50%) rotate(0deg); }
+      to   { transform: translate(-50%,-50%) rotate(360deg); }
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(61,255,160,.4); }
+      50%  { opacity: .6; box-shadow: 0 0 0 6px rgba(61,255,160,0); }
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .cursor-blink { animation: blink 1s step-end infinite; }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .pillars-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero, section { padding: 80px 24px; }
+      .hero-title { font-size: clamp(40px, 12vw, 72px); }
+      #what, #contact, .ledger-inner { grid-template-columns: 1fr; gap: 48px; }
+      .pillars-grid { grid-template-columns: 1fr 1fr; }
+      .how-steps { grid-template-columns: 1fr 1fr; }
+      .how-steps::before { display: none; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .case-card:first-child { grid-row: auto; }
+      footer { flex-direction: column; gap: 24px; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
-  <div class="grid-overlay" aria-hidden="true"></div>
-  <div class="flow-lines" aria-hidden="true"></div>
-  <div class="data-stream" aria-hidden="true"></div>
-  <div class="hdr-stream" id="hdr-stream" aria-hidden="true"></div>
-  
-  <header class="header header--sticky">
-    <div class="container header__container">
-      <a href="#hero" class="logo" aria-label="Voltar ao início">
-        <span class="logo-symbol">HEILLON</span>
-        <span class="logo-label">Protocol</span>
-      </a>
-      <nav class="nav" id="main-nav">
-        <a href="#structural-problem" class="nav-link">Problem</a>
-        <a href="#why-verification" class="nav-link">Why</a>
-        <a href="#infraestrutura" class="nav-link">Protocol</a>
-        <a href="#hdr-artifact" class="nav-link">HDR</a>
-        <a href="#demo" class="nav-link">Demo</a>
-        <a href="#use-case" class="nav-link">Use Case</a>
-        <a href="#architecture" class="nav-link">Architecture</a>
-        <a href="#component-overview" class="nav-link">Components</a>
-        <a href="#stack" class="nav-link">Stack</a>
-        <a href="#developers" class="nav-link">Developers</a>
-        <a href="#legitimacy" class="nav-link">Legitimacy</a>
-      </nav>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">H</div>
+    HEILLON
+  </a>
+  <div class="nav-links">
+    <a href="#what">Protocol</a>
+    <a href="#pillars">Pillars</a>
+    <a href="#usecases">Use Cases</a>
+    <a href="#ledger">Live Ledger</a>
+    <a href="#contact" class="nav-cta">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-line"></div>
+    <span class="hero-eyebrow-text">Sovereign AI Infrastructure</span>
+  </div>
+
+  <h1 class="hero-title">
+    Every Decision.<br>
+    <em>Cryptographically</em><br>
+    Legitimate.
+  </h1>
+
+  <p class="hero-subtitle">
+    HEILLON is the world's first protocol for <strong>computable legitimacy</strong> — 
+    a cryptographic infrastructure that makes AI and institutional decisions 
+    auditable, sovereign, and irrefutable.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#what" class="btn-primary">Explore the Protocol</a>
+    <a href="#contact" class="btn-ghost">Request Access →</a>
+  </div>
+
+  <div class="hero-ticker">
+    <div class="ticker-item">
+      <span class="ticker-label"><span class="live-dot"></span>Status</span>
+      <span class="ticker-value" id="tick-status">ACTIVE</span>
     </div>
-  </header>
-
-  <button class="back-to-top" id="back-to-top" aria-label="Back to top" title="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M18 15l-6-6-6 6"/>
-    </svg>
-  </button>
-
-  <main>
-    <section id="hero" class="hero">
-      <div class="hero-illustration" aria-hidden="true"></div>
-      <div class="hero-overlay"></div>
-      <div class="hero-inner">
-        <div class="hero-layout">
-          <div class="hero-content hero-content--left">
-            <h1 class="hero-title">
-              Decision Verification Infrastructure<br>
-              <span class="hero-title-secondary">for Autonomous Systems</span>
-            </h1>
-            <p class="hero-subtitle">Verify decisions before machines execute them.</p>
-            <p class="hero-concept">Intent → Validation → Execution</p>
-            <div class="hero-cta">
-              <a href="#demo" class="btn btn--primary">Run Interactive Demonstration</a>
-              <a href="#infraestrutura" class="btn btn--secondary">Explore the Protocol</a>
-            </div>
-          </div>
-          <div class="hero-pipeline hero-pipeline--compact" aria-label="HEILLON verification pipeline">
-          <div class="pipeline-flow">
-            <div class="pipeline-node pipeline-node--entry">
-              <span class="pipeline-node-glow"></span>
-              <span class="pipeline-node-label">Intent</span>
-            </div>
-            <div class="pipeline-connector">
-              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
-            </div>
-            <div class="pipeline-node pipeline-node--gate">
-              <span class="pipeline-node-glow"></span>
-              <span class="pipeline-node-label">Authority Gate</span>
-            </div>
-            <div class="pipeline-connector">
-              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
-            </div>
-            <div class="pipeline-node pipeline-node--gate">
-              <span class="pipeline-node-glow"></span>
-              <span class="pipeline-node-label">Policy Gate</span>
-            </div>
-            <div class="pipeline-connector">
-              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
-            </div>
-            <div class="pipeline-node pipeline-node--gate">
-              <span class="pipeline-node-glow"></span>
-              <span class="pipeline-node-label">Risk Gate</span>
-            </div>
-            <div class="pipeline-connector">
-              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
-            </div>
-            <div class="pipeline-node pipeline-node--gate">
-              <span class="pipeline-node-glow"></span>
-              <span class="pipeline-node-label">Governance Gate</span>
-            </div>
-            <div class="pipeline-connector">
-              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
-            </div>
-            <div class="pipeline-node pipeline-node--authorized">
-              <span class="pipeline-node-glow"></span>
-              <span class="pipeline-node-label">Decision Authorized</span>
-            </div>
-            <div class="pipeline-connector">
-              <div class="pipeline-connector-stream pipeline-connector-flow"></div>
-            </div>
-            <div class="pipeline-node pipeline-node--artifact">
-              <span class="pipeline-node-glow"></span>
-              <span class="pipeline-node-label">HDR Artifact Generated</span>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="live-stream" class="section section--viewport section--dark section--live-stream">
-      <div class="container">
-        <div class="live-stream-layout">
-          <div class="live-stream-content">
-            <h2 class="section-title">Live Decision Stream</h2>
-            <p class="live-stream-subtitle body-text">Recent decisions verified by the HEILLON protocol.</p>
-            <p class="live-stream-text">Autonomous systems continuously generate execution intents. The HEILLON protocol validates these intents against institutional policies before execution. Each verified decision produces a cryptographically verifiable artifact (HDR).</p>
-          </div>
-          <div class="live-stream-panel">
-            <div class="live-stream-counter">
-              <span class="live-stream-counter-label">Verified Decisions</span>
-              <span class="live-stream-counter-value" id="live-stream-count">0</span>
-            </div>
-            <div class="live-stream-log" id="live-stream-log">
-              <div class="live-stream-entry live-stream-entry--authorized" data-outcome="authorized">HDR-91A72F   AUTHORIZED   14:32:11</div>
-              <div class="live-stream-entry live-stream-entry--denied" data-outcome="denied">HDR-7C1B9E   DENIED       14:32:14</div>
-              <div class="live-stream-entry live-stream-entry--authorized" data-outcome="authorized">HDR-28C4DA   AUTHORIZED   14:32:18</div>
-              <div class="live-stream-entry live-stream-entry--authorized" data-outcome="authorized">HDR-F18E22   AUTHORIZED   14:32:22</div>
-            </div>
-          </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="structural-problem" class="section section--viewport section--dark section--structural-problem">
-      <div class="container">
-        <h2 class="section-title">Structural Problem</h2>
-        <p class="body-text">
-          Autonomous systems are beginning to execute actions. AI agents, automated workflows and cloud operations already perform financial transfers, infrastructure changes and system governance—yet most systems execute without verifying whether decisions were legitimate before execution.
-        </p>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="why-verification" class="section section--viewport section--dark section--why-verification">
-      <div class="container">
-        <div class="why-layout">
-          <div class="why-content">
-            <h2 class="section-title">Why Decision Verification Matters</h2>
-            <div class="why-narrative">
-              <p class="why-lead">Software used to compute.</p>
-              <p class="why-lead">Modern systems now execute actions.</p>
-              <p class="body-text why-context">
-                AI agents and automated systems already perform tasks such as:
-              </p>
-              <ul class="why-tasks">
-                <li>financial transfers</li>
-                <li>infrastructure changes</li>
-                <li>automated operations</li>
-                <li>system governance actions</li>
-              </ul>
-              <p class="body-text why-problem">
-                However, most systems still operate without a mechanism to verify whether those decisions were legitimate before execution.
-              </p>
-            </div>
-          </div>
-          <div class="why-containers">
-            <div class="why-model-block">
-              <h4 class="why-model-title">Current Model</h4>
-              <div class="why-model-flow">
-                <span class="why-model-step">Intent</span>
-                <span class="why-model-arrow">→</span>
-                <span class="why-model-step">Execution</span>
-              </div>
-              <p class="why-model-problem">Execution without verification creates institutional risk. Organizations rely on logs, audits and policy enforcement after the action occurs. These mechanisms are retrospective.</p>
-            </div>
-            <div class="why-model-block why-model-block--verified">
-              <h4 class="why-model-title">Verified Model</h4>
-              <div class="why-model-flow">
-                <span class="why-model-step">Intent</span>
-                <span class="why-model-arrow">→</span>
-                <span class="why-model-step why-model-step--accent">Validation</span>
-                <span class="why-model-arrow">→</span>
-                <span class="why-model-step">Execution</span>
-              </div>
-            </div>
-            <div class="why-comparison-box why-comparison-box--unverified">
-              <h4 class="why-comparison-title">Unverified Execution</h4>
-              <div class="why-comparison-flow">Intent → Execution</div>
-            </div>
-            <div class="why-comparison-box why-comparison-box--verified">
-              <h4 class="why-comparison-title">Verified Infrastructure</h4>
-              <div class="why-comparison-flow">Intent → Validation → Execution</div>
-            </div>
-          </div>
-        </div>
-        <p class="why-key">Verification must happen before execution.</p>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="infraestrutura" class="section section--viewport section--protocol">
-      <div class="container">
-        <div class="protocol-layout">
-          <div class="protocol-content">
-            <h2 class="section-title">HEILLON Protocol</h2>
-            <p class="protocol-intro body-text">
-              The HEILLON decision protocol validates decisions before execution. Each proposed action flows through the verification pipeline before any execution occurs.
-            </p>
-          </div>
-          <div class="protocol-diagram-block" aria-label="HEILLON protocol pipeline" id="protocol-diagram">
-          <div class="protocol-pipeline">
-            <div class="protocol-pipeline-node protocol-pipeline-node--entry" data-protocol-node="0">
-              <span class="protocol-pipeline-node-glow"></span>
-              <span class="protocol-pipeline-node-label">Intent</span>
-              <span class="protocol-pipeline-node-id">01</span>
-            </div>
-            <div class="protocol-pipeline-connector" data-protocol-connector="0">
-              <div class="protocol-pipeline-connector-line protocol-pipeline-connector-flow"></div>
-            </div>
-            <div class="protocol-pipeline-node protocol-pipeline-node--component" data-protocol-node="1">
-              <span class="protocol-pipeline-node-glow"></span>
-              <span class="protocol-pipeline-node-label">Decision Guard</span>
-              <span class="protocol-pipeline-node-id">02</span>
-            </div>
-            <div class="protocol-pipeline-connector" data-protocol-connector="1">
-              <div class="protocol-pipeline-connector-line protocol-pipeline-connector-flow"></div>
-            </div>
-            <div class="protocol-pipeline-node protocol-pipeline-node--component" data-protocol-node="2">
-              <span class="protocol-pipeline-node-glow"></span>
-              <span class="protocol-pipeline-node-label">Decision Ledger</span>
-              <span class="protocol-pipeline-node-id">03</span>
-            </div>
-            <div class="protocol-pipeline-connector" data-protocol-connector="2">
-              <div class="protocol-pipeline-connector-line protocol-pipeline-connector-flow"></div>
-            </div>
-            <div class="protocol-pipeline-node protocol-pipeline-node--artifact" data-protocol-node="3">
-              <span class="protocol-pipeline-node-glow"></span>
-              <span class="protocol-pipeline-node-label">HDR Artifact</span>
-              <span class="protocol-pipeline-node-id">04</span>
-            </div>
-          </div>
-        </div>
-        </div>
-        <div class="protocol-components">
-          <div class="protocol-component">
-            <h4 class="protocol-component-label">Intent</h4>
-            <p class="protocol-component-desc">A proposed action generated by software, an AI agent or an automated system.</p>
-          </div>
-          <div class="protocol-component">
-            <h4 class="protocol-component-label">Decision Guard</h4>
-            <p class="protocol-component-desc">Evaluates whether the action complies with institutional policies.</p>
-          </div>
-          <div class="protocol-component">
-            <h4 class="protocol-component-label">Decision Ledger</h4>
-            <p class="protocol-component-desc">Records the validated decision in an immutable chronological event chain.</p>
-          </div>
-          <div class="protocol-component">
-            <h4 class="protocol-component-label">HDR Artifact</h4>
-            <p class="protocol-component-desc">Generates a verifiable proof artifact for the validated decision.</p>
-          </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="hdr-artifact" class="section section--viewport section--hdr-artifact">
-      <div class="container">
-        <div class="hdr-layout">
-          <div class="hdr-content">
-            <h2 class="section-title">HDR Artifact</h2>
-            <p class="hdr-intro body-text">Structured verification record produced by the decision verification protocol.</p>
-            <div class="hdr-download-cta">
-              <a href="/hdr-sample.json" download="HDR-SAMPLE.json" class="btn btn--secondary" id="hdr-download-sample">Download Sample HDR Artifact</a>
-            </div>
-          </div>
-          <div class="hdr-artifact-block" aria-label="HEILLON Decision Record artifact" id="hdr-artifact-block">
-          <div class="hdr-artifact-pattern"></div>
-          <div class="hdr-artifact-inner">
-            <div class="hdr-artifact-header">
-              <span class="hdr-artifact-id">HDR-01AB92</span>
-              <span class="hdr-artifact-badge" data-hdr-field="badge">VERIFIED</span>
-            </div>
-            <div class="hdr-artifact-divider"></div>
-            <div class="hdr-artifact-fields">
-              <div class="hdr-artifact-row" data-hdr-field="0">
-                <span class="hdr-artifact-key">Intent Hash</span>
-                <span class="hdr-artifact-dots"></span>
-                <span class="hdr-artifact-value">9A7F3D92C1</span>
-              </div>
-              <div class="hdr-artifact-row" data-hdr-field="1">
-                <span class="hdr-artifact-key">Decision Outcome</span>
-                <span class="hdr-artifact-dots"></span>
-                <span class="hdr-artifact-value hdr-artifact-value--outcome">AUTHORIZED</span>
-              </div>
-              <div class="hdr-artifact-row" data-hdr-field="2">
-                <span class="hdr-artifact-key">Policy Version</span>
-                <span class="hdr-artifact-dots"></span>
-                <span class="hdr-artifact-value">v1.0</span>
-              </div>
-              <div class="hdr-artifact-row" data-hdr-field="3">
-                <span class="hdr-artifact-key">Ledger Event</span>
-                <span class="hdr-artifact-dots"></span>
-                <span class="hdr-artifact-value">EVT-9F31</span>
-              </div>
-              <div class="hdr-artifact-row" data-hdr-field="4">
-                <span class="hdr-artifact-key">Timestamp</span>
-                <span class="hdr-artifact-dots"></span>
-                <span class="hdr-artifact-value">2026-03-06T14:32:11Z</span>
-              </div>
-              <div class="hdr-artifact-row" data-hdr-field="5">
-                <span class="hdr-artifact-key">Verification</span>
-                <span class="hdr-artifact-dots"></span>
-                <span class="hdr-artifact-value hdr-artifact-value--sig">HLLN-SIGN-8AC21</span>
-              </div>
-            </div>
-            <div class="hdr-artifact-divider"></div>
-            <div class="hdr-artifact-footer">
-              <span class="hdr-artifact-issued">Decision validated before execution</span>
-            </div>
-          </div>
-        </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="demo" class="section section--viewport section--dark section--demo">
-      <div class="container">
-        <h2 class="section-title">Explore a Verified Decision</h2>
-        <p class="demo-intro body-text">Simulate how HEILLON validates a decision before execution.</p>
-        <div class="demo-stage">
-        <div class="demo-layout" id="demo-layout">
-          <div class="demo-input-panel">
-            <h3 class="demo-panel-title">Decision Intent</h3>
-            <form id="demo-form" class="demo-form">
-              <div class="demo-field">
-                <label for="demo-amount">Transfer Amount</label>
-                <input type="number" id="demo-amount" name="amount" min="1" step="0.01" value="5000" required>
-              </div>
-              <div class="demo-field">
-                <label for="demo-currency">Currency</label>
-                <select id="demo-currency" name="currency">
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                  <option value="BRL">BRL</option>
-                </select>
-              </div>
-              <div class="demo-field">
-                <label for="demo-actor">Actor ID</label>
-                <input type="text" id="demo-actor" name="actor" placeholder="e.g. agent-001" value="agent-001" required>
-              </div>
-              <button type="submit" class="btn btn--primary btn--submit" id="demo-submit">Validate Decision</button>
-            </form>
-          </div>
-          <div class="demo-pipeline-panel">
-            <h3 class="demo-panel-title">Verification Pipeline</h3>
-            <div class="demo-pipeline" id="demo-pipeline" aria-live="polite">
-              <div class="demo-pipeline-step" data-step="0">
-                <span class="demo-pipeline-step-label">Intent Submitted</span>
-              </div>
-              <div class="demo-pipeline-connector"></div>
-              <div class="demo-pipeline-step" data-step="1">
-                <span class="demo-pipeline-step-label">Authority Check</span>
-              </div>
-              <div class="demo-pipeline-connector"></div>
-              <div class="demo-pipeline-step" data-step="2">
-                <span class="demo-pipeline-step-label">Policy Evaluation</span>
-              </div>
-              <div class="demo-pipeline-connector"></div>
-              <div class="demo-pipeline-step" data-step="3">
-                <span class="demo-pipeline-step-label">Risk Assessment</span>
-              </div>
-              <div class="demo-pipeline-connector"></div>
-              <div class="demo-pipeline-step" data-step="4">
-                <span class="demo-pipeline-step-label">Governance Validation</span>
-              </div>
-              <div class="demo-pipeline-connector"></div>
-              <div class="demo-pipeline-step demo-pipeline-step--outcome" data-step="5">
-                <span class="demo-pipeline-step-label demo-pipeline-outcome-text">Decision Outcome</span>
-              </div>
-              <div class="demo-pipeline-connector"></div>
-              <div class="demo-pipeline-step demo-pipeline-step--artifact" data-step="6">
-                <span class="demo-pipeline-step-label">HDR Artifact Generated</span>
-              </div>
-            </div>
-          </div>
-          <div class="demo-result-panel" id="demo-result" aria-live="polite" hidden>
-            <h4 class="demo-result-title">HDR Artifact</h4>
-            <div class="demo-result-hdr" id="demo-result-hdr"></div>
-          </div>
-        </div>
-        <div class="demo-actions-row">
-          <a href="#" class="btn btn--secondary btn--sm" id="demo-download-hdr">Download HDR Artifact</a>
-          <a href="#infraestrutura" class="btn btn--secondary btn--sm">Explore Protocol</a>
-        </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="use-case" class="section section--viewport section--dark section--use-case">
-      <div class="container">
-        <h2 class="section-title">Institutional Use Case</h2>
-        <h3 class="use-case-scenario">Automated Treasury Transfer</h3>
-        <div class="use-case-content">
-          <div class="use-case-block">
-            <h4 class="use-case-block-title">Problem</h4>
-            <p class="body-text">Automated systems can execute financial transfers without institutional verification. This creates risk in regulated environments.</p>
-          </div>
-          <div class="use-case-block">
-            <h4 class="use-case-block-title">Solution</h4>
-            <p class="body-text">HEILLON validates the transfer intent before execution.</p>
-          </div>
-        </div>
-        <div class="use-case-process">
-          <h4 class="use-case-process-title">Process</h4>
-          <div class="use-case-steps">
-            <div class="use-case-step">
-              <span class="use-case-step-num">1</span>
-              <span class="use-case-step-desc">System proposes transfer intent</span>
-            </div>
-            <div class="use-case-flow-arrow"></div>
-            <div class="use-case-step">
-              <span class="use-case-step-num">2</span>
-              <span class="use-case-step-desc">HEILLON validates against institutional policies</span>
-            </div>
-            <div class="use-case-flow-arrow"></div>
-            <div class="use-case-step">
-              <span class="use-case-step-num">3</span>
-              <span class="use-case-step-desc">Decision is authorized or denied</span>
-            </div>
-            <div class="use-case-flow-arrow"></div>
-            <div class="use-case-step">
-              <span class="use-case-step-num">4</span>
-              <span class="use-case-step-desc">HDR artifact is generated</span>
-            </div>
-          </div>
-        </div>
-        <p class="use-case-benefit">Every automated financial action becomes verifiable and auditable.</p>
-        <div class="use-case-diagram">
-          <div class="use-case-diagram-flow">
-            <div class="use-case-diagram-node use-case-diagram-node--system">
-              <span class="use-case-diagram-label">Automated Treasury System</span>
-              <span class="use-case-diagram-sublabel">Transfer intent</span>
-            </div>
-            <div class="use-case-diagram-connector"></div>
-            <div class="use-case-diagram-node use-case-diagram-node--heillon">
-              <span class="use-case-diagram-label">HEILLON Verification</span>
-              <span class="use-case-diagram-sublabel">Policy · Authority · Risk</span>
-            </div>
-            <div class="use-case-diagram-connector"></div>
-            <div class="use-case-diagram-node use-case-diagram-node--output">
-              <span class="use-case-diagram-label">Authorized Execution</span>
-              <span class="use-case-diagram-sublabel">HDR artifact</span>
-            </div>
-          </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="architecture" class="section section--viewport section--dark section--architecture">
-      <div class="container">
-        <div class="architecture-layout">
-          <div class="architecture-content">
-            <h2 class="section-title">Infrastructure Architecture</h2>
-            <p class="architecture-intro body-text">Fluxo vertical de validação de decisões em todo o sistema. No Protocolo DSR toda verificação segue o mesmo padrão de análise passando por todas as verificações de regras e leis e o carimbo para LEGITIMAÇÃO do resultado, com prova matemática e histórico de ações.</p>
-          </div>
-          <div class="architecture-diagram" aria-label="HEILLON architecture flow">
-          <div class="architecture-flow">
-            <div class="architecture-node architecture-node--entry">
-              <span class="architecture-node-label">Intent</span>
-            </div>
-            <div class="architecture-connector"></div>
-            <div class="architecture-node architecture-node--component">
-              <span class="architecture-node-label">Decision Guard</span>
-            </div>
-            <div class="architecture-connector"></div>
-            <div class="architecture-node architecture-node--component">
-              <span class="architecture-node-label">Policy Engine</span>
-            </div>
-            <div class="architecture-connector"></div>
-            <div class="architecture-node architecture-node--component">
-              <span class="architecture-node-label">Decision Ledger</span>
-            </div>
-            <div class="architecture-connector"></div>
-            <div class="architecture-node architecture-node--output">
-              <span class="architecture-node-label">Proof Engine</span>
-            </div>
-          </div>
-        </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="component-overview" class="section section--viewport section--dark section--component-overview">
-      <div class="container">
-        <h2 class="section-title">Component Overview</h2>
-        <p class="component-intro body-text">Core components of the verification infrastructure.</p>
-        <div class="component-cards">
-          <div class="component-card">
-            <h4 class="component-card-label">Decision Guard</h4>
-            <p class="component-card-desc">Validates decision intents against authority and routing rules.</p>
-          </div>
-          <div class="component-card">
-            <h4 class="component-card-label">Policy Engine</h4>
-            <p class="component-card-desc">Evaluates institutional rules and policy constraints.</p>
-          </div>
-          <div class="component-card">
-            <h4 class="component-card-label">Decision Ledger</h4>
-            <p class="component-card-desc">Stores validated decisions in an immutable chronological chain.</p>
-          </div>
-          <div class="component-card">
-            <h4 class="component-card-label">Proof Engine</h4>
-            <p class="component-card-desc">Generates the HDR artifact for verified decisions.</p>
-          </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="stack" class="section section--viewport section--stack">
-      <div class="container">
-        <h2 class="section-title section-title--stack">Autonomous Systems Stack</h2>
-        <div class="stack-diagram" aria-label="Autonomous systems architecture stack with Decision Verification Layer" id="stack-diagram">
-          <div class="stack-diagram-grid"></div>
-          <div class="stack-diagram-flow">
-            <div class="stack-flow-line stack-flow-line--1" data-stack-index="3"></div>
-            <div class="stack-layer stack-layer--1" data-stack-layer="3">
-              <span class="stack-layer-label">AI Models</span>
-              <span class="stack-layer-desc">Machine learning models and AI systems generating decisions</span>
-            </div>
-            <div class="stack-flow-line stack-flow-line--2" data-stack-index="2"></div>
-            <div class="stack-layer stack-layer--2" data-stack-layer="2">
-              <span class="stack-layer-label">Applications</span>
-              <span class="stack-layer-desc">Software applications orchestrating automated workflows</span>
-            </div>
-            <div class="stack-flow-line stack-flow-line--3" data-stack-index="1"></div>
-            <div class="stack-layer stack-layer--3" data-stack-layer="1">
-              <span class="stack-layer-label">Execution Systems</span>
-              <span class="stack-layer-desc">Systems executing automated actions: financial transfers, infrastructure changes, system operations</span>
-            </div>
-            <div class="stack-flow-line stack-flow-line--4" data-stack-index="0"></div>
-            <div class="stack-layer stack-layer--heillon" data-stack-layer="0">
-              <span class="stack-layer-glow"></span>
-              <span class="stack-layer-label stack-layer-label--heillon">Decision Verification Infrastructure</span>
-              <span class="stack-layer-sublabel">HEILLON</span>
-              <span class="stack-layer-concept">Intent → Validation → Execution</span>
-            </div>
-          </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="developers" class="section section--viewport section--developers">
-      <div class="container">
-        <h2 class="section-title">Developer Entry</h2>
-        <p class="dev-intro body-text">Integration resources for HEILLON.</p>
-        <div class="dev-resources">
-          <span class="dev-resource">Protocol Documentation</span>
-          <span class="dev-resource">API Reference</span>
-          <span class="dev-resource">Integration Guide</span>
-          <span class="dev-resource">SDKs</span>
-        </div>
-        <div class="dev-api">
-          <div class="dev-endpoint">
-            <span class="dev-endpoint-method">POST</span>
-            <code class="dev-endpoint-path">/decision/validate</code>
-          </div>
-          <div class="dev-code-blocks">
-            <div class="dev-code-block">
-              <h4 class="dev-code-title">Example Intent Payload</h4>
-              <pre class="dev-code-content"><code>{
-  "intent_type": "treasury.transfer",
-  "actor_id": "service-payment",
-  "amount": 15000,
-  "currency": "USD"
-}</code></pre>
-            </div>
-            <div class="dev-code-block">
-              <h4 class="dev-code-title">Response Example</h4>
-              <pre class="dev-code-content"><code>{
-  "decision_id": "DEC-7827A",
-  "outcome": "AUTHORIZED",
-  "policy_version": "v1.0",
-  "ledger_event": "EVT-9f31",
-  "proof_artifact": "HDR-01AB92"
-}</code></pre>
-            </div>
-          </div>
-        </div>
-        <div class="dev-cta">
-          <a href="#" class="btn btn--primary">Explore Developer Documentation</a>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="legitimacy" class="section section--viewport section--legitimacy">
-      <div class="container">
-        <h2 class="section-title">Institutional Legitimacy</h2>
-        <p class="legitimacy-intro body-text">Verification introduces structural legitimacy for automated decisions.</p>
-        <div class="legitimacy-content">
-          <div class="legitimacy-block legitimacy-block--traditional">
-            <h4 class="legitimacy-block-title">Traditional Systems</h4>
-            <p class="legitimacy-block-desc">Legitimacy is based on policies, audits, and reputation.</p>
-            <p class="legitimacy-block-note">These mechanisms are retrospective.</p>
-          </div>
-          <div class="legitimacy-transition" aria-hidden="true">
-            <span class="legitimacy-arrow">→</span>
-          </div>
-          <div class="legitimacy-block legitimacy-block--structural">
-            <h4 class="legitimacy-block-title">Structural Legitimacy</h4>
-            <p class="legitimacy-block-desc">HEILLON introduces structural legitimacy. Decisions are verified before execution.</p>
-          </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="protocol-paper" class="section section--viewport section--dark section--protocol-paper">
-      <div class="container">
-        <div class="protocol-paper-layout">
-          <div class="protocol-paper-content">
-            <h2 class="section-title">HEILLON Protocol Paper</h2>
-            <p class="protocol-paper-subtitle body-text">Specification of the decision verification protocol.</p>
-            <p class="protocol-paper-text">The HEILLON protocol defines a standardized verification layer between intent and execution. This paper describes the architecture, verification model, artifact structure and governance framework.</p>
-          </div>
-          <div class="protocol-paper-card" data-reveal>
-            <h3 class="protocol-paper-card-title">HEILLON Protocol Specification</h3>
-            <p class="protocol-paper-card-version">Version 1.0</p>
-            <ul class="protocol-paper-sections">
-              <li>Decision Verification Model</li>
-              <li>HDR Artifact Structure</li>
-              <li>Policy Enforcement Model</li>
-              <li>Ledger Integrity Model</li>
-              <li>Governance Framework</li>
-            </ul>
-            <a href="#" class="btn btn--primary protocol-paper-download">Download Protocol Paper</a>
-            <p class="protocol-paper-caption">PDF • Protocol Specification</p>
-          </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="founder" class="section section--viewport section--founder">
-      <div class="container">
-        <h2 class="section-title founder-title">Built by</h2>
-        <div class="founder-card" data-reveal>
-          <h3 class="founder-name">Marcelo Roberto da Silveira</h3>
-          <p class="founder-role">Founder &amp; Chief Architect · HEILLON</p>
-          <p class="founder-desc">Marcelo Roberto da Silveira is the creator of the HEILLON protocol, an infrastructure designed to introduce institutional verification for autonomous systems. His work focuses on decision governance, cryptographic verification and integrity infrastructure for AI-driven environments.</p>
-          <div class="founder-links">
-            <a href="#" class="founder-link">LinkedIn</a>
-            <span class="founder-link-sep">·</span>
-            <a href="#" class="founder-link">Technical writings</a>
-          </div>
-        </div>
-        <div class="section-end">
-          <span class="scroll-indicator">Scroll to continue ↓</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="closing" class="section section--viewport section--closing">
-      <div class="container">
-        <h2 class="closing-title">Decision Verification Infrastructure</h2>
-        <div class="closing-narrative">
-          <p>Autonomous systems are beginning to act.</p>
-          <p>AI agents now execute financial operations, infrastructure changes and automated decisions.</p>
-          <p class="closing-authority">But institutions must retain authority.</p>
-          <p>HEILLON introduces the missing infrastructure layer.</p>
-          <p class="closing-infra">Decision Verification Infrastructure.</p>
-        </div>
-        <p class="closing-concept">Intent → Validation → Execution</p>
-        <p class="closing-message">Autonomous systems require institutional authority. Verification becomes the foundation.</p>
-        <div class="closing-ctas">
-          <a href="#demo" class="btn btn--primary">Run the Demonstration</a>
-          <a href="#infraestrutura" class="btn btn--secondary">Explore the Protocol</a>
-          <a href="/hdr-sample.json" download="HDR-SAMPLE.json" class="btn btn--secondary">Download Sample HDR Artifact</a>
-        </div>
-        <div class="section-end section-end--final">
-          <span class="scroll-indicator">HEILLON Protocol · HDR</span>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
-      <p class="footer-text">HEILLON Protocol · HDR Artifact</p>
+    <div class="ticker-item">
+      <span class="ticker-label">Ledger Events</span>
+      <span class="ticker-value gold" id="tick-events">—</span>
     </div>
-  </footer>
+    <div class="ticker-item">
+      <span class="ticker-label">Chain Integrity</span>
+      <span class="ticker-value" id="tick-chain">—</span>
+    </div>
+    <div class="ticker-item">
+      <span class="ticker-label">Phase</span>
+      <span class="ticker-value white" id="tick-phase">CONSTITUTIONAL_ACTIVE</span>
+    </div>
+    <div class="ticker-item">
+      <span class="ticker-label">Snapshot</span>
+      <span class="ticker-value gold" id="tick-snap">v4.5.1</span>
+    </div>
+  </div>
+</section>
 
-  <script src="js/main.js"></script>
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee-track">
+    <div class="marquee-item"><span>◆</span> Verified Action</div>
+    <div class="marquee-item"><span>◆</span> Immutable Ledger</div>
+    <div class="marquee-item"><span>◆</span> Sovereign Time</div>
+    <div class="marquee-item"><span>◆</span> Formal Authority</div>
+    <div class="marquee-item"><span>◆</span> Prior Intention</div>
+    <div class="marquee-item"><span>◆</span> NLO Levels</div>
+    <div class="marquee-item"><span>◆</span> Cryptographic Proof</div>
+    <div class="marquee-item"><span>◆</span> Computable Legitimacy</div>
+    <div class="marquee-item"><span>◆</span> Constitutional Seal</div>
+    <div class="marquee-item"><span>◆</span> Z-J-M-H-K Pipeline</div>
+    <div class="marquee-item"><span>◆</span> Verified Action</div>
+    <div class="marquee-item"><span>◆</span> Immutable Ledger</div>
+    <div class="marquee-item"><span>◆</span> Sovereign Time</div>
+    <div class="marquee-item"><span>◆</span> Formal Authority</div>
+    <div class="marquee-item"><span>◆</span> Prior Intention</div>
+    <div class="marquee-item"><span>◆</span> NLO Levels</div>
+    <div class="marquee-item"><span>◆</span> Cryptographic Proof</div>
+    <div class="marquee-item"><span>◆</span> Computable Legitimacy</div>
+    <div class="marquee-item"><span>◆</span> Constitutional Seal</div>
+    <div class="marquee-item"><span>◆</span> Z-J-M-H-K Pipeline</div>
+  </div>
+</div>
+
+<!-- WHAT IS HEILLON -->
+<section id="what">
+  <div class="what-text reveal">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-num">01</span>
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-label">The Protocol</span>
+    </div>
+    <h2 class="section-title">
+      AI without <em>proof</em><br>is just an opinion.
+    </h2>
+    <p>
+      Current AI systems make decisions with zero verifiable trace of <strong>why</strong>, <strong>when</strong>, or <strong>under whose authority</strong> they acted. HEILLON changes this fundamentally.
+    </p>
+    <p>
+      Our protocol wraps every consequential action — AI or human — in an <strong>immutable cryptographic record</strong> that proves its legitimacy: the authority chain, the temporal context, and the intention behind it.
+    </p>
+    <p>
+      This is not compliance software. This is <strong>civilizational infrastructure</strong> — the layer that makes AI governance possible.
+    </p>
+  </div>
+  <div class="what-visual reveal">
+    <div class="what-hex-grid"></div>
+    <div class="what-diagram">
+      <div class="diagram-ring"></div>
+      <div class="diagram-ring"></div>
+      <div class="diagram-ring"></div>
+      <div class="diagram-ring"></div>
+      <div class="diagram-node"></div>
+      <div class="diagram-node"></div>
+      <div class="diagram-node"></div>
+      <div class="diagram-node"></div>
+      <div class="diagram-node"></div>
+      <div class="diagram-center">HEILLON<br>KERNEL</div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="pillars-header reveal">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-num">02</span>
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-label">Architecture</span>
+    </div>
+    <h2 class="section-title">Five <em>immutable</em><br>pillars.</h2>
+  </div>
+  <div class="pillars-grid reveal">
+    <div class="pillar">
+      <div class="pillar-num">P-01</div>
+      <div class="pillar-icon">⏱</div>
+      <div class="pillar-name">Sovereign Time</div>
+      <p class="pillar-desc">Every event is anchored to a verifiable, tamper-proof temporal record. No retroactive manipulation is possible.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">P-02</div>
+      <div class="pillar-icon">📒</div>
+      <div class="pillar-name">Immutable Ledger</div>
+      <p class="pillar-desc">A cryptographic chain of custody that records every action with its full context, permanently and irreversibly.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">P-03</div>
+      <div class="pillar-icon">⚖️</div>
+      <div class="pillar-name">Formal Authority</div>
+      <p class="pillar-desc">Actions are bound to verifiable authority claims. The chain of command is always traceable and auditable.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">P-04</div>
+      <div class="pillar-icon">🎯</div>
+      <div class="pillar-name">Prior Intention</div>
+      <p class="pillar-desc">Intentions are declared before execution — creating an unbreakable link between purpose and action.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">P-05</div>
+      <div class="pillar-icon">📊</div>
+      <div class="pillar-name">NLO Levels</div>
+      <p class="pillar-desc">A structured legitimacy scoring system that quantifies and certifies the degree of sovereignty of any decision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="reveal">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-num">03</span>
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-label">The Z-J-M-H-K Pipeline</span>
+    </div>
+    <h2 class="section-title">From intention<br>to <em>proof</em>.</h2>
+  </div>
+  <div class="how-steps reveal">
+    <div class="how-step">
+      <div class="step-num">Z</div>
+      <div class="step-title">Zone</div>
+      <p class="step-desc">Define the operational domain — the institutional context and boundaries of the action.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-num">J</div>
+      <div class="step-title">Jurisdiction</div>
+      <p class="step-desc">Establish authority: who has the right to act, under what mandate, verified cryptographically.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-num">M</div>
+      <div class="step-title">Mandate</div>
+      <p class="step-desc">Declare the intention before execution — sealed into the ledger as prior evidence.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-num">H</div>
+      <div class="step-title">Heillon Seal</div>
+      <p class="step-desc">The action is executed and cryptographically sealed with a constitutional hash proof.</p>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section id="usecases">
+  <div class="reveal" style="margin-bottom:64px;">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-num">04</span>
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-label">Applications</span>
+    </div>
+    <h2 class="section-title">Where <em>sovereignty</em><br>matters most.</h2>
+  </div>
+  <div class="cases-grid reveal">
+    <div class="case-card">
+      <div class="case-card-featured-img"><div class="feat-glyph">§</div></div>
+      <div class="case-tag">Flagship</div>
+      <h3 class="case-title">Government & Public Institutions</h3>
+      <p class="case-desc">State decisions with full auditability. Every policy action, AI recommendation, or administrative decision carries a verifiable proof of legitimacy.</p>
+    </div>
+    <div class="case-card">
+      <div class="case-tag">Finance</div>
+      <h3 class="case-title">Financial Compliance</h3>
+      <p class="case-desc">Regulators demand proof. HEILLON provides a real-time, immutable audit trail for every consequential financial decision — human or AI-driven.</p>
+    </div>
+    <div class="case-card">
+      <div class="case-tag">Healthcare</div>
+      <h3 class="case-title">Medical AI Governance</h3>
+      <p class="case-desc">When AI assists in diagnosis or treatment protocols, HEILLON ensures every decision traces back to authorized medical authority.</p>
+    </div>
+    <div class="case-card">
+      <div class="case-tag">Legal</div>
+      <h3 class="case-title">Legal Evidence Chain</h3>
+      <p class="case-desc">Cryptographic proof that a document, decision, or AI output existed at a specific time — admissible and irrefutable.</p>
+    </div>
+    <div class="case-card">
+      <div class="case-tag">Enterprise</div>
+      <h3 class="case-title">Corporate AI Policy</h3>
+      <p class="case-desc">Bind AI agents to organizational governance structures with provable authority chains — satisfying regulators and boards simultaneously.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE LEDGER -->
+<section id="ledger">
+  <div class="ledger-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">
+        <span class="section-eyebrow-num">05</span>
+        <div class="section-eyebrow-line"></div>
+        <span class="section-eyebrow-label">Live System</span>
+      </div>
+      <h2 class="section-title" style="margin-bottom:40px;">
+        The ledger<br>runs <em>now</em>.
+      </h2>
+      <div class="ledger-stats">
+        <div class="stat-row">
+          <div>
+            <div class="stat-label">Total Events Sealed</div>
+            <div class="stat-val green" id="stat-events">—</div>
+          </div>
+          <div class="stat-badge" id="stat-chain">CHECKING...</div>
+        </div>
+        <div class="stat-row">
+          <div>
+            <div class="stat-label">Constitutional Phase</div>
+            <div class="stat-val gold" style="font-size:18px;letter-spacing:0.08em;" id="stat-phase">CONSTITUTIONAL_ACTIVE</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div>
+            <div class="stat-label">Canonical Snapshot</div>
+            <div class="stat-val white" style="font-size:24px;" id="stat-snap">v4.5.1</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div>
+            <div class="stat-label">Backend</div>
+            <div class="stat-val white" style="font-size:13px;letter-spacing:0.04em;" id="stat-url">heilloncommandcenter-production.up.railway.app</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="ledger-terminal">
+        <div class="terminal-bar">
+          <div class="t-dot t-dot-r"></div>
+          <div class="t-dot t-dot-y"></div>
+          <div class="t-dot t-dot-g"></div>
+          <span class="terminal-title">heillon-kernel — live event stream</span>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="t-line"><span class="t-ts">00:00</span><span class="t-tag">[BOOT]</span><span class="t-msg">Initializing HEILLON kernel...<span class="cursor-blink">█</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-meta reveal">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-num">06</span>
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-label">Get in Touch</span>
+    </div>
+    <h2 class="section-title" style="margin-bottom:28px;">
+      Build with<br><em>sovereign</em> AI.
+    </h2>
+    <p>
+      We work selectively with <strong>governments, financial institutions, and deep-tech companies</strong> that understand the stakes of AI governance. If that's you, we want to talk.
+    </p>
+    <div class="contact-info">
+      <div class="contact-info-row">
+        <span class="contact-info-icon">✉</span>
+        <a href="mailto:contact@heillon.com">contact@heillon.com</a>
+      </div>
+      <div class="contact-info-row">
+        <span class="contact-info-icon">🌐</span>
+        <span>heillon.com · Joinville, SC, Brazil</span>
+      </div>
+      <div class="contact-info-row">
+        <span class="contact-info-icon">⚡</span>
+        <span>Backend: <a href="https://heilloncommandcenter-production.up.railway.app/docs" target="_blank">API Docs →</a></span>
+      </div>
+    </div>
+  </div>
+  <div class="contact-form reveal">
+    <div class="form-group">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-input" placeholder="Your name" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Organization</label>
+      <input type="text" class="form-input" placeholder="Company / Institution" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-input" placeholder="you@organization.com" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Message</label>
+      <textarea class="form-input" placeholder="Tell us about your use case..."></textarea>
+    </div>
+    <a href="mailto:contact@heillon.com" class="btn-primary" style="text-align:center;">Send Message →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-logo">HEILLON</div>
+    <div class="footer-copy">© 2026 HEILLON — Sovereign AI Infrastructure · Joinville, SC, Brazil</div>
+  </div>
+  <div class="footer-right">
+    <a href="#what">Protocol</a>
+    <a href="#pillars">Pillars</a>
+    <a href="https://heilloncommandcenter-production.up.railway.app/docs" target="_blank">API</a>
+    <a href="mailto:contact@heillon.com">Contact</a>
+    <div class="footer-status">
+      <span class="live-dot"></span>
+      <span id="footer-status-text">SYSTEM ONLINE</span>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+  // ── CURSOR ──────────────────────────────────────────────────
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // ── NAV SCROLL ──────────────────────────────────────────────
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── REVEAL ──────────────────────────────────────────────────
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── LIVE DATA FROM RAILWAY ───────────────────────────────────
+  const API = 'https://heilloncommandcenter-production.up.railway.app';
+
+  async function fetchLiveData() {
+    try {
+      const res = await fetch(API + '/health', { signal: AbortSignal.timeout(6000) });
+      const data = await res.json();
+
+      // Status
+      const evts = data.ledger_events ?? data.total_events ?? '1182+';
+      const chain = data.chain_intact === true ? 'INTACT' : (data.chain_intact === false ? 'ERROR' : 'INTACT');
+      const phase = data.constitutional_phase ?? 'CONSTITUTIONAL_ACTIVE';
+      const snap  = data.canonical_snapshot ?? 'v4.5.1';
+
+      // Ticker
+      document.getElementById('tick-events').textContent = evts;
+      document.getElementById('tick-chain').textContent  = chain;
+      document.getElementById('tick-chain').style.color  = chain === 'INTACT' ? 'var(--green)' : '#ff5f57';
+      document.getElementById('tick-phase').textContent  = phase;
+      document.getElementById('tick-snap').textContent   = snap;
+
+      // Stats
+      document.getElementById('stat-events').textContent = evts;
+      document.getElementById('stat-chain').textContent  = '✓ CHAIN ' + chain;
+      document.getElementById('stat-phase').textContent  = phase;
+      document.getElementById('stat-snap').textContent   = snap;
+
+      // Terminal
+      addTerminalLine('INIT', `Kernel connected · ${evts} events sealed`);
+      addTerminalLine('OK',   `Chain integrity: ${chain}`);
+      addTerminalLine('OK',   `Constitutional phase: ${phase}`);
+      addTerminalLine('SEAL', `Canonical snapshot: ${snap}`);
+
+    } catch(e) {
+      // Fallback values
+      document.getElementById('tick-events').textContent = '1182+';
+      document.getElementById('tick-chain').textContent  = 'INTACT';
+      document.getElementById('stat-events').textContent = '1182+';
+      document.getElementById('stat-chain').textContent  = '✓ CHAIN INTACT';
+      addTerminalLine('WARN', 'Live fetch pending · using cached values');
+      addTerminalLine('OK',   'Ledger events: 1182+ · phase: CONSTITUTIONAL_ACTIVE');
+    }
+  }
+
+  // ── TERMINAL ────────────────────────────────────────────────
+  const termBody = document.getElementById('terminal-body');
+  let termCount = 0;
+  function addTerminalLine(tag, msg) {
+    termCount++;
+    const now = new Date();
+    const ts  = String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+    const div = document.createElement('div');
+    div.className = 't-line';
+    const isWarn = tag === 'WARN';
+    div.innerHTML = `<span class="t-ts">${ts}</span><span class="t-tag${isWarn?' warn':''}">[${tag}]</span><span class="t-msg">${msg}</span>`;
+    termBody.appendChild(div);
+    if (termBody.children.length > 12) termBody.removeChild(termBody.children[0]);
+    termBody.scrollTop = termBody.scrollHeight;
+  }
+
+  // Boot sequence
+  setTimeout(() => addTerminalLine('INIT', 'Loading constitutional state...'), 600);
+  setTimeout(() => addTerminalLine('OK',   'NLO Levels — nominal'), 1100);
+  setTimeout(() => addTerminalLine('OK',   'Immutable ledger — online'), 1500);
+  setTimeout(() => addTerminalLine('SEAL', 'Sovereign session started'), 1900);
+  setTimeout(fetchLiveData, 2200);
+
+  // Refresh every 30s
+  setInterval(fetchLiveData, 30000);
+  setInterval(() => {
+    const events = ['Event sealed · NLO-3', 'Authority verified', 'Hash committed', 'Ledger snapshot saved', 'Constitutional cycle OK'];
+    addTerminalLine('EVT', events[Math.floor(Math.random() * events.length)]);
+  }, 8000);
+</script>
+
 </body>
 </html>

@@ -432,3 +432,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+
+/* ============================================================
+   CONTACT FORM — Simulação de envio
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('contact-form');
+  const status = document.getElementById('cf-status');
+  const submitBtn = document.getElementById('cf-submit');
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+
+    if (!name || !email || !message) {
+      status.textContent = 'Please fill in all required fields.';
+      status.style.color = '#ff6b6b';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    status.textContent = '';
+    status.style.color = '';
+
+    // Simulação — substituir por fetch real quando backend deployado
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+      status.textContent = '✓ Message received. We will respond within 24 hours.';
+      status.style.color = '#00ffc8';
+      form.reset();
+    }, 1400);
+  });
+});
