@@ -2727,8 +2727,8 @@ async function fetchLiveData() {
     const data = await res.json();
     const evts  = data.statistics?.total_events ?? data.database?.total_events ?? '—';
     const chain = data.database?.healthy === true ? 'INTACT' : 'ERROR';
-    const phase = 'CONSTITUTIONAL_ACTIVE';
-    const snap  = data.database?.schema_version ?? 'M2+M3';
+    const phase = data.constitutional_phase ?? data.database?.constitutional_phase ?? 'CONSTITUTIONAL_ACTIVE';
+    const snap  = data.database?.schema_version ?? 'M2+M3+Guard+PULSE+HSC';
     ['tick-events','stat-events'].forEach(id => setEl(id, evts));
     ['tick-chain'].forEach(id => setEl(id, chain));
     setEl('stat-chain', '✓ ' + chain);
