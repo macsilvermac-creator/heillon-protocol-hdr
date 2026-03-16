@@ -2969,7 +2969,14 @@ function copyCode(id) {
 
 // ── WHITEPAPER DOWNLOAD ───────────────────────────────────────
 function downloadWhitepaper() {
-  const content = `HEILLON — Technical Whitepaper v1.0
+  // PDF profissional hospedado no repositório
+  const a = document.createElement('a');
+  a.href = '/HEILLON_Technical_Whitepaper_v1.1.pdf';
+  a.download = 'HEILLON_Technical_Whitepaper_v1.1.pdf';
+  a.target = '_blank';
+  a.click();
+  addTerminalLine('SEAL', 'Whitepaper v1.1 PDF downloaded · no auth required');
+}
 Computable Legitimacy Infrastructure
 =====================================
 Version: 1.0 · March 2026 · contact@heillon.com
@@ -3213,19 +3220,6 @@ Institutional POC      : contact@heillon.com (subject: Institutional POC)
 Full API Access        : contact@heillon.com (subject: API Access Request)
 
 Response within 48h.
-
-HEILLON © 2026 · Joinville, SC, Brazil · heillon.com
-`;
-
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'HEILLON_Technical_Whitepaper_v1.0.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-  addTerminalLine('SEAL', 'Whitepaper v1.0 downloaded · no auth required');
-}
 
 // ── FORM ──────────────────────────────────────────────────────
 function submitForm(btn) {
