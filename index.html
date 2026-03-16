@@ -1126,14 +1126,22 @@ section + section::before {
 .live-stat:hover,
 .stat-block:hover { background: var(--bg-surface); }
 
+.stat-block {
+  overflow: hidden;
+  min-height: 0;
+}
+
 .live-stat-value,
 .stat-val {
   font-family: var(--font-display);
-  font-size: 3.8rem;
+  font-size: clamp(0.78rem, 3.2vw, 3.8rem);
   font-weight: 300;
   color: var(--gold);
-  line-height: 1;
+  line-height: 1.2;
   margin-bottom: 0.5rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .stat-val.green { color: var(--proof-bright); }
@@ -2717,7 +2725,18 @@ function addTerminalLine(tag, msg) {
 // ── LIVE DATA ─────────────────────────────────────────────────
 function setEl(id, val) {
   const el = document.getElementById(id);
-  if (el && val !== undefined) el.textContent = val;
+  if (el && val !== undefined) {
+    el.textContent = val;
+    // Ajustar tamanho da fonte dinamicamente para strings longas
+    if (el.classList.contains('stat-val')) {
+      const len = String(val).length;
+      if (len > 30)      el.style.fontSize = '0.78rem';
+      else if (len > 20) el.style.fontSize = '1rem';
+      else if (len > 10) el.style.fontSize = '1.4rem';
+      else if (len > 6)  el.style.fontSize = '2rem';
+      else               el.style.fontSize = '';
+    }
+  }
 }
 
 async function fetchLiveData() {
