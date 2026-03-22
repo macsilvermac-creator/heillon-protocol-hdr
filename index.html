@@ -1915,8 +1915,6 @@ footer#footer {
     <li>
       <button id="lang-btn" onclick="toggleLang()" style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--gold-border);padding:6px 14px;cursor:pointer;transition:all 0.2s;">PT</button>
     </li>
-
-    <li><a href="https://heillon-command-center.vercel.app/cc" target="_blank" class="nav-cta" id="nav-access"><span class="lang-en">Access System</span><span class="lang-pt" style="display:none">Acessar Sistema</span></a></li>
   </ul>
 </nav>
 
@@ -3282,6 +3280,33 @@ function toggleLang() {
     document.querySelectorAll(".lang-pt").forEach(function(e){e.style.display="";});
     document.querySelectorAll(".lang-en").forEach(function(e){e.style.display="none";});
   }
+})();
+</script>
+
+<script>
+// FIX: Reveal robusto para vitrine.heillon.com
+(function() {
+  function activateReveals() {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }
+  // Ativa imediatamente os que já estão na viewport
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.01, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+  // Safety: ativa tudo após 2s caso o observer falhe
+  setTimeout(activateReveals, 2000);
+  // Ativa no scroll também
+  window.addEventListener('scroll', function() {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight - 20) el.classList.add('visible');
+    });
+  }, { passive: true });
 })();
 </script>
 </body>
