@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1912,7 +1912,11 @@ footer#footer {
     <li><a href="#pulse-section">HPG</a></li>
     <li><a href="#verify">Verify</a></li>
     <li><a href="#tech-proof">Technical</a></li>
-    <li><a href="#contact" class="nav-cta">Request Access</a></li>
+    <li>
+      <button id="lang-btn" onclick="toggleLang()" style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--gold-border);padding:6px 14px;cursor:pointer;transition:all 0.2s;">PT</button>
+    </li>
+    <li><button onclick="toggleLang()" id="lang-toggle" style="font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--gold-border);padding:7px 16px;cursor:pointer;transition:all .2s;">PT</button></li>
+    <li><a href="https://heillon-command-center.vercel.app/cc" target="_blank" class="nav-cta" id="nav-access"><span class="lang-en">Access System</span><span class="lang-pt" style="display:none">Acessar Sistema</span></a></li>
   </ul>
 </nav>
 
@@ -1922,8 +1926,10 @@ footer#footer {
     <div class="hero-eyebrow">Computable Legitimacy Infrastructure</div>
 
     <h1 class="hero-title">
-      When an AI makes a <em>$10M decision</em>,<br>
-      who proves it was <em>legitimate?</em>
+      <span class="lang-en">When an AI makes a <em>$10M decision</em>,<br>
+      who proves it was <em>legitimate?</em></span>
+      <span class="lang-pt" style="display:none;">Quando uma IA toma uma <em>decisão de $10M</em>,<br>
+      quem prova que foi <em>legítimo?</em></span>
     </h1>
 
     <p class="hero-desc">
@@ -3248,5 +3254,35 @@ setInterval(() => {
 }, 8000);
 </script>
 
+<script>
+// ── HEILLON PT/EN LANGUAGE TOGGLE ─────────────────────────
+function toggleLang() {
+  var btn = document.getElementById("lang-toggle");
+  var isPT = document.documentElement.lang === "pt-BR";
+  if (isPT) {
+    document.documentElement.lang = "en";
+    btn.textContent = "PT";
+    document.querySelectorAll(".lang-pt").forEach(function(e){e.style.display="none";});
+    document.querySelectorAll(".lang-en").forEach(function(e){e.style.display="";});
+    localStorage.setItem("heillon-lang","en");
+  } else {
+    document.documentElement.lang = "pt-BR";
+    btn.textContent = "EN";
+    document.querySelectorAll(".lang-pt").forEach(function(e){e.style.display="";});
+    document.querySelectorAll(".lang-en").forEach(function(e){e.style.display="none";});
+    localStorage.setItem("heillon-lang","pt");
+  }
+}
+// Restore saved language
+(function(){
+  if(localStorage.getItem("heillon-lang")==="pt"){
+    document.documentElement.lang="pt-BR";
+    var btn=document.getElementById("lang-toggle");
+    if(btn)btn.textContent="EN";
+    document.querySelectorAll(".lang-pt").forEach(function(e){e.style.display="";});
+    document.querySelectorAll(".lang-en").forEach(function(e){e.style.display="none";});
+  }
+})();
+</script>
 </body>
 </html>
