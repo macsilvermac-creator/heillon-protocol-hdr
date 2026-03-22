@@ -1915,7 +1915,7 @@ footer#footer {
     <li>
       <button id="lang-btn" onclick="toggleLang()" style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--gold-border);padding:6px 14px;cursor:pointer;transition:all 0.2s;">PT</button>
     </li>
-    <li><button onclick="toggleLang()" id="lang-toggle" style="font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--gold-border);padding:7px 16px;cursor:pointer;transition:all .2s;">PT</button></li>
+
     <li><a href="https://heillon-command-center.vercel.app/cc" target="_blank" class="nav-cta" id="nav-access"><span class="lang-en">Access System</span><span class="lang-pt" style="display:none">Acessar Sistema</span></a></li>
   </ul>
 </nav>
@@ -3257,7 +3257,7 @@ setInterval(() => {
 <script>
 // ── HEILLON PT/EN LANGUAGE TOGGLE ─────────────────────────
 function toggleLang() {
-  var btn = document.getElementById("lang-toggle");
+  var btn = document.getElementById("lang-btn");
   var isPT = document.documentElement.lang === "pt-BR";
   if (isPT) {
     document.documentElement.lang = "en";
@@ -3277,7 +3277,7 @@ function toggleLang() {
 (function(){
   if(localStorage.getItem("heillon-lang")==="pt"){
     document.documentElement.lang="pt-BR";
-    var btn=document.getElementById("lang-toggle");
+    var btn=document.getElementById("lang-btn");
     if(btn)btn.textContent="EN";
     document.querySelectorAll(".lang-pt").forEach(function(e){e.style.display="";});
     document.querySelectorAll(".lang-en").forEach(function(e){e.style.display="none";});
