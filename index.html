@@ -1949,6 +1949,32 @@ footer#footer {
         Explore by role →
       </a>
     </div>
+      <!-- APP DOWNLOAD — bloqueado até 03/04 -->
+      <div id="vit-app-wrap" style="margin-top:1rem;">
+        <a id="vit-app-btn" href="https://heillon.com/app.html"
+          style="display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;padding:.7rem 1.4rem;border:1px solid rgba(201,168,76,.3);color:var(--gold);text-decoration:none;background:rgba(201,168,76,.06);transition:all .2s;"
+          onmouseover="this.style.background='rgba(201,168,76,.12)'" onmouseout="this.style.background='rgba(201,168,76,.06)'">
+          <span style="font-family:var(--font-display);font-size:1.1rem;line-height:1;font-weight:300;">H</span>
+          <span id="vit-app-text">↓ App — abre 03/04</span>
+          <span id="vit-app-cd" style="font-size:.6rem;color:rgba(201,168,76,.55);"></span>
+        </a>
+      </div>
+      <script>
+      (function(){
+        var LAUNCH = new Date('2026-04-03T00:00:00-03:00').getTime()
+        var btn = document.getElementById('vit-app-btn')
+        var cd  = document.getElementById('vit-app-cd')
+        function tick(){
+          var diff = LAUNCH - Date.now()
+          if(diff <= 0){ cd.textContent='● LIVE'; cd.style.color='#40916C'; return }
+          btn.onclick=function(e){ e.preventDefault(); }
+          var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000)
+          cd.textContent = d+'d '+h+'h '+m+'m'
+          setTimeout(tick, 60000)
+        }
+        tick()
+      })()
+      </script>
 
     <div class="hero-anchor" style="margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid rgba(201,168,76,0.12);font-family:var(--font-display);font-size:1rem;font-style:italic;color:var(--ink-secondary);letter-spacing:0.04em;opacity:0.9;">
       Invisible at installation. Inevitable as proof.
