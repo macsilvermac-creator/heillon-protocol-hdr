@@ -1950,10 +1950,10 @@ footer#footer {
     <div class="hero-eyebrow">HEILLON · Infraestrutura de Legitimidade Computacional</div>
 
     <h1 class="hero-title">
-      <span class="lang-en">Your system acts.<br>
-      <em>The proof exists.</em></span>
-      <span class="lang-pt" style="display:none;">Seu sistema age.<br>
+      <span class="lang-pt">Seu sistema age.<br>
       <em>A prova existe.</em></span>
+      <span class="lang-en" style="display:none;">Your system acts.<br>
+      <em>The proof exists.</em></span>
     </h1>
 
     <p class="hero-desc">
@@ -2105,10 +2105,12 @@ footer#footer {
 <!-- CONSEQUENCE / THE REAL PROBLEM -->
 <section id="consequence">
   <div class="consequence-inner">
-    <div class="consequence-label">The Governance Gap</div>
+    <div class="consequence-label"><span class="lang-pt">O Problema de Governança</span><span class="lang-en" style="display:none">The Governance Gap</span></div>
     <h2 class="consequence-title">
-      Governance after execution is theatre. The LC²S governs before.<br>
-      <strong>The LC&sup2;S governs before. Not after.</strong>
+      <span class="lang-pt">Governança pós-execução é teatro. O LC²S governa antes.<br>
+      <strong>O LC²S governa antes. Não depois.</strong></span>
+      <span class="lang-en" style="display:none">Governance after execution is theatre. The LC²S governs before.<br>
+      <strong>The LC²S governs before. Not after.</strong></span>
     </h2>
 
     <div class="consequence-scenarios reveal">
@@ -2209,8 +2211,8 @@ footer#footer {
       <span class="lang-pt" style="display:none">A DIFERENÇA QUE IMPORTA</span>
     </div>
     <h2 class="section-title reveal" style="max-width:18ch;margin-bottom:1rem">
-      <span class="lang-en">This is not a log.<br><em>This is proof.</em></span>
-      <span class="lang-pt" style="display:none">Isso não é um log.<br><em>É uma prova institucional.</em></span>
+      <span class="lang-pt">Isso não é um log.<br><em>É uma prova institucional.</em></span>
+      <span class="lang-en" style="display:none">This is not a log.<br><em>This is proof.</em></span>
     </h2>
     <p style="font-size:1rem;color:var(--ink-secondary);max-width:520px;margin-bottom:3.5rem" class="reveal reveal-delay-1">
       <span class="lang-en">A log records what happened. An HDR proves who had authority, under which mandate, against which norms — before execution. The difference is the difference between a security camera and a notary.</span>
@@ -2811,8 +2813,8 @@ footer#footer {
         <span class="lang-pt" style="display:none">DEMO AO VIVO · VEJA A PROVA SENDO GERADA</span>
       </div>
       <h2 style="font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;color:var(--ink-primary);line-height:1.2;margin-bottom:0.75rem;">
-        <span class="lang-en">R$50k credit decision at 3am.<br><em style="color:var(--gold)">What proves it had authority?</em></span>
-        <span class="lang-pt" style="display:none">Decisão de crédito de R$50k às 3h da manhã.<br><em style="color:var(--gold)">O que prova que tinha autoridade?</em></span>
+        <span class="lang-pt">Decisão de crédito de R$50k às 3h da manhã.<br><em style="color:var(--gold)">O que prova que tinha autoridade?</em></span>
+        <span class="lang-en" style="display:none">R$50k credit decision at 3am.<br><em style="color:var(--gold)">What proves it had authority?</em></span>
       </h2>
       <p style="font-family:var(--font-mono);font-size:0.82rem;color:var(--ink-secondary);max-width:560px;">
         <span class="lang-en">Watch the Z-J-M-H-K pipeline seal a real AI decision in real time. From intent to verdict.</span>
@@ -3056,8 +3058,8 @@ window.startDemo=function(){
       <span class="lang-pt" style="display:none">RECURSOS & DOCUMENTOS</span>
     </div>
     <h2 class="section-title reveal">
-      <span class="lang-en">Everything you need<br>to evaluate HEILLON.</span>
-      <span class="lang-pt" style="display:none">Tudo que você precisa<br>para avaliar a HEILLON.</span>
+      <span class="lang-pt">Tudo que você precisa<br>para avaliar a HEILLON.</span>
+      <span class="lang-en" style="display:none">Everything you need<br>to evaluate HEILLON.</span>
     </h2>
     <p style="font-size:1rem;color:var(--ink-secondary);max-width:540px;margin-bottom:3rem;opacity:0" class="reveal reveal-delay-1">
       <span class="lang-en">No login. No form. All documents open and free. Verify the system yourself before any conversation.</span>
@@ -3841,14 +3843,21 @@ function toggleLang() {
     localStorage.setItem("heillon-lang","pt");
   }
 }
-// Restore saved language
+// Restore saved language — default PT se sem preferencia guardada
 (function(){
-  if(localStorage.getItem("heillon-lang")==="pt"){
-    document.documentElement.lang="pt-BR";
-    var btn=document.getElementById("lang-btn");
-    if(btn)btn.textContent="EN";
+  var saved = localStorage.getItem("heillon-lang");
+  var usePT = (saved === "pt" || saved === null); // PT por defeito
+  var btn = document.getElementById("lang-btn");
+  if (usePT) {
+    document.documentElement.lang = "pt-BR";
+    if(btn) btn.textContent = "EN";
     document.querySelectorAll(".lang-pt").forEach(function(e){e.style.display="";});
     document.querySelectorAll(".lang-en").forEach(function(e){e.style.display="none";});
+  } else {
+    document.documentElement.lang = "en";
+    if(btn) btn.textContent = "PT";
+    document.querySelectorAll(".lang-pt").forEach(function(e){e.style.display="none";});
+    document.querySelectorAll(".lang-en").forEach(function(e){e.style.display="";});
   }
 })();
 </script>
