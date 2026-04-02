@@ -2410,23 +2410,42 @@ footer#footer {
     </p>
 
     <!-- Fricção zero — uma linha de código -->
-    <div class="reveal reveal-delay-2" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;align-items:start;">
+    <div class="reveal reveal-delay-2" style="margin-top:2rem;padding:1rem 1.5rem;background:rgba(0,80,40,.15);border:1px solid rgba(74,222,128,.2);font-family:var(--font-mono);font-size:0.72rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+      <span style="color:#4ade80;font-weight:700;letter-spacing:.1em;">SANDBOX MODE</span>
+      <span style="color:var(--ink-secondary);">Use <code style="color:#4ade80;background:rgba(74,222,128,.1);padding:2px 6px;border-radius:3px;">"test_mode": true</code> para testar sem selar no ledger soberano · 3 execuções gratuitas · sem conta necessária</span>
+      <span style="color:var(--ink-muted);">Remova para produção: <code style="color:var(--gold);background:rgba(201,168,76,.08);padding:2px 6px;border-radius:3px;">"test_mode": false</code></span>
+    </div>
+    <div class="reveal reveal-delay-2" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2rem;align-items:start;">
       <div>
         <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:1rem;opacity:0.7;">ZERO-FRICTION INTEGRATION</div>
         <div style="background:var(--bg-surface);border:1px solid var(--gold-border);padding:2rem;font-family:var(--font-mono);font-size:0.82rem;line-height:1.8;">
-          <div style="color:var(--ink-muted);font-size:0.65rem;margin-bottom:1rem;letter-spacing:0.1em;">STEP 1 — onboard your system</div>
-          <div><span style="color:var(--gold-bright);">POST</span> <span style="color:var(--ink-primary);">/pulse/onboard</span></div>
-          <div style="color:var(--ink-muted);font-size:0.72rem;margin:0.4rem 0 1rem 0;">→ receives client_id + integration URLs</div>
-          <div style="color:var(--ink-muted);font-size:0.65rem;margin-bottom:1rem;letter-spacing:0.1em;">STEP 2 — declare each decision</div>
-          <div><span style="color:var(--gold-bright);">POST</span> <span style="color:var(--ink-primary);">/pulse/declare</span></div>
-          <div style="color:var(--ink-muted);font-size:0.72rem;margin:0.3rem 0 0.5rem 1rem;">{ actor_id, action, subject_id }</div>
-          <div style="color:var(--ink-muted);font-size:0.72rem;margin-bottom:1rem;">→ returns signal_id + confidence level</div>
-          <div style="color:var(--ink-muted);font-size:0.65rem;margin-bottom:1rem;letter-spacing:0.1em;">STEP 3 — retrieve the proof</div>
-          <div><span style="color:var(--proof-bright);">GET</span>&nbsp; <span style="color:var(--ink-primary);">/pulse/signal/{id}/certificate</span></div>
-          <div style="color:var(--ink-muted);font-size:0.72rem;margin-top:0.4rem;">→ cryptographic PDF · verifiable offline</div>
+          <div style="color:var(--ink-muted);font-size:0.65rem;margin-bottom:1rem;letter-spacing:0.1em;">ENDPOINT ÚNICO — POST /lc2s/execute</div>
+          <div style="color:var(--ink-muted);font-size:0.72rem;margin-bottom:.75rem;">Content-Type: application/json</div>
+          <div><span style="color:var(--gold-bright);">{</span></div>
+          <div style="margin-left:1.2rem;color:var(--ink-primary);">"actor_id": <span style="color:#4ade80;">"meu-sistema-ia"</span>,</div>
+          <div style="margin-left:1.2rem;color:var(--ink-primary);">"actor_type": <span style="color:#4ade80;">"AI"</span>,</div>
+          <div style="margin-left:1.2rem;color:var(--ink-primary);">"intent": <span style="color:#4ade80;">"Aprovar crédito R$25k"</span>,</div>
+          <div style="margin-left:1.2rem;color:var(--ink-primary);">"action_type": <span style="color:#4ade80;">"CREDIT_DECISION"</span>,</div>
+          <div style="margin-left:1.2rem;color:var(--ink-primary);">"domain": <span style="color:#4ade80;">"BR-FINANCEIRO"</span>,</div>
+          <div style="margin-left:1.2rem;color:var(--ink-primary);">"nlo_required": <span style="color:#60a5fa;">2</span>,</div>
+          <div style="margin-left:1.2rem;color:var(--ink-primary);">"test_mode": <span style="color:#f59e0b;">true</span></div>
+          <div><span style="color:var(--gold-bright);">}</span></div>
+          <div style="color:var(--ink-muted);font-size:0.72rem;margin-top:1rem;">→ verdict_code: "LEGITIMATE" · hdr_id: "HDR-LC2S-…" · ~333ms</div>
+        </div>
+        <div style="margin-top:1rem;padding:.75rem 1rem;border:1px solid rgba(74,222,128,.2);background:rgba(0,80,40,.1);font-family:var(--font-mono);font-size:0.68rem;">
+          <div style="color:#4ade80;margin-bottom:.5rem;letter-spacing:.1em;">VALORES VÁLIDOS PARA domain</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
+            <span style="background:rgba(74,222,128,.1);color:#4ade80;padding:2px 8px;border-radius:3px;">BR-FINANCEIRO</span>
+            <span style="background:rgba(74,222,128,.1);color:#4ade80;padding:2px 8px;border-radius:3px;">BR-SAUDE</span>
+            <span style="background:rgba(74,222,128,.1);color:#4ade80;padding:2px 8px;border-radius:3px;">BR-JURIDICO</span>
+            <span style="background:rgba(74,222,128,.1);color:#4ade80;padding:2px 8px;border-radius:3px;">BR-SEGUROS</span>
+            <span style="background:rgba(74,222,128,.1);color:#4ade80;padding:2px 8px;border-radius:3px;">UAE-FINANCEIRO</span>
+            <span style="background:rgba(74,222,128,.1);color:#4ade80;padding:2px 8px;border-radius:3px;">EU-DADOS</span>
+          </div>
+          <div style="color:var(--ink-muted);margin-top:.5rem;">nlo_required: 1 (baixo risco) → 5 (estratégico/regulatório)</div>
         </div>
         <div style="margin-top:1.25rem;padding:1rem 1.25rem;border:1px solid var(--proof-border);background:var(--proof-trace);font-family:var(--font-mono);font-size:0.72rem;color:var(--proof-bright);">
-          ✓ Your system doesn't change. It just starts generating proof.
+          ✓ 1 endpoint · sem SDK · sem refactoring · latência avg 333ms
         </div>
       </div>
 
@@ -3267,8 +3286,11 @@ window.startDemo=function(){
     <li><a href="#verify">Verify</a></li>
     <li><a href="#tech-proof">Technical</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="https://vitrine.heillon.com/docs/HEILLON_TermosDeUso_v1.pdf" target="_blank" rel="noopener">Termos de Uso</a></li>
+    <li><a href="https://vitrine.heillon.com/docs/HEILLON_PoliticaPrivacidade_v1.pdf" target="_blank" rel="noopener">Privacidade</a></li>
+    <li><a href="https://vitrine.heillon.com/docs/HEILLON_SLA_v1.pdf" target="_blank" rel="noopener">SLA</a></li>
   </ul>
-  <div class="footer-meta">© 2026 HEILLON · Joinville, SC, Brazil</div>
+  <div class="footer-meta">© 2026 HEILLON · Joinville, SC, Brazil · HEILLON não é ICP-Brasil · HDR é artefato de legitimidade computável</div>
 </footer>
 
 <script>
