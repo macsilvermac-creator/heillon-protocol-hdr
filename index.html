@@ -69,12 +69,46 @@
     }
 
     .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .72rem;
       font-family: var(--mono);
       letter-spacing: .42em;
       color: var(--gold-bright);
       font-size: .78rem;
       font-weight: 700;
     }
+    .brand-mark {
+      width: 1.35rem;
+      height: 1.35rem;
+      position: relative;
+      display: inline-block;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 0 8px rgba(201,168,76,.18));
+    }
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: .34rem;
+      height: 100%;
+      background: var(--gold-bright);
+      clip-path: polygon(0 18%, 100% 0, 100% 100%, 0 82%);
+    }
+    .brand-mark::before { left: 0; }
+    .brand-mark::after { right: 0; transform: scaleX(-1); }
+    .brand-axis {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: .38rem;
+      height: .2rem;
+      transform: translate(-50%, -50%);
+      background: var(--gold);
+      box-shadow: 0 0 8px rgba(201,168,76,.25);
+    }
+    .brand-word { transform: translateY(.02rem); }
 
     .links { display: flex; align-items: center; gap: 2.4rem; }
     .links a {
@@ -370,7 +404,10 @@
 </head>
 <body>
   <nav class="nav">
-    <a class="brand" href="#top">HEILLON</a>
+    <a class="brand" href="#top" aria-label="HEILLON">
+      <span class="brand-mark" aria-hidden="true"><span class="brand-axis"></span></span>
+      <span class="brand-word">HEILLON</span>
+    </a>
     <div class="links">
       <a href="#problem">Problema</a>
       <a href="#how">Como funciona</a>
