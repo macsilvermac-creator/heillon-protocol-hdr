@@ -163,7 +163,7 @@
 
     .seal {
       justify-self: center;
-      width: min(396px, 78vw);
+      width: min(430px, 80vw);
       aspect-ratio: 1;
       border: 1px solid var(--gold-line);
       border-radius: 50%;
@@ -184,7 +184,7 @@
     .seal::before { inset: 10%; }
     .seal::after { inset: 22%; animation-delay: -3s; }
     .portal-logo {
-      width: 54%;
+      width: 62%;
       aspect-ratio: 1;
       position: relative;
       z-index: 1;
@@ -209,18 +209,18 @@
     }
     .portal-pillar {
       position: absolute;
-      top: 8%;
-      width: 24%;
-      height: 84%;
+      top: 3%;
+      width: 29%;
+      height: 94%;
       background: linear-gradient(180deg, var(--ink), rgba(240,235,224,.86));
       clip-path: polygon(0 16%, 100% 0, 100% 100%, 0 84%);
       opacity: .96;
       transform-origin: center;
       animation: pillar-guard 6.8s ease-in-out infinite;
     }
-    .portal-pillar.left { left: 4%; }
+    .portal-pillar.left { left: 0; }
     .portal-pillar.right {
-      right: 4%;
+      right: 0;
       transform: scaleX(-1);
       animation-name: pillar-guard-right;
     }
