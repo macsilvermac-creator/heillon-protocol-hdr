@@ -91,11 +91,16 @@
     .hero {
       min-height: calc(100vh - 64px);
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 360px;
-      gap: 5vw;
+      grid-template-columns: minmax(0, 1fr) minmax(420px, 28vw);
+      gap: 2vw;
       align-items: center;
       padding-top: 4rem;
       padding-bottom: 4rem;
+    }
+
+    .hero aside {
+      justify-self: center;
+      transform: translateX(clamp(-110px, -5vw, -70px));
     }
 
     .eyebrow {
@@ -158,7 +163,7 @@
 
     .seal {
       justify-self: center;
-      width: min(330px, 72vw);
+      width: min(396px, 78vw);
       aspect-ratio: 1;
       border: 1px solid var(--gold-line);
       border-radius: 50%;
@@ -246,7 +251,7 @@
       color: var(--dim);
       text-transform: uppercase;
     }
-    .seal-status { margin-top: 1.4rem; font-family: var(--mono); color: var(--green); font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; }
+    .seal-status { margin-top: 1.4rem; font-family: var(--mono); color: var(--green); font-size: .7rem; letter-spacing: .18em; text-align: center; text-transform: uppercase; }
 
     @keyframes ring-breathe {
       0%, 100% { transform: scale(1); opacity: .72; }
@@ -343,6 +348,7 @@
     @media (max-width: 960px) {
       .links { display: none; }
       .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero aside { transform: none; }
       .seal { display: none; }
       .grid, .flow, .split { grid-template-columns: 1fr; }
       .step { border-right: 0; border-bottom: 1px solid rgba(201,168,76,.12); }
