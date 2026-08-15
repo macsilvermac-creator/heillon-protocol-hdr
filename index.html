@@ -371,12 +371,20 @@
       border-top: 1px solid rgba(201,168,76,.12);
       display: flex;
       justify-content: space-between;
-      gap: 2rem;
+      gap: 1.4rem 2rem;
       color: var(--dim);
       font-family: var(--mono);
       font-size: .72rem;
       line-height: 1.8;
+      flex-wrap: wrap;
     }
+    .footer-brand { display: flex; align-items: center; gap: .8rem; color: var(--gold-bright); }
+    .footer-brand .brand-mark { width: 1.55rem; height: 1.55rem; }
+    .footer-brand .brand-axis { width: .44rem; height: .22rem; }
+    .footer-brand strong { letter-spacing: .34em; font-size: .78rem; }
+    .footer-brand span:last-child { letter-spacing: .16em; color: rgba(247,226,153,.62); }
+    .footer-company { display: grid; gap: .2rem; letter-spacing: .08em; color: rgba(245,241,232,.58); }
+    .footer-links { letter-spacing: .1em; }
     footer a { color: var(--gold-bright); }
 
     @media (max-width: 960px) {
@@ -502,12 +510,19 @@
   </main>
 
   <footer>
-    <div>
-      <strong>HEILLON</strong><br>
-      MARCELO ROBERTO DA SILVEIRA · CNPJ 16.697.402/0001-27 · Joinville/SC · Tel. +55 47 99119-9695<br>
-      Infraestrutura de legitimidade computacional · prova · reconstrução · contratos.
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true"><span class="brand-axis"></span></span>
+      <div>
+        <strong>HEILLON INFRAESTRUTURA COMPUTACIONAL</strong>
+      </div>
     </div>
-    <div><a href="https://heillon.com">heillon.com</a> · <a href="https://hdr.heillon.com">hdr.heillon.com</a> · <a href="mailto:contact@heillon.com">contact</a></div>
+    <div class="footer-company" aria-label="Dados públicos HEILLON">
+      <span>CNPJ: 16.697.402/0001-27</span>
+      <span>Base: Joinville/SC</span>
+      <span>Contato: +55 47 99119-9695</span>
+      <span>E-mail: contact@heillon.com</span>
+    </div>
+    <div class="footer-links"><a href="https://heillon.com">heillon.com</a> · <a href="https://hdr.heillon.com">hdr.heillon.com</a> · <a href="mailto:contact@heillon.com">contact</a></div>
   </footer>
 </body>
 </html>
